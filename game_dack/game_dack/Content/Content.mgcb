@@ -13,90 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin images/7Heroes/Canas.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/7Heroes/Canas.png
-
-#begin images/7Heroes/Ephraim.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/7Heroes/Ephraim.png
-
-#begin images/7Heroes/Hector.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/7Heroes/Hector.png
-
-#begin images/7Heroes/Lucius.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/7Heroes/Lucius.png
-
-#begin images/7Heroes/Lyn.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn.png
-
-#begin images/7Heroes/marth.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/7Heroes/marth.png
-
-#begin images/7Heroes/Nino.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/7Heroes/Nino.png
-
 #begin ground/BattleGround.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -109,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:ground/BattleGround.png
 
-#begin images/7Heroes/Lyn/Lyn_1.png
+#begin unit/7Heroes/Lyn/attack/bow/1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -119,9 +35,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_1.png
+/build:unit/7Heroes/Lyn/attack/bow/1.png
 
-#begin images/7Heroes/Lyn/Lyn_10.png
+#begin unit/7Heroes/Lyn/attack/bow/10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -131,9 +47,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_10.png
+/build:unit/7Heroes/Lyn/attack/bow/10.png
 
-#begin images/7Heroes/Lyn/Lyn_11.png
+#begin unit/7Heroes/Lyn/attack/bow/11.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -143,9 +59,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_11.png
+/build:unit/7Heroes/Lyn/attack/bow/11.png
 
-#begin images/7Heroes/Lyn/Lyn_12.png
+#begin unit/7Heroes/Lyn/attack/bow/12.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -155,9 +71,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_12.png
+/build:unit/7Heroes/Lyn/attack/bow/12.png
 
-#begin images/7Heroes/Lyn/Lyn_13.png
+#begin unit/7Heroes/Lyn/attack/bow/13.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -167,9 +83,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_13.png
+/build:unit/7Heroes/Lyn/attack/bow/13.png
 
-#begin images/7Heroes/Lyn/Lyn_14.png
+#begin unit/7Heroes/Lyn/attack/bow/14.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -179,9 +95,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_14.png
+/build:unit/7Heroes/Lyn/attack/bow/14.png
 
-#begin images/7Heroes/Lyn/Lyn_15.png
+#begin unit/7Heroes/Lyn/attack/bow/15.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -191,9 +107,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_15.png
+/build:unit/7Heroes/Lyn/attack/bow/15.png
 
-#begin images/7Heroes/Lyn/Lyn_16.png
+#begin unit/7Heroes/Lyn/attack/bow/2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -203,9 +119,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_16.png
+/build:unit/7Heroes/Lyn/attack/bow/2.png
 
-#begin images/7Heroes/Lyn/Lyn_17.png
+#begin unit/7Heroes/Lyn/attack/bow/3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -215,9 +131,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_17.png
+/build:unit/7Heroes/Lyn/attack/bow/3.png
 
-#begin images/7Heroes/Lyn/Lyn_18.png
+#begin unit/7Heroes/Lyn/attack/bow/4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -227,9 +143,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_18.png
+/build:unit/7Heroes/Lyn/attack/bow/4.png
 
-#begin images/7Heroes/Lyn/Lyn_19.png
+#begin unit/7Heroes/Lyn/attack/bow/5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -239,9 +155,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_19.png
+/build:unit/7Heroes/Lyn/attack/bow/5.png
 
-#begin images/7Heroes/Lyn/Lyn_2.png
+#begin unit/7Heroes/Lyn/attack/bow/6.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -251,9 +167,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_2.png
+/build:unit/7Heroes/Lyn/attack/bow/6.png
 
-#begin images/7Heroes/Lyn/Lyn_20.png
+#begin unit/7Heroes/Lyn/attack/bow/7.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -263,9 +179,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_20.png
+/build:unit/7Heroes/Lyn/attack/bow/7.png
 
-#begin images/7Heroes/Lyn/Lyn_21.png
+#begin unit/7Heroes/Lyn/attack/bow/8.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -275,9 +191,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_21.png
+/build:unit/7Heroes/Lyn/attack/bow/8.png
 
-#begin images/7Heroes/Lyn/Lyn_22.png
+#begin unit/7Heroes/Lyn/attack/bow/9.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -287,9 +203,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_22.png
+/build:unit/7Heroes/Lyn/attack/bow/9.png
 
-#begin images/7Heroes/Lyn/Lyn_23.png
+#begin unit/7Heroes/Lyn/attack/sword/1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -299,9 +215,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_23.png
+/build:unit/7Heroes/Lyn/attack/sword/1.png
 
-#begin images/7Heroes/Lyn/Lyn_24.png
+#begin unit/7Heroes/Lyn/attack/sword/10.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -311,9 +227,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_24.png
+/build:unit/7Heroes/Lyn/attack/sword/10.png
 
-#begin images/7Heroes/Lyn/Lyn_25.png
+#begin unit/7Heroes/Lyn/attack/sword/11.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -323,9 +239,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_25.png
+/build:unit/7Heroes/Lyn/attack/sword/11.png
 
-#begin images/7Heroes/Lyn/Lyn_26.png
+#begin unit/7Heroes/Lyn/attack/sword/12.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -335,9 +251,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_26.png
+/build:unit/7Heroes/Lyn/attack/sword/12.png
 
-#begin images/7Heroes/Lyn/Lyn_27.png
+#begin unit/7Heroes/Lyn/attack/sword/13.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -347,9 +263,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_27.png
+/build:unit/7Heroes/Lyn/attack/sword/13.png
 
-#begin images/7Heroes/Lyn/Lyn_28.png
+#begin unit/7Heroes/Lyn/attack/sword/14.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -359,9 +275,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_28.png
+/build:unit/7Heroes/Lyn/attack/sword/14.png
 
-#begin images/7Heroes/Lyn/Lyn_29.png
+#begin unit/7Heroes/Lyn/attack/sword/15.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -371,9 +287,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_29.png
+/build:unit/7Heroes/Lyn/attack/sword/15.png
 
-#begin images/7Heroes/Lyn/Lyn_3.png
+#begin unit/7Heroes/Lyn/attack/sword/16.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -383,9 +299,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_3.png
+/build:unit/7Heroes/Lyn/attack/sword/16.png
 
-#begin images/7Heroes/Lyn/Lyn_30.png
+#begin unit/7Heroes/Lyn/attack/sword/17.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -395,9 +311,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_30.png
+/build:unit/7Heroes/Lyn/attack/sword/17.png
 
-#begin images/7Heroes/Lyn/Lyn_31.png
+#begin unit/7Heroes/Lyn/attack/sword/18.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -407,9 +323,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_31.png
+/build:unit/7Heroes/Lyn/attack/sword/18.png
 
-#begin images/7Heroes/Lyn/Lyn_32.png
+#begin unit/7Heroes/Lyn/attack/sword/19.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -419,9 +335,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_32.png
+/build:unit/7Heroes/Lyn/attack/sword/19.png
 
-#begin images/7Heroes/Lyn/Lyn_33.png
+#begin unit/7Heroes/Lyn/attack/sword/2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -431,9 +347,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_33.png
+/build:unit/7Heroes/Lyn/attack/sword/2.png
 
-#begin images/7Heroes/Lyn/Lyn_34.png
+#begin unit/7Heroes/Lyn/attack/sword/20.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -443,9 +359,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_34.png
+/build:unit/7Heroes/Lyn/attack/sword/20.png
 
-#begin images/7Heroes/Lyn/Lyn_4.png
+#begin unit/7Heroes/Lyn/attack/sword/21.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -455,9 +371,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_4.png
+/build:unit/7Heroes/Lyn/attack/sword/21.png
 
-#begin images/7Heroes/Lyn/Lyn_5.png
+#begin unit/7Heroes/Lyn/attack/sword/22.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -467,9 +383,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_5.png
+/build:unit/7Heroes/Lyn/attack/sword/22.png
 
-#begin images/7Heroes/Lyn/Lyn_6.png
+#begin unit/7Heroes/Lyn/attack/sword/23.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -479,9 +395,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_6.png
+/build:unit/7Heroes/Lyn/attack/sword/23.png
 
-#begin images/7Heroes/Lyn/Lyn_7.png
+#begin unit/7Heroes/Lyn/attack/sword/24.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -491,9 +407,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_7.png
+/build:unit/7Heroes/Lyn/attack/sword/24.png
 
-#begin images/7Heroes/Lyn/Lyn_8.png
+#begin unit/7Heroes/Lyn/attack/sword/25.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -503,9 +419,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_8.png
+/build:unit/7Heroes/Lyn/attack/sword/25.png
 
-#begin images/7Heroes/Lyn/Lyn_9.png
+#begin unit/7Heroes/Lyn/attack/sword/26.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -515,5 +431,533 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:images/7Heroes/Lyn/Lyn_9.png
+/build:unit/7Heroes/Lyn/attack/sword/26.png
+
+#begin unit/7Heroes/Lyn/attack/sword/27.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/27.png
+
+#begin unit/7Heroes/Lyn/attack/sword/28.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/28.png
+
+#begin unit/7Heroes/Lyn/attack/sword/29.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/29.png
+
+#begin unit/7Heroes/Lyn/attack/sword/3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/3.png
+
+#begin unit/7Heroes/Lyn/attack/sword/30.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/30.png
+
+#begin unit/7Heroes/Lyn/attack/sword/31.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/31.png
+
+#begin unit/7Heroes/Lyn/attack/sword/32.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/32.png
+
+#begin unit/7Heroes/Lyn/attack/sword/33.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/33.png
+
+#begin unit/7Heroes/Lyn/attack/sword/34.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/34.png
+
+#begin unit/7Heroes/Lyn/attack/sword/4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/4.png
+
+#begin unit/7Heroes/Lyn/attack/sword/5.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/5.png
+
+#begin unit/7Heroes/Lyn/attack/sword/6.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/6.png
+
+#begin unit/7Heroes/Lyn/attack/sword/7.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/7.png
+
+#begin unit/7Heroes/Lyn/attack/sword/8.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/8.png
+
+#begin unit/7Heroes/Lyn/attack/sword/9.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/attack/sword/9.png
+
+#begin unit/7Heroes/Lyn/doge/bow_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/doge/bow_1.png
+
+#begin unit/7Heroes/Lyn/doge/bow_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/doge/bow_2.png
+
+#begin unit/7Heroes/Lyn/doge/sword_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/doge/sword_1.png
+
+#begin unit/7Heroes/Lyn/doge/sword_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/doge/sword_2.png
+
+#begin unit/7Heroes/Lyn/map/active_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/active_1.png
+
+#begin unit/7Heroes/Lyn/map/active_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/active_2.png
+
+#begin unit/7Heroes/Lyn/map/active_3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/active_3.png
+
+#begin unit/7Heroes/Lyn/map/down_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/down_1.png
+
+#begin unit/7Heroes/Lyn/map/down_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/down_2.png
+
+#begin unit/7Heroes/Lyn/map/down_3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/down_3.png
+
+#begin unit/7Heroes/Lyn/map/left_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/left_1.png
+
+#begin unit/7Heroes/Lyn/map/left_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/left_2.png
+
+#begin unit/7Heroes/Lyn/map/left_3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/left_3.png
+
+#begin unit/7Heroes/Lyn/map/right_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/right_1.png
+
+#begin unit/7Heroes/Lyn/map/right_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/right_2.png
+
+#begin unit/7Heroes/Lyn/map/right_3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/right_3.png
+
+#begin unit/7Heroes/Lyn/map/stance_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/stance_1.png
+
+#begin unit/7Heroes/Lyn/map/stance_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/stance_2.png
+
+#begin unit/7Heroes/Lyn/map/stance_3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/stance_3.png
+
+#begin unit/7Heroes/Lyn/map/up_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/up_1.png
+
+#begin unit/7Heroes/Lyn/map/up_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/up_2.png
+
+#begin unit/7Heroes/Lyn/map/up_3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn/map/up_3.png
+
+#begin unit/7Heroes/Canas.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Canas.png
+
+#begin unit/7Heroes/Ephraim.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Ephraim.png
+
+#begin unit/7Heroes/Hector.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Hector.png
+
+#begin unit/7Heroes/Lucius.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lucius.png
+
+#begin unit/7Heroes/Lyn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Lyn.png
+
+#begin unit/7Heroes/marth.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/marth.png
+
+#begin unit/7Heroes/Nino.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:unit/7Heroes/Nino.png
 

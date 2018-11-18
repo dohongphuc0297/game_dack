@@ -11,10 +11,15 @@ namespace game_dack
     {
         public Lyn(Game game, Sprite2D model) : base(game, model)
         {
+            BowBattle(game, model);
+        }
+
+        public void SwordBattle(Game game, Sprite2D model)
+        {
             List<string> paths = new List<string>();
             for (int i = 1; i <= 34; i++)
             {
-                paths.Add(string.Format("images/7Heroes/Lyn/Lyn_{0}", i));
+                paths.Add(string.Format("unit/7Heroes/Lyn/attack/sword/{0}", i));
             }
             model.LoadContent(game, paths, 3f);
             List<Vector2> pos = new List<Vector2>();
@@ -45,6 +50,33 @@ namespace game_dack
             pos.Add(new Vector2(270, 150));
             pos.Add(new Vector2(280, 170));
             pos.Add(new Vector2(290, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            model.LoadPos(pos);
+        }
+
+        public void BowBattle(Game game, Sprite2D model)
+        {
+            List<string> paths = new List<string>();
+            for (int i = 1; i <= 15; i++)
+            {
+                paths.Add(string.Format("unit/7Heroes/Lyn/attack/bow/{0}", i));
+            }
+            model.LoadContent(game, paths, 3f);
+            List<Vector2> pos = new List<Vector2>();
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
+            pos.Add(new Vector2(300, 180));
             pos.Add(new Vector2(300, 180));
             pos.Add(new Vector2(300, 180));
             pos.Add(new Vector2(300, 180));
