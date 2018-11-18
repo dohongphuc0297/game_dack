@@ -40,21 +40,14 @@ namespace game_dack
         private GameVisibleEntity CreateUnit(Vector2 position)
         {
             var sprite = new Sprite2D(position.X, position.Y);
-            List<string> paths = new List<string>();
-            for (int i = 1; i <= 34; i++)
-            {
-                paths.Add(string.Format("images/7Heroes/Lyn/Lyn_{0}", i));
-            }
-            sprite.LoadContent(this, paths, 3f);
+            
             return new Lyn(this, sprite);
         }
 
         private GameVisibleEntity CreateMap(Vector2 position)
         {
             var sprite = new Sprite2D(position.X, position.Y);
-            List<string> paths = new List<string>();
-            paths.Add("ground/BattleGround");
-            sprite.LoadContent(this, paths, 3f);
+            
             return new Cloud(this, sprite);
         }
 

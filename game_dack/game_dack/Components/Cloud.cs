@@ -10,7 +10,12 @@ namespace game_dack
     {
         public Cloud(Game game, Sprite2D model) : base(game, model)
         {
-
+            List<string> paths = new List<string>();
+            paths.Add("ground/BattleGround");
+            model.LoadContent(game, paths, 3f);
+            List<Vector2> pos = new List<Vector2>();
+            pos.Add(new Vector2(0, 0));
+            model.LoadPos(pos);
         }
     }
 }

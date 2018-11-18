@@ -16,6 +16,7 @@ namespace game_dack
         float _width;
         float _height;
         List<Texture2D> _images = new List<Texture2D>();
+        List<Vector2> _pos = new List<Vector2>();
         int imageIndex = 0;
         int state;
         Vector2 _scale;
@@ -48,6 +49,15 @@ namespace game_dack
                 _width = scale * _images[0].Width;
                 _height = scale * _images[0].Height;
             }
+        }
+
+        public void LoadPos(List<Vector2> content)
+        {
+            for (int i = 0; i < content.Count; i++)
+            {
+                _pos.Add(content[i]);
+            }
+            
         }
 
         public void UnloadContent()
@@ -102,7 +112,10 @@ namespace game_dack
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_images[imageIndex], position: new Vector2(_left, _top), scale: _scale, color: _color);
+            if (_images.Count > 0 && _pos.Count > 0) 
+            {
+                spriteBatch.Draw(_images[imageIndex], position: _pos[imageIndex], scale: _scale, color: _color);
+            }
         }
     }
 }
