@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using game_dack.Components.Units.Player;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -34,6 +35,10 @@ namespace game_dack
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
             this.IsMouseVisible = true;
         }
 
@@ -41,14 +46,14 @@ namespace game_dack
         {
             var sprite = new Sprite2D(position.X, position.Y);
             
-            return new Lyn(this, sprite);
+            return new Marth(this, sprite);
         }
 
         private GameVisibleEntity CreateMap(Vector2 position)
         {
             var sprite = new Sprite2D(position.X, position.Y);
             
-            return new Cloud(this, sprite);
+            return new Ground(this, sprite);
         }
 
         private GameVisibleEntity CreateMenu(Vector2 position)
