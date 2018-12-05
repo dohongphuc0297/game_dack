@@ -40,7 +40,33 @@ namespace game_dack
         private GameVisibleEntity CreateUnit(Vector2 position)
         {
             var sprite = new Sprite2D(position.X, position.Y);
-            
+ 
+            return new Lyn(this, sprite);
+        }
+
+        private GameVisibleEntity CreateEnemyUnit(Vector2 position)
+        {
+            var sprite = new Sprite2D(position.X, position.Y);
+            List<string> paths = new List<string>();
+            paths.Add(string.Format("enemy"));
+
+            sprite.LoadContent(this, paths, 3f);
+
+            List<Vector2> pos = new List<Vector2>();
+            pos.Add(new Vector2(0, -30));
+            sprite.LoadPos(pos);
+
+            return new test(this, sprite);
+        }
+
+        private GameVisibleEntity CreatePlayableUnit(Vector2 position, int stt)
+        {
+            var sprite = new Sprite2D(position.X, position.Y);
+            switch(stt)
+            {
+                case 1: return new Archer(this, sprite);
+                case 2: return new Assassin(this, sprite);
+            }
             return new Lyn(this, sprite);
         }
 
@@ -81,10 +107,10 @@ namespace game_dack
 
             // TODO: use this.Content to load your game content here
             Units.Add(CreateMap(new Vector2(0, 0)));
-            Units.Add(CreateUnit(new Vector2(250, 180)));
-            //Units.Add(CreateUnit(GetRndPos()));
-            //Units.Add(CreateUnit(GetRndPos()));
-            //Units.Add(CreateUnit(GetRndPos()));
+            //Units.Add(CreateUnit(new Vector2(250, 180)));
+            Units.Add(CreatePlayableUnit(new Vector2(200, 180), 1));
+            Units.Add(CreatePlayableUnit(new Vector2(200, 180), 2));
+            Units.Add(CreateEnemyUnit(GetRndPos()));
             //Units.Add(CreateUnit(GetRndPos()));
             //Units.Add(CreateUnit(GetRndPos()));
             //Units.Add(CreateMenu(new Vector2(250, 100)));

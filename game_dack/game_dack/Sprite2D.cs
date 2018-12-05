@@ -46,8 +46,8 @@ namespace game_dack
             if (content.Count > 0)
             {
                 _scale = new Vector2(scale, scale);
-                _width = scale * _images[0].Width;
-                _height = scale * _images[0].Height;
+                //_width = scale * _images[0].Width;
+                //_height = scale * _images[0].Height;
             }
         }
 
