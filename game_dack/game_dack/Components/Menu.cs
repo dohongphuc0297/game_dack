@@ -52,10 +52,12 @@ namespace game_dack
         {
             this._game.Window.Title = "You clicked on Load Button.";
         }
+
         private void Options_Click(object sender, EventArgs e)
         {
             this._game.Window.Title = "You clicked on Options Button.";
         }
+
         private void Exit_Click(object sender, EventArgs e)
         {
             this._game.Window.Title = "You clicked on Exit Button.";

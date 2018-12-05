@@ -11,6 +11,7 @@ namespace game_dack
     {
         public Lyn(Game game, Sprite2D model) : base(game, model)
         {
+            SwordBattle(game, model);
             BowBattle(game, model);
         }
 
