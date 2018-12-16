@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 409508348}
   - component: {fileID: 409508347}
   m_Layer: 0
-  m_Name: Bale
+  m_Name: Bael
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
