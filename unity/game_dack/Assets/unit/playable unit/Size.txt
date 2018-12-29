@@ -1,0 +1,15 @@
+W-H
+Basic: 
+    attact-stand-dodge: 72-56 
+    map: 32-32
+Fighter: 
+    attack: 117-91
+    map: 38*38
+Knight:
+    attack-stand-dodge: 108-56
+Paladin:
+    attack-stand-dodge: 117-91
+PegasusKnight:
+    attack-stand-dodge: 180-140
+WyvernRider:
+    attack-stand-dodge: 180-140
