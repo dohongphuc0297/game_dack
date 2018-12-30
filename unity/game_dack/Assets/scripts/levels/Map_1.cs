@@ -6,15 +6,22 @@ public class Map_1 : MonoBehaviour
 {
     public Grid grid;
     public GameObject Cursor;
+
+    public GameObject Lyn = null;
+    //private Animator _activeLyn = null;
+
     private GameStates currentState;
-    private BaseCharacterClass Lyn = new Warrior();
+    //private BaseCharacterClass Lyn = new Warrior();
     string str_collider = "not set";
-    Ray ray;
+    Ray ray; 
     RaycastHit hit;
+    bool Lyn_active = false;
     // Start is called before the first frame update
     void Start()
     {
         currentState = GameStates.PlayerSelectTile;
+
+        //_activeLyn = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -35,9 +42,24 @@ public class Map_1 : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
-                str_collider = hit.collider.name;
+               
+                //str_collider = hit.collider.name;
             }
         }
+
+        Collider2D coll = Lyn.GetComponent<Collider2D>();
+
+        if(coll.OverlapPoint(mouseWorldPos)) {
+            if(!Lyn_active) {
+                Lyn_active = true;
+            }
+        }
+        else {
+            Lyn_active = false;
+        }
+        //_activeLyn.SetBool("active", Lyn_active);
+
+
         switch (currentState)
         {
             case GameStates.Start:
@@ -57,6 +79,14 @@ public class Map_1 : MonoBehaviour
             default:
                 break;
         }
+
+        
+    
+
+    }
+
+    void onMouseEnter() {
+        Debug.Log("123");
     }
 
     void OnGUI()
