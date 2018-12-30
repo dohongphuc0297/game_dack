@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lyn_status : MonoBehaviour
+public class Archer : MonoBehaviour
 {
-   	public GameObject Lyn;
+    public GameObject _Archer;
     public Animator animator;
-    bool Lyn_active = false;
+    bool change = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,17 +18,17 @@ public class Lyn_status : MonoBehaviour
     void Update()
     {
     	Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D coll = Lyn.GetComponent<Collider2D>();
+        Collider2D coll = _Archer.GetComponent<Collider2D>();
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if(coll.OverlapPoint(mouseWorldPos)) {
-            if(!Lyn_active) {
-                Lyn_active = true;
+            if(!change) {
+                change = true;
             }
         }
         else {
-            Lyn_active = false;
+            change = false;
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -40,6 +40,6 @@ public class Lyn_status : MonoBehaviour
         		 Debug.Log(hit.transform.gameObject.name);
         	}
         }
-        animator.SetBool("change", Lyn_active);
+        animator.SetBool("ischange", change);
     }
 }
