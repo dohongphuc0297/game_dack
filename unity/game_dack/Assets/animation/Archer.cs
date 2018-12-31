@@ -6,7 +6,7 @@ public class Archer : MonoBehaviour
 {
     public GameObject _Archer;
     public Animator animator;
-    bool change = false;
+    bool isActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -20,26 +20,23 @@ public class Archer : MonoBehaviour
     	Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D coll = _Archer.GetComponent<Collider2D>();
 
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //RaycastHit hit;
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
         if(coll.OverlapPoint(mouseWorldPos)) {
-            if(!change) {
-                change = true;
+            if(!isActive) {
+                isActive = true;
+            }
+            
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log(gameObject.name);
             }
         }
         else {
-            change = false;
+            isActive = false;
         }
-        if (Input.GetMouseButtonDown(0))
-        {
-        	if(coll.OverlapPoint(mouseWorldPos)) {
-	            Debug.Log("123");
-        	}
-        	
-        	if(Physics.Raycast(ray, out hit)) {
-        		 Debug.Log(hit.transform.gameObject.name);
-        	}
-        }
-        animator.SetBool("ischange", change);
+    
+        animator.SetBool("isActive", isActive);
     }
 }

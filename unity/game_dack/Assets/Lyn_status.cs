@@ -31,14 +31,12 @@ public class Lyn_status : MonoBehaviour
             Lyn_active = false;
         }
         if (Input.GetMouseButtonDown(0))
-        {
+        {	
+        
         	if(coll.OverlapPoint(mouseWorldPos)) {
 	            Debug.Log("123");
         	}
         	
-        	if(Physics.Raycast(ray, out hit)) {
-        		 Debug.Log(hit.transform.gameObject.name);
-        	}
         }
         animator.SetBool("change", Lyn_active);
     }
