@@ -7,58 +7,79 @@ public class Map_1 : MonoBehaviour
     public Grid grid;
     public GameObject Cursor;
 
-    public GameObject Lyn = null;
+    private List<BaseCharacterClass> PlayerUnits = new List<BaseCharacterClass>();
+    //public GameObject Lyn = null;
     //private Animator _activeLyn = null;
 
     private GameStates currentState;
+    private bool isClickable = true;
     //private BaseCharacterClass Lyn = new Warrior();
-    string str_collider = "not set";
-    Ray ray; 
-    RaycastHit hit;
-    bool Lyn_active = false;
+    //string str_collider = "not set";
+    
+    //bool Lyn_active = false;
     // Start is called before the first frame update
     void Start()
     {
         currentState = GameStates.PlayerSelectTile;
-
-        //_activeLyn = GetComponent<Animator>();
+        GameObject[] list = GameObject.FindGameObjectsWithTag("PlayerUnit");
+        foreach (GameObject obj in list)
+        {
+            switch (obj.name)
+            {
+                case "Lyn":
+                    PlayerUnits.Add(new Warrior(obj));
+                    break;
+                case "Archer":
+                    PlayerUnits.Add(new Archer(obj));
+                    break;
+                default:
+                    break;
+            }
+            
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        //hover
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int coordinate = grid.WorldToCell(mouseWorldPos);
-        Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
-        //Debug.Log(coordinate);
-        pos.x += 0.5f;
-        pos.y += 0.5f;
-        Cursor.transform.position = pos;
+        if (!(currentState == GameStates.PlayerSelectAction) && !(currentState == GameStates.PlayerAttackUnit) && !(currentState == GameStates.EnemyTurn))
+        {
+            //hover
+            Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
+            //Debug.Log(coordinate);
+            pos.x += 0.5f;
+            pos.y += 0.5f;
+            Cursor.transform.position = pos;
+        }
 
         //mouse click
-        if (Input.GetMouseButtonDown(0))
+        if (isClickable && Input.GetMouseButtonDown(0))
         {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            foreach (BaseCharacterClass unit in PlayerUnits)
             {
-               
-                //str_collider = hit.collider.name;
+                Collider2D coll = unit._GameObject.GetComponent<Collider2D>();
+
+                if (coll.OverlapPoint(mouseWorldPos))
+                {
+                    if (!(unit.State == CharacterStates.Active))
+                    {
+                        unit.State = CharacterStates.Active;
+                        currentState = GameStates.PlayerSelectAction;
+                        unit._Animator.SetBool("isActive", true);
+                        //break;
+                    }
+                }
+                else
+                {
+                    unit.State = CharacterStates.Stance;
+                    currentState = GameStates.PlayerSelectTile;
+                    unit._Animator.SetBool("isActive", false);
+                }
+                
             }
         }
-
-        Collider2D coll = Lyn.GetComponent<Collider2D>();
-
-        if(coll.OverlapPoint(mouseWorldPos)) {
-            if(!Lyn_active) {
-                Lyn_active = true;
-            }
-        }
-        else {
-            Lyn_active = false;
-        }
-        //_activeLyn.SetBool("active", Lyn_active);
-
 
         switch (currentState)
         {
@@ -85,12 +106,8 @@ public class Map_1 : MonoBehaviour
 
     }
 
-    void onMouseEnter() {
-        Debug.Log("123");
-    }
-
     void OnGUI()
     {
-        GUILayout.Label(str_collider);
+        GUILayout.Label(currentState.ToString());
     }
 }

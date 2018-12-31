@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CharacterStates
+{
+    Stance, Active, Left, Right, Up, Down
+}
+
 public class BaseCharacterClass
 {
     private string characterClassName;
@@ -18,6 +23,24 @@ public class BaseCharacterClass
     private int resist;
     private int movement;
 
+    //state
+    private CharacterStates state;
+
+    public BaseCharacterClass(GameObject gameObject)
+    {
+        _GameObject = gameObject;
+        _Animator = _GameObject.GetComponent<Animator>();
+        State = CharacterStates.Stance;
+    }
+
+    public GameObject _GameObject { get; set; }
+    public Animator _Animator { get; set; }
+
+    public CharacterStates State
+    {
+        get { return state; }
+        set { state = value; }
+    }
     public string CharacterClassName
     {
         get { return characterClassName; }

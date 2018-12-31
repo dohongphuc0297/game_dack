@@ -6,6 +6,8 @@ TagManager:
   tags:
   - TileMap
   - Cursor
+  - PlayerUnit
+  - EnemyUnit
   layers:
   - Default
   - TransparentFX

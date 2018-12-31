@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Warrior : BaseCharacterClass
 {
-    public Warrior()
+    public int AttackRange { get; set; }
+    public Warrior(GameObject gameObject) : base(gameObject)
     {
         CharacterClassName = "BladeMaster";
         CharacterClassDescription = "Master of bow and blade";
@@ -17,5 +18,6 @@ public class Warrior : BaseCharacterClass
         Defend = 4;
         Resist = 2;
         Movement = 4;
+        AttackRange = 1;
     }
 }
