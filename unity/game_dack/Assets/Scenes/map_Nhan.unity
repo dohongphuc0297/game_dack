@@ -157,7 +157,6 @@ GameObject:
   - component: {fileID: 148628278}
   - component: {fileID: 148628280}
   - component: {fileID: 148628279}
-  - component: {fileID: 148628282}
   - component: {fileID: 148628281}
   m_Layer: 0
   m_Name: Knight
@@ -273,20 +272,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16676776, y: 0.16262624}
   m_EdgeRadius: 0
---- !u!114 &148628282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148628277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be3852af1e9e60c4fb0483ac3474acba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Knight: {fileID: 148628277}
-  animator: {fileID: 148628279}
 --- !u!1 &237843673
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +359,6 @@ GameObject:
   - component: {fileID: 706063323}
   - component: {fileID: 706063325}
   - component: {fileID: 706063324}
-  - component: {fileID: 706063327}
   - component: {fileID: 706063326}
   m_Layer: 0
   m_Name: Paladin
@@ -490,20 +474,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.15848479, y: 0.15848486}
   m_EdgeRadius: 0
---- !u!114 &706063327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 706063322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 940a3ef8442dc504e81102b567dbba8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Paladin: {fileID: 706063322}
-  animator: {fileID: 706063324}
 --- !u!1 &1559682162
 GameObject:
   m_ObjectHideFlags: 0
@@ -7694,7 +7664,6 @@ GameObject:
   - component: {fileID: 1627848761}
   - component: {fileID: 1627848760}
   - component: {fileID: 1627848759}
-  - component: {fileID: 1627848758}
   m_Layer: 0
   m_Name: Lyn
   m_TagString: Untagged
@@ -7702,20 +7671,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1627848758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627848757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60cf614241f54b44096f0237879a8290, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Lyn: {fileID: 1627848757}
-  animator: {fileID: 1627848760}
 --- !u!61 &1627848759
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7902,7 +7857,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 450644247}
   Cursor: {fileID: 2048765025}
-  Lyn: {fileID: 1627848757}
 --- !u!81 &1815921938
 AudioListener:
   m_ObjectHideFlags: 0
@@ -7978,7 +7932,6 @@ GameObject:
   - component: {fileID: 2035374588}
   - component: {fileID: 2035374592}
   - component: {fileID: 2035374591}
-  - component: {fileID: 2035374590}
   - component: {fileID: 2035374589}
   m_Layer: 0
   m_Name: Archer
@@ -8027,20 +7980,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.18992215, y: 0.19419338}
   m_EdgeRadius: 0
---- !u!114 &2035374590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035374587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9172565a3c468ff4796886de553aa1c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Archer: {fileID: 2035374587}
-  animator: {fileID: 2035374591}
 --- !u!95 &2035374591
 Animator:
   serializedVersion: 3
@@ -8218,7 +8157,6 @@ GameObject:
   - component: {fileID: 2102263734}
   - component: {fileID: 2102263736}
   - component: {fileID: 2102263735}
-  - component: {fileID: 2102263738}
   - component: {fileID: 2102263737}
   m_Layer: 0
   m_Name: Summoner
@@ -8334,17 +8272,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19046706, y: 0.19353436}
   m_EdgeRadius: 0
---- !u!114 &2102263738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102263733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 992aa9070e4116a4cafe008ef618bf49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Summoner: {fileID: 2102263733}
-  animator: {fileID: 2102263735}
