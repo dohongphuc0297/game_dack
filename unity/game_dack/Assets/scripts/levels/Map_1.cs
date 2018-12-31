@@ -158,10 +158,15 @@ public class Map_1 : MonoBehaviour
                     {
                         for(int k = coordinate.y - PlayerUnits[i].Movement; k <= coordinate.y + PlayerUnits[i].Movement; k++)
                         {
-
+                            int t = j - coordinate.x;
+                            if(t<0) t=-t;
+                            if(k>=coordinate.y-PlayerUnits[i].Movement+t && k<=coordinate.y+PlayerUnits[i].Movement-t){
+                                Vector3Int a = new Vector3Int(j, k, 0);
+                                SetTileColour(Color.blue, a, tilemap);
+                            }
                         }
                     }
-                    //SetTileColour(Color.cyan, coordinate, tilemap);
+                    SetTileColour(Color.cyan, coordinate, tilemap);
                     //ShowActionPanel();
                 }
                 else
