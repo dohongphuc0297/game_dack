@@ -20,6 +20,8 @@ public class Lyn_status : MonoBehaviour
     	Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D coll = Lyn.GetComponent<Collider2D>();
 
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if(coll.OverlapPoint(mouseWorldPos)) {
             if(!Lyn_active) {
                 Lyn_active = true;
@@ -29,10 +31,12 @@ public class Lyn_status : MonoBehaviour
             Lyn_active = false;
         }
         if (Input.GetMouseButtonDown(0))
-        {
+        {	
+        
         	if(coll.OverlapPoint(mouseWorldPos)) {
 	            Debug.Log("123");
         	}
+        	
         }
         animator.SetBool("change", Lyn_active);
     }
