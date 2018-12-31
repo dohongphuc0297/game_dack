@@ -162,11 +162,27 @@ public class Map_1 : MonoBehaviour
                             if(t<0) t=-t;
                             if(k>=coordinate.y-PlayerUnits[i].Movement+t && k<=coordinate.y+PlayerUnits[i].Movement-t){
                                 Vector3Int a = new Vector3Int(j, k, 0);
+                                moveZone.Add(a);
+                                //SetTileColour(Color.blue, a, tilemap);
+                            }
+                        }
+                    }
+                    /*
+                    for(int j = coordinate.x - PlayerUnits[i].AttackRange; j <= coordinate.x + PlayerUnits[i].AttackRange; j++)
+                    {
+                        for(int k = coordinate.y - PlayerUnits[i].AttackRange; k <= coordinate.y + PlayerUnits[i].AttackRange; k++)
+                        {
+                            int t = j - coordinate.x;
+                            if(t<0) t=-t;
+                            if(k>=coordinate.y-PlayerUnits[i].AttackRange+t && k<=coordinate.y+PlayerUnits[i].AttackRange-t){
+                                Vector3Int a = new Vector3Int(j, k, 0);
                                 SetTileColour(Color.blue, a, tilemap);
                             }
                         }
                     }
+                    */
                     SetTileColour(Color.cyan, coordinate, tilemap);
+                    ColorMoveZone();
                     //ShowActionPanel();
                 }
                 else
