@@ -20,8 +20,21 @@ public class Map_1 : MonoBehaviour
     public float speed;
 
     public Tilemap tilemap;
+    public BoundsInt cellBounds;
+    public Color color;
 
-    private List<Vector3Int> terrain = new List<Vector3Int>();
+    public struct Terrain
+    {
+        public int type;
+        public Vector3Int pos;
+        public Terrain(int p1, Vector3Int p2)
+        {
+            type = p1;
+            pos = p2;
+        }
+    }
+    private List<Terrain> terrain = new List<Terrain>();
+    
     private List<Vector3Int> moveZone = new List<Vector3Int>();
     private List<Vector3Int> attackZone = new List<Vector3Int>();
     private List<Vector3Int> curAttackZone = new List<Vector3Int>();
@@ -47,6 +60,34 @@ public class Map_1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Debug.Log(tilemap.GetTile(grid.WorldToCell(new Vector3(-11, 9, 0))));
+        for(int x = -18; x<= 18; x++) {
+            for(int y = -10; y<=9; y++) {
+                string s = tilemap.GetTile(grid.WorldToCell(new Vector3(x, y, 0))).name;
+            
+                if(s == "grass1" || s == "grass2"){
+                    Terrain temp = new Terrain(0, grid.WorldToCell(new Vector3(x, y, 0)));
+                    terrain.Add(temp);
+                }
+                else if(s == "tree1" || s == "tree2" || s == "tree3"){
+                    Terrain temp = new Terrain(1, grid.WorldToCell(new Vector3(x, y, 0)));
+                    terrain.Add(temp);
+                }
+                else if(s == "door1"){
+                    Terrain temp = new Terrain(2, grid.WorldToCell(new Vector3(x, y, 0)));
+                    terrain.Add(temp);
+                }
+                //else if(s == "house1" || s == "house2" || s == "house3" || s == "house4" || s == "house5" 
+                //    || s == "house6" || s == "house7" || s == "house8" || s == "house9") {
+                //    Terrain temp = new Terrain(3, grid.WorldToCell(new Vector3(x, y, 0)));
+                //    terrain.Add(temp);
+                //}
+                else {
+                    Terrain temp = new Terrain(3, grid.WorldToCell(new Vector3(x, y, 0)));
+                    terrain.Add(temp);
+                }
+            }
+        }
         isPlayerTurn = true;
         ChangeTurnPanel.SetActive(false);
         ShowInfoPanel();
@@ -208,23 +249,24 @@ public class Map_1 : MonoBehaviour
             }
         }
         
-
+        bool haveCharacter = false;
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int coordinate = grid.WorldToCell(mouseWorldPos);
         if (isPlayerTurn && isHoverable)
         {
             //hover
             Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
-            Debug.Log(coordinate);
+            
             pos.x += 0.5f;
             pos.y += 0.5f;
             Cursor.transform.position = pos;
             for (int i = 0; i < PlayerUnits.Count; i++)
             {
                 Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
-
+                
                 if (coll.OverlapPoint(mouseWorldPos))
                 {
+                    haveCharacter = true;
                     InfoMenuName.text = PlayerUnits[i]._GameObject.name;
                     InfoMenuHP.text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].HP.ToString();
                     if (MovedUnitIndex.IndexOf(i) >= 0) continue;
@@ -238,6 +280,29 @@ public class Map_1 : MonoBehaviour
                 {
                     PlayerUnits[i].State = CharacterStates.Stance;
                     PlayerUnits[i]._Animator.SetBool("isActive", false);
+                }
+            }
+            if(haveCharacter == false) {
+                for(int i = 0; i < terrain.Count; i++) {
+                    if(coordinate == terrain[i].pos) {
+                        if(terrain[i].type == 0) {
+                            InfoMenuName.text = "Grass";
+                            InfoMenuHP.text = "Def: 0 / Avoid: 0";
+                        }
+                        else if(terrain[i].type == 1) {
+                            InfoMenuName.text = "Tree";
+                            InfoMenuHP.text = "Def: 1 / Avoid: 20";
+                        }
+                        else if(terrain[i].type == 2) {
+                            InfoMenuName.text = "House";
+                            InfoMenuHP.text = "Def: 0 / Avoid: 10";
+                        }
+                        else if(terrain[i].type == 3) {
+                            InfoMenuName.text = "Can't move";
+                            InfoMenuHP.text = "Def: 0 / Avoid: 0";
+                        }
+                        break;
+                    }
                 }
             }
         }
