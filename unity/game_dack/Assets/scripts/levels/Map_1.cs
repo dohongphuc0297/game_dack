@@ -11,7 +11,9 @@ public class Map_1 : MonoBehaviour
     public GameObject MenuPanel;
     public GameObject InfoPanel;
     public GameObject ActionPanel;
+    public GameObject ChangeTurnPanel;
 
+    public Text ChangeTurnText;
     public Text InfoMenuName;
     public Text InfoMenuHP;
 
@@ -33,6 +35,7 @@ public class Map_1 : MonoBehaviour
     private bool isClickable = true;
     private bool isHoverable = true;
     private bool isPlayerTurn = false;
+    private Vector3 TargetPosition;
     private Vector3 moveTarget;
     //private BaseCharacterClass Lyn = new Warrior();
     //string str_collider = "not set";
@@ -42,6 +45,7 @@ public class Map_1 : MonoBehaviour
     void Start()
     {
         isPlayerTurn = true;
+        ChangeTurnPanel.SetActive(false);
         ShowInfoPanel();
         //tilemap = grid.GetComponent<Tilemap>();
         currentState = GameStates.PlayerSelectTile;
@@ -63,6 +67,16 @@ public class Map_1 : MonoBehaviour
             }
             
         }
+    }
+
+    public void PlayChangeTurnPanel()
+    {
+        //MenuPanel.SetActive(false);
+        //InfoPanel.SetActive(false);
+        //ActionPanel.SetActive(false);
+        //Animator animate = ChangeTurnText.GetComponent<Animator>();
+        //animate.SetBool("isActive", true);
+        //ChangeTurnPanel.SetActive(true);
     }
 
     public void ShowInfoPanel()
@@ -105,8 +119,20 @@ public class Map_1 : MonoBehaviour
         currentState = GameStates.PlayerSelectTile;
     }
 
+    public void BtnEndTurnClick()
+    {
+        PlayChangeTurnPanel();
+    }
+
     public void BtnCancelClick()
     {
+        ShowInfoPanel();
+        currentState = GameStates.PlayerSelectTile;
+    }
+
+    public void BtnActionCancelClick()
+    {
+        PlayerUnits[currentUnitIndex]._GameObject.transform.position = TargetPosition;
         ShowInfoPanel();
         currentState = GameStates.PlayerSelectTile;
     }
@@ -285,6 +311,7 @@ public class Map_1 : MonoBehaviour
                     if (IsInMoveZone(coordinate))
                     {
                         //Debug.Log(coordinate);
+                        TargetPosition = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
                         moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
                         currentState = GameStates.UnitMoving;
                     }
