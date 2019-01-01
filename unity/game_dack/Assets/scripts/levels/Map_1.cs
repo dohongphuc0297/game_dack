@@ -142,6 +142,7 @@ public class Map_1 : MonoBehaviour
         //mouse click
         if (isClickable && Input.GetMouseButtonDown(0))
         {
+            ShowActionPanel();
             for (int i = 0; i < PlayerUnits.Count; i++)
             {
                 Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
