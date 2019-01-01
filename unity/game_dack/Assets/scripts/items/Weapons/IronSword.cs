@@ -17,7 +17,7 @@ public class IronSword : BaseWeaponClass
         Hit = 90;
         Crt = 0;
         Wex = 1;
-        int[] range = {1};
+        int range = 1;
         Range = range;
         Cost = 460;
     }

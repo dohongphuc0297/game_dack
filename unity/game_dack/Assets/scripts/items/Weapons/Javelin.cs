@@ -17,7 +17,7 @@ public class Javelin : BaseWeaponClass
         Hit = 65;
         Crt = 0;
         Wex = 1;
-        int[] range = {1, 2};
+        int range = 3;
         Range = range;
         Cost = 400;
     }

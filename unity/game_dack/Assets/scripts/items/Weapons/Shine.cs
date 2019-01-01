@@ -17,7 +17,7 @@ public class Shine : BaseWeaponClass
         Hit = 90;
         Crt = 8;
         Wex = 2;
-        int[] range = {1, 2};
+        int range = 5;
         Range = range;
         Cost = 900;
     }

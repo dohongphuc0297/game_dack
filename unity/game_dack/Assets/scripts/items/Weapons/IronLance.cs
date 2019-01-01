@@ -17,7 +17,7 @@ public class IronLance : BaseWeaponClass
         Hit = 80;
         Crt = 0;
         Wex = 1;
-        int[] range = {1};
+        int range = 3;
         Range = range;
         Cost = 360;
     }

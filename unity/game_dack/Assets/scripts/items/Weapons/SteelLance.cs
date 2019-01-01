@@ -17,7 +17,7 @@ public class SteelLance : BaseWeaponClass
         Hit = 70;
         Crt = 0;
         Wex = 2;
-        int[] range = {1};
+        int range = 3;
         Range = range;
         Cost = 480;
     }
