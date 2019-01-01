@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class Map_1 : MonoBehaviour
 {
@@ -11,12 +12,17 @@ public class Map_1 : MonoBehaviour
     public GameObject InfoPanel;
     public GameObject ActionPanel;
 
+    public Text InfoMenuName;
+    public Text InfoMenuHP;
+
     public float speed;
 
     public Tilemap tilemap;
 
     private List<Vector3Int> moveZone = new List<Vector3Int>();
     private List<Vector3Int> attackZone = new List<Vector3Int>();
+    private List<Vector3Int> curAttackZone = new List<Vector3Int>();
+    private List<int> MovedUnitIndex = new List<int>();
     private int currentUnitIndex;
 
     private List<BaseCharacterClass> PlayerUnits = new List<BaseCharacterClass>();
@@ -26,7 +32,7 @@ public class Map_1 : MonoBehaviour
     private GameStates currentState;
     private bool isClickable = true;
     private bool isHoverable = true;
-    private bool isMoving = false;
+    private bool isPlayerTurn = false;
     private Vector3 moveTarget;
     //private BaseCharacterClass Lyn = new Warrior();
     //string str_collider = "not set";
@@ -35,6 +41,7 @@ public class Map_1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isPlayerTurn = true;
         ShowInfoPanel();
         //tilemap = grid.GetComponent<Tilemap>();
         currentState = GameStates.PlayerSelectTile;
@@ -77,6 +84,32 @@ public class Map_1 : MonoBehaviour
         MenuPanel.SetActive(false);
         InfoPanel.SetActive(false);
     }
+    public void BtnMoveClick()
+    {
+        ColorMoveZone();
+        ShowInfoPanel();
+        currentState = GameStates.PlayerMoveUnit;
+    }
+    public void BtnAttackClick()
+    {
+        //calculate attack zone around unit
+        ColorAttackZone();
+        currentState = GameStates.PlayerAttackUnit;
+    }
+    public void BtnEndClick()
+    {
+        MovedUnitIndex.Add(currentUnitIndex);
+        SpriteRenderer spriteR = PlayerUnits[currentUnitIndex]._GameObject.GetComponent<SpriteRenderer>();
+        spriteR.color = Color.gray;
+        ShowInfoPanel();
+        currentState = GameStates.PlayerSelectTile;
+    }
+
+    public void BtnCancelClick()
+    {
+        ShowInfoPanel();
+        currentState = GameStates.PlayerSelectTile;
+    }
     //source: https://answers.unity.com/questions/1546818/how-can-i-change-a-tile-color-in-unity-by-using-c.html
     /// <summary>
     /// Set the colour of a tile.
@@ -100,11 +133,16 @@ public class Map_1 : MonoBehaviour
         {
             SetTileColour(new Color(51, 102, 255, 0.6f), pos, tilemap);
         }
+
+        foreach (Vector3Int pos in attackZone)
+        {
+            SetTileColour(Color.red, pos, tilemap);
+        }
     }
 
     private void ColorAttackZone()
     {
-        foreach (Vector3Int pos in attackZone)
+        foreach (Vector3Int pos in curAttackZone)
         {
             SetTileColour(Color.red, pos, tilemap);
         }
@@ -119,12 +157,21 @@ public class Map_1 : MonoBehaviour
         return false;
     }
 
+    private bool IsInAttackZone(Vector3Int point)
+    {
+        foreach (Vector3Int pos in curAttackZone)
+        {
+            if (point.x == pos.x && point.y == pos.y) return true;
+        }
+        return false;
+    }
+
     // Update is called once per frame
     void Update()
     {
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int coordinate = grid.WorldToCell(mouseWorldPos);
-        if (isHoverable)
+        if (isPlayerTurn && isHoverable)
         {
             //hover
             Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
@@ -138,6 +185,9 @@ public class Map_1 : MonoBehaviour
 
                 if (coll.OverlapPoint(mouseWorldPos))
                 {
+                    InfoMenuName.text = PlayerUnits[i]._GameObject.name;
+                    InfoMenuHP.text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].HP.ToString();
+                    if (MovedUnitIndex.IndexOf(i) >= 0) continue;
                     if (!(PlayerUnits[i].State == CharacterStates.Active))
                     {
                         PlayerUnits[i].State = CharacterStates.Active;
@@ -153,93 +203,103 @@ public class Map_1 : MonoBehaviour
             }
         }
 
-        //mouse click
-        if (isClickable && Input.GetMouseButtonDown(0))
-        {
-            ShowActionPanel();
-            for (int i = 0; i < PlayerUnits.Count; i++)
-            {
-                Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
-
-                if (coll.OverlapPoint(mouseWorldPos))
-                {
-                    currentUnitIndex = i;
-                    //isHoverable = false;
-                    currentState = GameStates.PlayerMoveUnit;
-                    //refresh list zone
-                    moveZone.Clear();
-                    attackZone.Clear();
-                    //refresh color of map
-                    tilemap.RefreshAllTiles();
-                    //calculate array of move zone and attack zone
-                    for(int j = coordinate.x - PlayerUnits[i].Movement; j <= coordinate.x + PlayerUnits[i].Movement; j++)
-                    {
-                        for(int k = coordinate.y - PlayerUnits[i].Movement; k <= coordinate.y + PlayerUnits[i].Movement; k++)
-                        {
-                            int t = j - coordinate.x;
-                            if(t<0) t=-t;
-                            if(k>=coordinate.y-PlayerUnits[i].Movement+t && k<=coordinate.y+PlayerUnits[i].Movement-t){
-                                Vector3Int a = new Vector3Int(j, k, 0);
-                                moveZone.Add(a);
-                            }
-                        }
-                    }
-                    //get attack range
-                    //PlayerUnits[0].EquippedWeapon.Range         ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
-                    
-                    /*
-                    for(int j = coordinate.x - PlayerUnits[i].AttackRange; j <= coordinate.x + PlayerUnits[i].AttackRange; j++)
-                    {
-                        for(int k = coordinate.y - PlayerUnits[i].AttackRange; k <= coordinate.y + PlayerUnits[i].AttackRange; k++)
-                        {
-                            int t = j - coordinate.x;
-                            if(t<0) t=-t;
-                            if(k>=coordinate.y-PlayerUnits[i].AttackRange+t && k<=coordinate.y+PlayerUnits[i].AttackRange-t){
-                                Vector3Int a = new Vector3Int(j, k, 0);
-                                SetTileColour(Color.blue, a, tilemap);
-                            }
-                        }
-                    }
-                    */
-                    //SetTileColour(Color.cyan, coordinate, tilemap);
-                    ColorMoveZone();
-                    ColorAttackZone();
-                    //ShowActionPanel();
-                }
-                else
-                {
-                }
-                
-            }
-        }
-
         switch (currentState)
         {
             case GameStates.Start:
                 break;
             case GameStates.PlayerSelectTile:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    bool isUnit = false;
+                    for (int i = 0; i < PlayerUnits.Count; i++)
+                    {
+                        if (MovedUnitIndex.IndexOf(i) >= 0) continue;
+                        Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
+
+                        if (coll.OverlapPoint(mouseWorldPos))
+                        {
+                            isUnit = true;
+                            currentUnitIndex = i;
+                            //isHoverable = false;
+                            currentState = GameStates.PlayerMoveUnit;
+                            //refresh list zone
+                            moveZone.Clear();
+                            attackZone.Clear();
+                            //refresh color of map
+                            tilemap.RefreshAllTiles();
+                            //calculate array of move zone and attack zone
+                            for (int j = coordinate.x - PlayerUnits[i].Movement; j <= coordinate.x + PlayerUnits[i].Movement; j++)
+                            {
+                                for (int k = coordinate.y - PlayerUnits[i].Movement; k <= coordinate.y + PlayerUnits[i].Movement; k++)
+                                {
+                                    int t = j - coordinate.x;
+                                    if (t < 0) t = -t;
+                                    if (k >= coordinate.y - PlayerUnits[i].Movement + t && k <= coordinate.y + PlayerUnits[i].Movement - t)
+                                    {
+                                        Vector3Int a = new Vector3Int(j, k, 0);
+                                        moveZone.Add(a);
+                                    }
+                                }
+                            }
+                            //get attack range
+                            //PlayerUnits[0].EquippedWeapon.Range         ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
+
+                            /*
+                            for(int j = coordinate.x - PlayerUnits[i].AttackRange; j <= coordinate.x + PlayerUnits[i].AttackRange; j++)
+                            {
+                                for(int k = coordinate.y - PlayerUnits[i].AttackRange; k <= coordinate.y + PlayerUnits[i].AttackRange; k++)
+                                {
+                                    int t = j - coordinate.x;
+                                    if(t<0) t=-t;
+                                    if(k>=coordinate.y-PlayerUnits[i].AttackRange+t && k<=coordinate.y+PlayerUnits[i].AttackRange-t){
+                                        Vector3Int a = new Vector3Int(j, k, 0);
+                                        SetTileColour(Color.blue, a, tilemap);
+                                    }
+                                }
+                            }
+                            */
+                            //SetTileColour(Color.cyan, coordinate, tilemap);
+                            ColorMoveZone();
+                            //ShowActionPanel();
+                        }
+                    }
+                    if (!isUnit)
+                    {
+                        ShowMenuPanel();
+                        currentState = GameStates.PlayerSelectAction;
+                    }
+                }
                 break;
             case GameStates.PlayerMoveUnit:
-                isClickable = false;
-                if (!isMoving && !isClickable && Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     if (IsInMoveZone(coordinate))
                     {
-                        Debug.Log(coordinate);
-                        isMoving = true;
+                        //Debug.Log(coordinate);
                         moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
+                        currentState = GameStates.UnitMoving;
                     }
                 }
-                if (isMoving)
-                {
-                    PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
-                    if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == moveTarget) isMoving = false;
-                }
                     break;
+            case GameStates.UnitMoving:
+                PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
+                if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == moveTarget)
+                {
+                    ShowActionPanel();
+                    tilemap.RefreshAllTiles();
+                    currentState = GameStates.PlayerSelectAction;
+                }
+                break;
             case GameStates.PlayerSelectAction:
                 break;
             case GameStates.PlayerAttackUnit:
-                break;
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (IsInAttackZone(coordinate))
+                    {
+                    }
+                }
+                        break;
             case GameStates.EnemyTurn:
                 break;
             case GameStates.GameOver:
