@@ -37,6 +37,8 @@ public class Map_1 : MonoBehaviour
     private bool isPlayerTurn = false;
     private Vector3 TargetPosition;
     private Vector3 moveTarget;
+
+    private bool changeTurn = false;
     //private BaseCharacterClass Lyn = new Warrior();
     //string str_collider = "not set";
 
@@ -69,14 +71,15 @@ public class Map_1 : MonoBehaviour
         }
     }
 
-    public void PlayChangeTurnPanel()
+    public void  PlayChangeTurnPanel()
     {
-        //MenuPanel.SetActive(false);
-        //InfoPanel.SetActive(false);
-        //ActionPanel.SetActive(false);
-        //Animator animate = ChangeTurnText.GetComponent<Animator>();
-        //animate.SetBool("isActive", true);
-        //ChangeTurnPanel.SetActive(true);
+        MenuPanel.SetActive(false);
+        InfoPanel.SetActive(false);
+        ActionPanel.SetActive(false);
+        ChangeTurnPanel.SetActive(true);
+        Animator animate = ChangeTurnText.GetComponent<Animator>();
+        animate.SetBool("isActive", true);
+        changeTurn = true;
     }
 
     public void ShowInfoPanel()
@@ -195,6 +198,17 @@ public class Map_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(changeTurn == true){
+            Animator animate = ChangeTurnText.GetComponent<Animator>();
+            if(!animate.GetCurrentAnimatorStateInfo(0).IsName("TurnAnimation")){
+                animate.SetBool("isActive", false);
+                ChangeTurnPanel.SetActive(false);
+                changeTurn = false;
+            }
+            Debug.Log(animate.GetCurrentAnimatorStateInfo(0).IsName("TurnAnimation"));
+        }
+        
+
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int coordinate = grid.WorldToCell(mouseWorldPos);
         if (isPlayerTurn && isHoverable)
@@ -225,7 +239,6 @@ public class Map_1 : MonoBehaviour
                     PlayerUnits[i].State = CharacterStates.Stance;
                     PlayerUnits[i]._Animator.SetBool("isActive", false);
                 }
-
             }
         }
 
