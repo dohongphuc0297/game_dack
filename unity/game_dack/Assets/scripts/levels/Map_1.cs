@@ -11,10 +11,13 @@ public class Map_1 : MonoBehaviour
     public GameObject InfoPanel;
     public GameObject ActionPanel;
 
+    public float speed;
+
     public Tilemap tilemap;
 
     private List<Vector3Int> moveZone = new List<Vector3Int>();
     private List<Vector3Int> attackZone = new List<Vector3Int>();
+    private int currentUnitIndex;
 
     private List<BaseCharacterClass> PlayerUnits = new List<BaseCharacterClass>();
     //public GameObject Lyn = null;
@@ -23,6 +26,8 @@ public class Map_1 : MonoBehaviour
     private GameStates currentState;
     private bool isClickable = true;
     private bool isHoverable = true;
+    private bool isMoving = false;
+    private Vector3 moveTarget;
     //private BaseCharacterClass Lyn = new Warrior();
     //string str_collider = "not set";
 
@@ -93,7 +98,7 @@ public class Map_1 : MonoBehaviour
     {
         foreach (Vector3Int pos in moveZone)
         {
-            SetTileColour(Color.cyan, pos, tilemap);
+            SetTileColour(new Color(51, 102, 255, 0.6f), pos, tilemap);
         }
     }
 
@@ -103,6 +108,15 @@ public class Map_1 : MonoBehaviour
         {
             SetTileColour(Color.red, pos, tilemap);
         }
+    }
+
+    private bool IsInMoveZone(Vector3Int point)
+    {
+        foreach (Vector3Int pos in moveZone)
+        {
+            if (point.x == pos.x && point.y == pos.y) return true;
+        }
+        return false;
     }
 
     // Update is called once per frame
@@ -148,6 +162,7 @@ public class Map_1 : MonoBehaviour
 
                 if (coll.OverlapPoint(mouseWorldPos))
                 {
+                    currentUnitIndex = i;
                     //isHoverable = false;
                     currentState = GameStates.PlayerMoveUnit;
                     //refresh list zone
@@ -165,16 +180,12 @@ public class Map_1 : MonoBehaviour
                             if(k>=coordinate.y-PlayerUnits[i].Movement+t && k<=coordinate.y+PlayerUnits[i].Movement-t){
                                 Vector3Int a = new Vector3Int(j, k, 0);
                                 moveZone.Add(a);
-                                //SetTileColour(Color.blue, a, tilemap);
                             }
                         }
                     }
-
-
                     //get attack range
                     //PlayerUnits[0].EquippedWeapon.Range         ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
-
-
+                    
                     /*
                     for(int j = coordinate.x - PlayerUnits[i].AttackRange; j <= coordinate.x + PlayerUnits[i].AttackRange; j++)
                     {
@@ -189,8 +200,9 @@ public class Map_1 : MonoBehaviour
                         }
                     }
                     */
-                    SetTileColour(Color.cyan, coordinate, tilemap);
+                    //SetTileColour(Color.cyan, coordinate, tilemap);
                     ColorMoveZone();
+                    ColorAttackZone();
                     //ShowActionPanel();
                 }
                 else
@@ -207,8 +219,22 @@ public class Map_1 : MonoBehaviour
             case GameStates.PlayerSelectTile:
                 break;
             case GameStates.PlayerMoveUnit:
-
-                break;
+                isClickable = false;
+                if (!isMoving && !isClickable && Input.GetMouseButtonDown(0))
+                {
+                    if (IsInMoveZone(coordinate))
+                    {
+                        Debug.Log(coordinate);
+                        isMoving = true;
+                        moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
+                    }
+                }
+                if (isMoving)
+                {
+                    PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
+                    if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == moveTarget) isMoving = false;
+                }
+                    break;
             case GameStates.PlayerSelectAction:
                 break;
             case GameStates.PlayerAttackUnit:
