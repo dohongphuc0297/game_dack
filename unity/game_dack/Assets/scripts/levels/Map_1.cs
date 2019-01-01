@@ -28,6 +28,7 @@ public class Map_1 : MonoBehaviour
     private int currentUnitIndex;
 
     private List<BaseCharacterClass> PlayerUnits = new List<BaseCharacterClass>();
+    private List<BaseCharacterClass> EnemyUnits = new List<BaseCharacterClass>();
     //public GameObject Lyn = null;
     //private Animator _activeLyn = null;
 
@@ -67,7 +68,19 @@ public class Map_1 : MonoBehaviour
                 default:
                     break;
             }
-            
+        }
+        GameObject[] Enemylist = GameObject.FindGameObjectsWithTag("EnemyrUnit");
+        foreach (GameObject obj in Enemylist)
+        {
+            switch (obj.name)
+            {
+                case "Brigand":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -110,6 +123,24 @@ public class Map_1 : MonoBehaviour
     public void BtnAttackClick()
     {
         //calculate attack zone around unit
+        curAttackZone.Clear();
+        Vector3Int coordinate = grid.WorldToCell(moveTarget);
+        int range = PlayerUnits[currentUnitIndex].EquippedWeapon.Range;
+        for (int i = coordinate.x - range; i <= coordinate.x + range; i++)
+        {
+            for (int j = coordinate.y - range; j <= coordinate.y + range; j++)
+            {
+                if (i == coordinate.x && j == coordinate.y) continue;
+                int t = i - coordinate.x;
+                if (t < 0) t = -t;
+                if (j >= coordinate.y - range + t && j <= coordinate.y + range - t)
+                {
+                    Vector3Int a = new Vector3Int(i, j, 0);
+                    curAttackZone.Add(a);
+
+                }
+            }
+        }
         ColorAttackZone();
         currentState = GameStates.PlayerAttackUnit;
     }
@@ -124,7 +155,11 @@ public class Map_1 : MonoBehaviour
 
     public void BtnEndTurnClick()
     {
+        ChangeTurnText.text = "ENEMY TURN";
+        ChangeTurnText.color = Color.red;
         PlayChangeTurnPanel();
+        currentState = GameStates.EnemyTurn;
+        isPlayerTurn = false;
     }
 
     public void BtnCancelClick()
@@ -160,7 +195,7 @@ public class Map_1 : MonoBehaviour
     {
         foreach (Vector3Int pos in moveZone)
         {
-            SetTileColour(new Color(51, 102, 255, 0.6f), pos, tilemap);
+            SetTileColour(new Color(0.2f, 0.4f, 1, 0.8f), pos, tilemap);
         }
 
         foreach (Vector3Int pos in attackZone)
@@ -272,6 +307,7 @@ public class Map_1 : MonoBehaviour
                             currentUnitIndex = i;
                             //isHoverable = false;
                             currentState = GameStates.PlayerMoveUnit;
+                            TargetPosition = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
                             //refresh list zone
                             moveZone.Clear();
                             attackZone.Clear();
@@ -334,7 +370,6 @@ public class Map_1 : MonoBehaviour
                     if (IsInMoveZone(coordinate))
                     {
                         //Debug.Log(coordinate);
-                        TargetPosition = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
                         moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
                         currentState = GameStates.UnitMoving;
                     }
@@ -360,6 +395,14 @@ public class Map_1 : MonoBehaviour
                 }
                         break;
             case GameStates.EnemyTurn:
+                if (!changeTurn)
+                {
+                    ChangeTurnText.text = "YOUR TURN";
+                    ChangeTurnText.color = Color.blue;
+                    PlayChangeTurnPanel();
+                    currentState = GameStates.PlayerSelectTile;
+                    isPlayerTurn = true;
+                }
                 break;
             case GameStates.GameOver:
                 break;
