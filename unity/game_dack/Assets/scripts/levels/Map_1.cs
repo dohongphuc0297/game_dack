@@ -21,6 +21,7 @@ public class Map_1 : MonoBehaviour
 
     public Tilemap tilemap;
 
+    private List<Vector3Int> terrain = new List<Vector3Int>();
     private List<Vector3Int> moveZone = new List<Vector3Int>();
     private List<Vector3Int> attackZone = new List<Vector3Int>();
     private List<Vector3Int> curAttackZone = new List<Vector3Int>();
@@ -240,7 +241,6 @@ public class Map_1 : MonoBehaviour
                 ChangeTurnPanel.SetActive(false);
                 changeTurn = false;
             }
-            Debug.Log(animate.GetCurrentAnimatorStateInfo(0).IsName("TurnAnimation"));
         }
         
 
@@ -250,7 +250,7 @@ public class Map_1 : MonoBehaviour
         {
             //hover
             Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
-            //Debug.Log(coordinate);
+            Debug.Log(coordinate);
             pos.x += 0.5f;
             pos.y += 0.5f;
             Cursor.transform.position = pos;
@@ -325,7 +325,6 @@ public class Map_1 : MonoBehaviour
                                     {
                                         Vector3Int a = new Vector3Int(j, k, 0);
                                         moveZone.Add(a);
-
                                     }
                                 }
                             }
