@@ -241,7 +241,7 @@ public class Map_1 : MonoBehaviour
                     {
                         if (MovedUnitIndex.IndexOf(i) >= 0)
                         {
-                            if(i == PlayerUnits.Count - 1)
+                            if (i == PlayerUnits.Count - 1)
                             {
                                 ShowMenuPanel();
                                 currentState = GameStates.PlayerSelectAction;
@@ -304,18 +304,15 @@ public class Map_1 : MonoBehaviour
                                     }
                                 }
                             }
-
-
                             ColorMoveZone();
                         }
+                    //ShowActionPanel();
+                }
                     if (!isUnit)
                     {
                         ShowMenuPanel();
                         currentState = GameStates.PlayerSelectAction;
                     }
-                    
-                    //ShowActionPanel();
-                }
                 }
                 break;
             case GameStates.PlayerMoveUnit:

@@ -16,7 +16,7 @@ public class Archer : BaseCharacterClass
         Luck = 3;
         Defend = 3;
         Resist = 2;
-        Movement = 5;
+        Movement = 3;
         AttackRange = 2;
     }
 }
