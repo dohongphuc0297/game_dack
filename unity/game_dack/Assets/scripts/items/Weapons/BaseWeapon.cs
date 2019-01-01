@@ -17,7 +17,7 @@ public class BaseWeaponClass
     private int hit; //Weapon's Hit rate + [(Skill x 3 + Luck) / 2] + Weapon Rank bonus
     private int crt;
     private int wex; //Weapon EXP
-    private int[] range;
+    private int range;
     private int cost;
 
     //state
@@ -26,7 +26,7 @@ public class BaseWeaponClass
     public BaseWeaponClass()
     {
         //_GameObject = gameObject;
-        int[] r = { 0 };
+        int r = 0 ;
         range = r;
         //_Animator = _GameObject.GetComponent<Animator>();
         //State = CharacterStates.Stance;
@@ -93,7 +93,7 @@ public class BaseWeaponClass
         get { return wex; }
         set { wex = value; }
     }
-    public int[] Range
+    public int Range
     {
         get { return range; }
         set { range = value; }

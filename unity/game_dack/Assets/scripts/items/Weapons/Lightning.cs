@@ -17,7 +17,7 @@ public class Lightning : BaseWeaponClass
         Hit = 95;
         Crt = 5;
         Wex = 1;
-        int[] range = {1, 2};
+        int range = 5;
         Range = range;
         Cost = 630;
     }

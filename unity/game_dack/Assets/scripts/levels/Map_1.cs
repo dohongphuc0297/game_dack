@@ -172,25 +172,29 @@ public class Map_1 : MonoBehaviour
 
 
                     //get attack range
-                    //PlayerUnits[0].EquippedWeapon.Range         ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
+                    int weaponRange = PlayerUnits[i].EquippedWeapon.Range;     // ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
 
-
-                    /*
-                    for(int j = coordinate.x - PlayerUnits[i].AttackRange; j <= coordinate.x + PlayerUnits[i].AttackRange; j++)
+   
+                    for(int j = coordinate.x - weaponRange; j <= coordinate.x + weaponRange; j++)
                     {
-                        for(int k = coordinate.y - PlayerUnits[i].AttackRange; k <= coordinate.y + PlayerUnits[i].AttackRange; k++)
+
+                        for (int k = coordinate.y - weaponRange; k <= coordinate.y + weaponRange; k++)
                         {
                             int t = j - coordinate.x;
                             if(t<0) t=-t;
-                            if(k>=coordinate.y-PlayerUnits[i].AttackRange+t && k<=coordinate.y+PlayerUnits[i].AttackRange-t){
+                            if(k >= coordinate.y - weaponRange + t && k <= coordinate.y + weaponRange - t)
+                            {
+
                                 Vector3Int a = new Vector3Int(j, k, 0);
-                                SetTileColour(Color.blue, a, tilemap);
+                                //SetTileColour(Color.red, a, tilemap);
+                                attackZone.Add(a);
                             }
                         }
                     }
-                    */
+                    
                     SetTileColour(Color.cyan, coordinate, tilemap);
                     ColorMoveZone();
+                    ColorAttackZone();
                     //ShowActionPanel();
                 }
                 else

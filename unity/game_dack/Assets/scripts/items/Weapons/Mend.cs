@@ -17,7 +17,7 @@ public class Mend : BaseWeaponClass
         Hit = 0;
         Crt = 0;
         Wex = 3;
-        int[] range = {1};
+        int range = 5;
         Range = range;
         Cost = 1000;
     }
