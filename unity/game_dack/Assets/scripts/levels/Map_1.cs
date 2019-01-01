@@ -191,13 +191,15 @@ public class Map_1 : MonoBehaviour
                 if (j >= coordinate.y - range + t && j <= coordinate.y + range - t)
                 {
                     Vector3Int a = new Vector3Int(i, j, 0);
-                    curAttackZone.Add(a);
-
+                    if (IsPlayerUnit(a) == null)
+                    {
+                        curAttackZone.Add(a);
+                    }
                 }
             }
         }
         ColorAttackZone();
-        ShowInfoPanel();
+        //ShowInfoPanel();
         currentState = GameStates.PlayerAttackUnit;
     }
     public void BtnEndClick()
@@ -227,6 +229,7 @@ public class Map_1 : MonoBehaviour
 
     public void BtnActionCancelClick()
     {
+        tilemap.RefreshAllTiles();
         PlayerUnits[currentUnitIndex]._GameObject.transform.position = TargetPosition;
         ShowInfoPanel();
         currentState = GameStates.PlayerSelectTile;
@@ -290,6 +293,12 @@ public class Map_1 : MonoBehaviour
         }
     }
 
+    private bool IsOutMap(Vector3Int point)
+    {
+        if (point.x < -18 || point.x > 17 || point.y < -10 || point.y > 9) return true;
+        return false;
+    }
+
     private bool IsInMoveZone(Vector3Int point)
     {
         foreach (Vector3Int pos in moveZone)
@@ -308,13 +317,24 @@ public class Map_1 : MonoBehaviour
         return false;
     }
 
+    private int GetTerrainType(Vector3Int point)
+    {
+        foreach (Terrain terr in terrain)
+        {
+            if (point.x == terr.pos.x && point.y == terr.pos.y)
+            {
+                return terr.type;
+            }
+        }
+        return -1;
+    }
+
     private BaseCharacterClass IsPlayerUnit(Vector3Int point)
     {
         foreach (BaseCharacterClass unit in PlayerUnits)
         {
-            Collider2D coll = unit._GameObject.GetComponent<Collider2D>();
             Vector3Int coordinate = grid.WorldToCell(unit._GameObject.transform.position);
-            if (coll.OverlapPoint(unit._GameObject.transform.position)) return unit;
+            if (coordinate.x == point.x && coordinate.y == point.y) return unit;
         }
         return null;
     }
@@ -327,6 +347,34 @@ public class Map_1 : MonoBehaviour
             if (coordinate.x == point.x && coordinate.y == point.y) return unit;
         }
         return null;
+    }
+
+    private bool isMovable(Vector3Int currPos, Vector3Int des, int currStep, int maxStep, string dir)
+    {
+        if (currStep > maxStep) return false;
+        if (!moveZone.Contains(currPos)) return false;
+        if (currPos.x == des.x && currPos.y == des.y) return true;
+        bool res = false;
+        //go left
+        if(dir != "right")
+        {
+            res = res || isMovable(new Vector3Int(currPos.x - 1, currPos.y, 0), des, currStep + 1, maxStep, "left");
+        }
+        //go right
+        if (dir != "left")
+        {
+            res = res || isMovable(new Vector3Int(currPos.x + 1, currPos.y, 0), des, currStep + 1, maxStep, "right");
+        }
+        //go up
+        if (dir != "down")
+        {
+            res = res || isMovable(new Vector3Int(currPos.x, currPos.y + 1, 0), des, currStep + 1, maxStep, "up");
+        }
+        if (dir != "up")
+        {
+            res = res || isMovable(new Vector3Int(currPos.x, currPos.y - 1, 0), des, currStep + 1, maxStep, "down");
+        }
+        return res;
     }
 
     // Update is called once per frame
@@ -348,7 +396,6 @@ public class Map_1 : MonoBehaviour
         {
             //hover
             Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
-            
             pos.x += 0.5f;
             pos.y += 0.5f;
             Cursor.transform.position = pos;
@@ -407,24 +454,25 @@ public class Map_1 : MonoBehaviour
                 if(MovedUnitIndex.Count == PlayerUnits.Count) BtnEndTurnClick();
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (IsOutMap(coordinate)) break;
                     bool isUnit = false;
                     for (int i = 0; i < PlayerUnits.Count; i++)
                     {
                         if (MovedUnitIndex.IndexOf(i) >= 0)
                         {
-                            if (i == PlayerUnits.Count - 1)
-                            {
-                                ShowMenuPanel();
-                                currentState = GameStates.PlayerSelectAction;
-                            }
+                            //if (i == PlayerUnits.Count - 1)
+                            //{
+                            //    ShowMenuPanel();
+                            //    currentState = GameStates.PlayerSelectAction;
+                            //}
                             continue;
                         }
                         Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
 
                         if (coll.OverlapPoint(mouseWorldPos))
                         {
-                            int weaponRange = PlayerUnits[i].EquippedWeapon.Range;    
-                            // ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
+                            //get attack range
+                            int weaponRange = PlayerUnits[i].EquippedWeapon.Range;
 
                             isUnit = true;
                             currentUnitIndex = i;
@@ -436,49 +484,87 @@ public class Map_1 : MonoBehaviour
                             attackZone.Clear();
                             //refresh color of map
                             tilemap.RefreshAllTiles();
-                        
+
                             //calculate array of move zone and attack zone
-                            for (int j = coordinate.x - PlayerUnits[i].Movement; j <= coordinate.x + PlayerUnits[i].Movement; j++)
+                            int MoveRange = PlayerUnits[i].Movement;
+                            for (int j = coordinate.x - MoveRange; j <= coordinate.x + MoveRange; j++)
                             {
-                                for (int k = coordinate.y - PlayerUnits[i].Movement; k <= coordinate.y + PlayerUnits[i].Movement; k++)
+                                for (int k = coordinate.y - MoveRange; k <= coordinate.y + MoveRange; k++)
                                 {
                                     int t = j - coordinate.x;
                                     if (t < 0) t = -t;
-                                    if (k >= coordinate.y - PlayerUnits[i].Movement + t && k <= coordinate.y + PlayerUnits[i].Movement - t)
+                                    if (k >= coordinate.y - MoveRange + t && k <= coordinate.y + MoveRange - t)
                                     {
                                         Vector3Int a = new Vector3Int(j, k, 0);
-                                        moveZone.Add(a);
+                                        int type = GetTerrainType(a);
+                                        if(type != 3)
+                                        {
+                                            if (IsEnemyUnit(a) == null)
+                                            {
+                                                moveZone.Add(a);
+                                            }
+                                        }
                                     }
                                 }
                             }
-                            //get attack range
-                            for (int j = coordinate.x - PlayerUnits[i].Movement; j <= coordinate.x + PlayerUnits[i].Movement; j++)
+                            int index = 0;
+                            while(index < moveZone.Count)
                             {
-                                for (int k = coordinate.y - PlayerUnits[i].Movement; k <= coordinate.y + PlayerUnits[i].Movement; k++)
+                                if (moveZone[index].x == coordinate.x && moveZone[index].y == coordinate.y)
                                 {
-                                    int t = j - coordinate.x;
-                                    if (t < 0) t = -t;
-                                    if (k >= coordinate.y - PlayerUnits[i].Movement + t && k <= coordinate.y + PlayerUnits[i].Movement - t)
+                                    index++;
+                                    continue;
+                                }
+                                if (!isMovable(coordinate, moveZone[index], 0, MoveRange, ""))
+                                {
+                                    moveZone.RemoveAt(index);
+                                }
+                                else
+                                {
+                                    index++;
+                                }
+                                
+                            }
+                            //calculate attack zone
+                            for(int j = 0; j < moveZone.Count; j++)
+                            {
+                                Vector3Int left = new Vector3Int(moveZone[j].x - weaponRange, moveZone[j].y, 0);
+                                Vector3Int right = new Vector3Int(moveZone[j].x + weaponRange, moveZone[j].y, 0);
+                                Vector3Int up = new Vector3Int(moveZone[j].x, moveZone[j].y + weaponRange, 0);
+                                Vector3Int down = new Vector3Int(moveZone[j].x, moveZone[j].y - weaponRange, 0);
+                                if (!moveZone.Contains(left))
+                                {
+                                    if (!attackZone.Contains(left))
                                     {
-                                            Vector3Int left = new Vector3Int(j - weaponRange, k, 0);
-                                            Vector3Int right = new Vector3Int(j + weaponRange, k, 0);
-                                            Vector3Int up = new Vector3Int(j, k + weaponRange, 0);
-                                            Vector3Int down = new Vector3Int(j, k - weaponRange, 0);
-                                            if (!moveZone.Contains(left))
-                                                attackZone.Add(left);
-                                            if (!moveZone.Contains(right))
-                                                attackZone.Add(right);
-                                            if (!moveZone.Contains(up))
-                                                attackZone.Add(up);
-                                            if (!moveZone.Contains(down))
-                                                attackZone.Add(down);
+                                        attackZone.Add(left);
+                                    }
+                                }
+                                if (!moveZone.Contains(right))
+                                {
+                                    if (!attackZone.Contains(right))
+                                    {
+                                        attackZone.Add(right);
+                                    }
+                                }
+                                if (!moveZone.Contains(up))
+                                {
+                                    if (!attackZone.Contains(up))
+                                    {
+                                        attackZone.Add(up);
+                                    }
+                                }
+                                if (!moveZone.Contains(down))
+                                {
+                                    if (!attackZone.Contains(down))
+                                    {
+                                        attackZone.Add(down);
                                     }
                                 }
                             }
                             ColorMoveZone();
                         }
                     //ShowActionPanel();
-                }
+                    }
                     if (!isUnit)
                     {
                         ShowMenuPanel();
@@ -489,15 +575,18 @@ public class Map_1 : MonoBehaviour
             case GameStates.PlayerMoveUnit:
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (IsOutMap(coordinate)) break;
                     if (IsInMoveZone(coordinate))
                     {
-                        
-                        //Debug.Log(coordinate);
-                        moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
-                        currentState = GameStates.UnitMoving;
+                        if (IsPlayerUnit(coordinate) == null || coordinate == grid.WorldToCell(TargetPosition))
+                        {
+                            //Debug.Log(coordinate);
+                            moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
+                            currentState = GameStates.UnitMoving;
+                        }
                     }
                 }
-                    break;
+                break;
             case GameStates.UnitMoving:
                 PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
                 if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == moveTarget)
@@ -512,18 +601,19 @@ public class Map_1 : MonoBehaviour
             case GameStates.PlayerAttackUnit:
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (IsOutMap(coordinate)) break;
                     if (IsInAttackZone(coordinate))
                     {
                         BaseCharacterClass enemy = IsEnemyUnit(coordinate);
-                        if(enemy != null)
+                        if (enemy != null)
                         {
-                            Debug.Log(enemy);
+                            //Debug.Log(enemy);
                             ShowAttackPanel();
                             currentState = GameStates.PlayerSelectAction;
                         }
                     }
                 }
-                        break;
+                break;
             case GameStates.EnemyTurn:
                 if (!changeTurn)
                 {
