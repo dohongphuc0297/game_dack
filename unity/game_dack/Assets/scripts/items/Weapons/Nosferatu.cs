@@ -5,7 +5,7 @@ using UnityEngine;
 public class Nosferatu : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Nosferatu(GameObject gameObject) : base(gameObject)
+    public Nosferatu() : base()
     {
         WeaponClassName = "Nosferatu";
         Effects = "Restores HP equal to damage dealt";

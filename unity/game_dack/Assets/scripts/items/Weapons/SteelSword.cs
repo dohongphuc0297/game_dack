@@ -5,7 +5,7 @@ using UnityEngine;
 public class SteelSword : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public SteelSword(GameObject gameObject) : base(gameObject)
+    public SteelSword() : base()
     {
         WeaponClassName = "SteelSword";
         Effects = "";

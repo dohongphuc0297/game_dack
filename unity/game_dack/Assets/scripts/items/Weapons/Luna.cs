@@ -5,7 +5,7 @@ using UnityEngine;
 public class Luna : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Luna(GameObject gameObject) : base(gameObject)
+    public Luna() : base()
     {
         WeaponClassName = "Luna";
         Effects = "Negates Resistance";

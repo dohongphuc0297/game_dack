@@ -5,7 +5,7 @@ using UnityEngine;
 public class Flux : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Flux(GameObject gameObject) : base(gameObject)
+    public Flux() : base()
     {
         WeaponClassName = "Flux";
         Effects = "";

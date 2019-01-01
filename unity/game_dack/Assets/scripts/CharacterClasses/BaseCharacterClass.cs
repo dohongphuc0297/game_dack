@@ -23,6 +23,10 @@ public class BaseCharacterClass
     private int resist;
     private int movement;
 
+    public int AttackRange { get; set; }
+
+    public BaseWeaponClass EquippedWeapon;
+
     //state
     private CharacterStates state;
 
@@ -31,6 +35,7 @@ public class BaseCharacterClass
         _GameObject = gameObject;
         _Animator = _GameObject.GetComponent<Animator>();
         State = CharacterStates.Stance;
+        EquippedWeapon = new BaseWeaponClass();
     }
 
     public GameObject _GameObject { get; set; }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Fire : BaseWeaponClass
 {
-    public int AttackRange { get; set; }
-    public Fire(GameObject gameObject) : base(gameObject)
+    public Fire() : base()
     {
         WeaponClassName = "Fire";
         Effects = "";

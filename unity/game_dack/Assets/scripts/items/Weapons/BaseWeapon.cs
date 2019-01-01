@@ -19,14 +19,15 @@ public class BaseWeaponClass
     private int wex; //Weapon EXP
     private int[] range;
     private int cost;
-    
 
     //state
     //private CharacterStates state;
-    
-    public BaseWeaponClass(GameObject gameObject)
+
+    public BaseWeaponClass()
     {
-        _GameObject = gameObject;
+        //_GameObject = gameObject;
+        int[] r = { 0 };
+        range = r;
         //_Animator = _GameObject.GetComponent<Animator>();
         //State = CharacterStates.Stance;
     }

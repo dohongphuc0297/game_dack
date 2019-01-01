@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Archer : BaseCharacterClass
 {
-    public int AttackRange { get; set; }
     public Archer(GameObject gameObject) : base(gameObject)
     {
         CharacterClassName = "Archer";

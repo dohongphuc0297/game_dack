@@ -5,7 +5,7 @@ using UnityEngine;
 public class Lightning : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Lightning(GameObject gameObject) : base(gameObject)
+    public Lightning() : base()
     {
         WeaponClassName = "Lightning";
         Effects = "";

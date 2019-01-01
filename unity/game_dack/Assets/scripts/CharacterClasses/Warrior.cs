@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Warrior : BaseCharacterClass
 {
-    public int AttackRange { get; set; }
     public Warrior(GameObject gameObject) : base(gameObject)
     {
         CharacterClassName = "BladeMaster";

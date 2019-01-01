@@ -5,7 +5,7 @@ using UnityEngine;
 public class Thunder : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Thunder(GameObject gameObject) : base(gameObject)
+    public Thunder() : base()
     {
         WeaponClassName = "Thunder";
         Effects = "";

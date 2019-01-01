@@ -5,7 +5,7 @@ using UnityEngine;
 public class Heal : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Heal(GameObject gameObject) : base(gameObject)
+    public Heal() : base()
     {
         WeaponClassName = "Heal";
         Effects = "Restores HP to an adjacent ally equal to (Magic +10). Provides 11 EXP to the user";

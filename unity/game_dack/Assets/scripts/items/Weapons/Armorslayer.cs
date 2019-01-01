@@ -5,7 +5,7 @@ using UnityEngine;
 public class Armorslayer : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Armorslayer(GameObject gameObject) : base(gameObject)
+    public Armorslayer() : base()
     {
         WeaponClassName = "Armorslayer";
         Effects = "Effective vs. Armored units";

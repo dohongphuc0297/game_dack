@@ -5,7 +5,7 @@ using UnityEngine;
 public class IronLance : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public IronLance(GameObject gameObject) : base(gameObject)
+    public IronLance() : base()
     {
         WeaponClassName = "IronLance";
         Effects = "";

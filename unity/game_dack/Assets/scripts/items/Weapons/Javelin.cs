@@ -5,7 +5,7 @@ using UnityEngine;
 public class Javelin : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public Javelin(GameObject gameObject) : base(gameObject)
+    public Javelin() : base()
     {
         WeaponClassName = "Javelin";
         Effects = "";

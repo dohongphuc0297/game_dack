@@ -5,7 +5,7 @@ using UnityEngine;
 public class LongBow : BaseWeaponClass
 {
     public int AttackRange { get; set; }
-    public LongBow(GameObject gameObject) : base(gameObject)
+    public LongBow() : base()
     {
         WeaponClassName = "LongBow";
         Effects = "";

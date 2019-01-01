@@ -40,9 +40,11 @@ public class Map_1 : MonoBehaviour
             {
                 case "Lyn":
                     PlayerUnits.Add(new Warrior(obj));
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
                 case "Archer":
                     PlayerUnits.Add(new Archer(obj));
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
                     break;
                 default:
                     break;
@@ -167,6 +169,12 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                     }
+
+
+                    //get attack range
+                    //PlayerUnits[0].EquippedWeapon.Range         ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
+
+
                     /*
                     for(int j = coordinate.x - PlayerUnits[i].AttackRange; j <= coordinate.x + PlayerUnits[i].AttackRange; j++)
                     {
