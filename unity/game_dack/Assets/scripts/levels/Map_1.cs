@@ -226,6 +226,9 @@ public class Map_1 : MonoBehaviour
 
                         if (coll.OverlapPoint(mouseWorldPos))
                         {
+                            int weaponRange = PlayerUnits[i].EquippedWeapon.Range;    
+                            // ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
+
                             isUnit = true;
                             currentUnitIndex = i;
                             //isHoverable = false;
@@ -235,6 +238,7 @@ public class Map_1 : MonoBehaviour
                             attackZone.Clear();
                             //refresh color of map
                             tilemap.RefreshAllTiles();
+                        
                             //calculate array of move zone and attack zone
                             for (int j = coordinate.x - PlayerUnits[i].Movement; j <= coordinate.x + PlayerUnits[i].Movement; j++)
                             {
@@ -246,27 +250,36 @@ public class Map_1 : MonoBehaviour
                                     {
                                         Vector3Int a = new Vector3Int(j, k, 0);
                                         moveZone.Add(a);
+
                                     }
                                 }
                             }
                             //get attack range
-                            int weaponRange = PlayerUnits[i].EquippedWeapon.Range;     // ket qua tra ve = [1] hoac [1,2] hoac [2] hoac [0] neu khong co vu khi
-
-                            for (int j = coordinate.x - weaponRange; j <= coordinate.x + weaponRange; j++)
+                            for (int j = coordinate.x - PlayerUnits[i].Movement; j <= coordinate.x + PlayerUnits[i].Movement; j++)
                             {
-                                for (int k = coordinate.y - weaponRange; k <= coordinate.y + weaponRange; k++)
+                                for (int k = coordinate.y - PlayerUnits[i].Movement; k <= coordinate.y + PlayerUnits[i].Movement; k++)
                                 {
                                     int t = j - coordinate.x;
                                     if (t < 0) t = -t;
-                                    if (k >= coordinate.y - weaponRange + t && k <= coordinate.y + weaponRange - t)
+                                    if (k >= coordinate.y - PlayerUnits[i].Movement + t && k <= coordinate.y + PlayerUnits[i].Movement - t)
                                     {
-
-                                        Vector3Int a = new Vector3Int(j, k, 0);
-                                        //SetTileColour(Color.red, a, tilemap);
-                                        attackZone.Add(a);
+                                            Vector3Int left = new Vector3Int(j - weaponRange, k, 0);
+                                            Vector3Int right = new Vector3Int(j + weaponRange, k, 0);
+                                            Vector3Int up = new Vector3Int(j, k + weaponRange, 0);
+                                            Vector3Int down = new Vector3Int(j, k - weaponRange, 0);
+                                            if (!moveZone.Contains(left))
+                                                attackZone.Add(left);
+                                            if (!moveZone.Contains(right))
+                                                attackZone.Add(right);
+                                            if (!moveZone.Contains(up))
+                                                attackZone.Add(up);
+                                            if (!moveZone.Contains(down))
+                                                attackZone.Add(down);
                                     }
                                 }
                             }
+
+
                             ColorMoveZone();
                         }
                     if (!isUnit)
