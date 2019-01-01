@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -12,6 +13,7 @@ public class Map_1 : MonoBehaviour
     public GameObject InfoPanel;
     public GameObject ActionPanel;
     public GameObject ChangeTurnPanel;
+    public GameObject AttackPanel;
 
     public Text ChangeTurnText;
     public Text InfoMenuName;
@@ -70,7 +72,7 @@ public class Map_1 : MonoBehaviour
                     break;
             }
         }
-        GameObject[] Enemylist = GameObject.FindGameObjectsWithTag("EnemyrUnit");
+        GameObject[] Enemylist = GameObject.FindGameObjectsWithTag("EnemyUnit");
         foreach (GameObject obj in Enemylist)
         {
             switch (obj.name)
@@ -101,6 +103,7 @@ public class Map_1 : MonoBehaviour
         MenuPanel.SetActive(false);
         InfoPanel.SetActive(true);
         ActionPanel.SetActive(false);
+        AttackPanel.SetActive(false);
     }
 
     public void ShowMenuPanel()
@@ -108,10 +111,20 @@ public class Map_1 : MonoBehaviour
         MenuPanel.SetActive(true);
         InfoPanel.SetActive(false);
         ActionPanel.SetActive(false);
+        AttackPanel.SetActive(false);
     }
     public void ShowActionPanel()
     {
         ActionPanel.SetActive(true);
+        MenuPanel.SetActive(false);
+        InfoPanel.SetActive(false);
+        AttackPanel.SetActive(false);
+    }
+
+    public void ShowAttackPanel()
+    {
+        AttackPanel.SetActive(true);
+        ActionPanel.SetActive(false);
         MenuPanel.SetActive(false);
         InfoPanel.SetActive(false);
     }
@@ -143,6 +156,7 @@ public class Map_1 : MonoBehaviour
             }
         }
         ColorAttackZone();
+        ShowInfoPanel();
         currentState = GameStates.PlayerAttackUnit;
     }
     public void BtnEndClick()
@@ -156,6 +170,7 @@ public class Map_1 : MonoBehaviour
 
     public void BtnEndTurnClick()
     {
+        RefreshUnitColor();
         ChangeTurnText.text = "ENEMY TURN";
         ChangeTurnText.color = Color.red;
         PlayChangeTurnPanel();
@@ -175,6 +190,18 @@ public class Map_1 : MonoBehaviour
         ShowInfoPanel();
         currentState = GameStates.PlayerSelectTile;
     }
+
+    public void BtnAttackConfirmClick()
+    {
+
+    }
+
+    public void BtnAttackCancelClick()
+    {
+        tilemap.RefreshAllTiles();
+        ShowActionPanel();
+    }
+
     //source: https://answers.unity.com/questions/1546818/how-can-i-change-a-tile-color-in-unity-by-using-c.html
     /// <summary>
     /// Set the colour of a tile.
@@ -213,6 +240,15 @@ public class Map_1 : MonoBehaviour
         }
     }
 
+    private void RefreshUnitColor()
+    {
+        foreach (BaseCharacterClass unit in PlayerUnits)
+        {
+            SpriteRenderer spriteR = unit._GameObject.GetComponent<SpriteRenderer>();
+            spriteR.color = Color.white;
+        }
+    }
+
     private bool IsInMoveZone(Vector3Int point)
     {
         foreach (Vector3Int pos in moveZone)
@@ -229,6 +265,27 @@ public class Map_1 : MonoBehaviour
             if (point.x == pos.x && point.y == pos.y) return true;
         }
         return false;
+    }
+
+    private BaseCharacterClass IsPlayerUnit(Vector3Int point)
+    {
+        foreach (BaseCharacterClass unit in PlayerUnits)
+        {
+            Collider2D coll = unit._GameObject.GetComponent<Collider2D>();
+            Vector3Int coordinate = grid.WorldToCell(unit._GameObject.transform.position);
+            if (coll.OverlapPoint(unit._GameObject.transform.position)) return unit;
+        }
+        return null;
+    }
+
+    private BaseCharacterClass IsEnemyUnit(Vector3Int point)
+    {
+        foreach (BaseCharacterClass unit in EnemyUnits)
+        {
+            Vector3Int coordinate = grid.WorldToCell(unit._GameObject.transform.position);
+            if (coordinate.x == point.x && coordinate.y == point.y) return unit;
+        }
+        return null;
     }
 
     // Update is called once per frame
@@ -282,6 +339,7 @@ public class Map_1 : MonoBehaviour
             case GameStates.Start:
                 break;
             case GameStates.PlayerSelectTile:
+                if(MovedUnitIndex.Count == PlayerUnits.Count) BtnEndTurnClick();
                 if (Input.GetMouseButtonDown(0))
                 {
                     bool isUnit = false;
@@ -368,6 +426,7 @@ public class Map_1 : MonoBehaviour
                 {
                     if (IsInMoveZone(coordinate))
                     {
+                        
                         //Debug.Log(coordinate);
                         moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
                         currentState = GameStates.UnitMoving;
@@ -390,6 +449,13 @@ public class Map_1 : MonoBehaviour
                 {
                     if (IsInAttackZone(coordinate))
                     {
+                        BaseCharacterClass enemy = IsEnemyUnit(coordinate);
+                        if(enemy != null)
+                        {
+                            Debug.Log(enemy);
+                            ShowAttackPanel();
+                            currentState = GameStates.PlayerSelectAction;
+                        }
                     }
                 }
                         break;
@@ -398,6 +464,7 @@ public class Map_1 : MonoBehaviour
                 {
                     ChangeTurnText.text = "YOUR TURN";
                     ChangeTurnText.color = Color.blue;
+                    MovedUnitIndex.Clear();
                     PlayChangeTurnPanel();
                     currentState = GameStates.PlayerSelectTile;
                     isPlayerTurn = true;
@@ -413,7 +480,6 @@ public class Map_1 : MonoBehaviour
     
 
     }
-
     void OnGUI()
     {
         GUILayout.Label(currentState.ToString());
