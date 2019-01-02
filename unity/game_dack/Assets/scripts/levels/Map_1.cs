@@ -271,8 +271,7 @@ public class Map_1 : MonoBehaviour
             if(sprite.name == PlayerUnits[currentUnitIndex]._GameObject.name)
             {
                 PlayerCharacter.GetComponent<SpriteRenderer>().sprite = sprite;
-                Debug.Log(PlayerCharacter.GetComponent<SpriteRenderer>().sprite.name);
-                Debug.Log(sprite.name);
+                break;
             }
         }
         foreach (RuntimeAnimatorController cotroller in listController)
