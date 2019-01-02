@@ -9,7 +9,7 @@ public enum GameStates
     PlayerSelectAction,
     PlayerMoveUnit,
     PlayerAttackUnit,
-    PlayerConfirmAttack,
+    AnimationFight,
     UnitMoving,
     EnemyTurn,
     GameOver

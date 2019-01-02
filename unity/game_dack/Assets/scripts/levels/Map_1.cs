@@ -14,6 +14,7 @@ public class Map_1 : MonoBehaviour
     public GameObject ActionPanel;
     public GameObject ChangeTurnPanel;
     public GameObject AttackPanel;
+    public GameObject FightWindow;
 
     public Text ChangeTurnText;
     public Text InfoMenuName;
@@ -93,6 +94,7 @@ public class Map_1 : MonoBehaviour
         }
         isPlayerTurn = true;
         ChangeTurnPanel.SetActive(false);
+        FightWindow.SetActive(false);
         ShowInfoPanel();
         //tilemap = grid.GetComponent<Tilemap>();
         currentState = GameStates.PlayerSelectTile;
@@ -169,6 +171,16 @@ public class Map_1 : MonoBehaviour
         MenuPanel.SetActive(false);
         InfoPanel.SetActive(false);
     }
+
+    public void ShowFightWindow()
+    {
+        AttackPanel.SetActive(false);
+        ActionPanel.SetActive(false);
+        MenuPanel.SetActive(false);
+        InfoPanel.SetActive(false);
+        FightWindow.SetActive(true);
+    }
+
     public void BtnMoveClick()
     {
         ColorMoveZone();
@@ -216,6 +228,7 @@ public class Map_1 : MonoBehaviour
         RefreshUnitColor();
         ChangeTurnText.text = "ENEMY TURN";
         ChangeTurnText.color = Color.red;
+        Debug.Log(ChangeTurnText.color);
         PlayChangeTurnPanel();
         currentState = GameStates.EnemyTurn;
         isPlayerTurn = false;
@@ -237,7 +250,8 @@ public class Map_1 : MonoBehaviour
 
     public void BtnAttackConfirmClick()
     {
-
+        ShowFightWindow();
+        currentState = GameStates.AnimationFight;
     }
 
     public void BtnAttackCancelClick()
@@ -421,7 +435,21 @@ public class Map_1 : MonoBehaviour
                     PlayerUnits[i]._Animator.SetBool("isActive", false);
                 }
             }
-            if(haveCharacter == false) {
+            if (haveCharacter == false)
+            {
+                for (int i = 0; i < EnemyUnits.Count; i++)
+                {
+                    Collider2D coll = EnemyUnits[i]._GameObject.GetComponent<Collider2D>();
+
+                    if (coll.OverlapPoint(mouseWorldPos))
+                    {
+                        haveCharacter = true;
+                        InfoMenuName.text = EnemyUnits[i]._GameObject.name;
+                        InfoMenuHP.text = EnemyUnits[i].HP.ToString() + "/" + EnemyUnits[i].HP.ToString();
+                    }
+                }
+            }
+            if (haveCharacter == false) {
                 for(int i = 0; i < terrain.Count; i++) {
                     if(coordinate == terrain[i].pos) {
                         if(terrain[i].type == 0) {
@@ -613,6 +641,8 @@ public class Map_1 : MonoBehaviour
                         }
                     }
                 }
+                break;
+            case GameStates.AnimationFight:
                 break;
             case GameStates.EnemyTurn:
                 if (!changeTurn)
