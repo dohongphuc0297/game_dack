@@ -229,7 +229,7 @@ public class Map_1 : MonoBehaviour
         RefreshUnitColor();
         ChangeTurnText.text = "ENEMY TURN";
         ChangeTurnText.color = Color.red;
-        Debug.Log(ChangeTurnText.color);
+        //Debug.Log(ChangeTurnText.color);
         PlayChangeTurnPanel();
         currentState = GameStates.EnemyTurn;
         isPlayerTurn = false;
@@ -691,10 +691,10 @@ public class Map_1 : MonoBehaviour
                                         obj.text = PlayerUnits[currentUnitIndex].HP.ToString();
                                         break;
                                     case "PlayerMt":
-                                        Debug.Log(PlayerUnits[currentUnitIndex].Strength);
-                                        Debug.Log(PlayerUnits[currentUnitIndex].EquippedWeapon.Mt);
-                                        Debug.Log(enemy.Defend);
-                                        Debug.Log(typeattack);
+                                        //Debug.Log(PlayerUnits[currentUnitIndex].Strength);
+                                        //Debug.Log(PlayerUnits[currentUnitIndex].EquippedWeapon.Mt);
+                                        //Debug.Log(enemy.Defend);
+                                        //Debug.Log(typeattack);
                                         if(typeattack == 1) terrain_bonus = 1;
                                         else terrain_bonus = 0;
                                         obj.text = (PlayerUnits[currentUnitIndex].Strength+PlayerUnits[currentUnitIndex].EquippedWeapon.Mt
