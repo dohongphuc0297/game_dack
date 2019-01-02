@@ -13,6 +13,7 @@ public class BaseCharacterClass
     private string characterClassDescription;
 
     //stats
+    private int maxhitpoint;
     private int hitpoint;
     private int strength;
     private int magic;
@@ -56,6 +57,12 @@ public class BaseCharacterClass
         get { return characterClassDescription; }
         set { characterClassDescription = value; }
     }
+    public int MaxHP
+    {
+        get { return maxhitpoint; }
+        set { maxhitpoint = value; }
+    }
+ 
     public int HP
     {
         get { return hitpoint; }

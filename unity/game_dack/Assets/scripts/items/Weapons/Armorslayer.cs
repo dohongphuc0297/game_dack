@@ -17,7 +17,7 @@ public class Armorslayer : BaseWeaponClass
         Hit = 75;
         Crt = 0;
         Wex = 1;
-        int range = 3;
+        int range = 1;
         Range = range;
         Cost = 600;
     }

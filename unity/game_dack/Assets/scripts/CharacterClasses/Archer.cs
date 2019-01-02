@@ -8,6 +8,7 @@ public class Archer : BaseCharacterClass
     {
         CharacterClassName = "Archer";
         CharacterClassDescription = "Soldier equipped with bow and attack enemy from far";
+        MaxHP = 15;
         HP = 15;
         Strength = 5;
         Magic = 0;
