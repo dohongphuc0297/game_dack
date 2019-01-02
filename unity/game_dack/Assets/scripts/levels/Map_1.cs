@@ -97,6 +97,7 @@ public class Map_1 : MonoBehaviour
         //tilemap = grid.GetComponent<Tilemap>();
         currentState = GameStates.PlayerSelectTile;
         GameObject[] list = GameObject.FindGameObjectsWithTag("PlayerUnit");
+
         foreach (GameObject obj in list)
         {
             switch (obj.name)
@@ -517,8 +518,129 @@ public class Map_1 : MonoBehaviour
                         BaseCharacterClass enemy = IsEnemyUnit(coordinate);
                         if(enemy != null)
                         {
-                            Debug.Log(enemy);
                             ShowAttackPanel();
+                            Vector3Int attack_pos = grid.WorldToCell(moveTarget);
+                            int Triangle = 0; //dam+1/Acc+15
+                            int typedef = 0;
+                            int typeattack = 0;
+                            for(int i = 0; i<terrain.Count; i++ ) {
+                                if(coordinate == terrain[i].pos) {
+                                    typedef = terrain[i].type;
+                                }
+                                if(attack_pos == terrain[i].pos) {
+                                    typeattack = terrain[i].type;
+                                }
+                            }
+
+                            if(PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName.IndexOf("Sword")>=0 
+                                && enemy.EquippedWeapon.WeaponClassName.IndexOf("Axe")>=0)
+                            {
+                                Triangle = 1;        
+                            }
+                            else if(PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName.IndexOf("Axe")>=0 
+                                && enemy.EquippedWeapon.WeaponClassName.IndexOf("Lance")>=0)
+                            {
+                                Triangle = 1;        
+                            }
+                            else if(PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName.IndexOf("Lance")>=0 
+                                && enemy.EquippedWeapon.WeaponClassName.IndexOf("Sword")>=0)
+                            {
+                                Triangle = 1;        
+                            }
+                            else if(PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName.IndexOf("Lance")>=0 
+                                && enemy.EquippedWeapon.WeaponClassName.IndexOf("Axe")>=0)
+                            {
+                                Triangle = -1;        
+                            }
+                            else if(PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName.IndexOf("Axe")>=0 
+                                && enemy.EquippedWeapon.WeaponClassName.IndexOf("Sword")>=0)
+                            {
+                                Triangle = -1;        
+                            }
+                            else if(PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName.IndexOf("Sword")>=0 
+                                && enemy.EquippedWeapon.WeaponClassName.IndexOf("Lance")>=0)
+                            {
+                                Triangle = -1;        
+                            }
+                            else Triangle = 0;
+                            Text[] stats =  FindObjectsOfType<Text>();
+                            int terrain_bonus;
+                            foreach (Text obj in stats)
+                            {
+                                switch (obj.name)
+                                {
+                                    case "PlayerHP":
+                                        obj.text = PlayerUnits[currentUnitIndex].HP.ToString();
+                                        break;
+                                    case "PlayerMt":
+                                        Debug.Log(PlayerUnits[currentUnitIndex].Strength);
+                                        Debug.Log(PlayerUnits[currentUnitIndex].EquippedWeapon.Mt);
+                                        Debug.Log(enemy.Defend);
+                                        Debug.Log(typeattack);
+                                        if(typeattack == 1) terrain_bonus = 1;
+                                        else terrain_bonus = 0;
+                                        obj.text = (PlayerUnits[currentUnitIndex].Strength+PlayerUnits[currentUnitIndex].EquippedWeapon.Mt
+                                            -enemy.Defend+Triangle+terrain_bonus).ToString();
+                                        break;
+                                    case "PlayerHit":                                        
+                                        if(typedef == 1) terrain_bonus = 20;
+                                        else if(typedef == 2) terrain_bonus = 10;
+                                        else terrain_bonus = 0;
+                                        int attackHit = PlayerUnits[currentUnitIndex].EquippedWeapon.Hit+PlayerUnits[currentUnitIndex].Skill*2+
+                                            (int)PlayerUnits[currentUnitIndex].Luck/2;
+                                        int defendAvoid = enemy.Speed*2+enemy.Luck+terrain_bonus;
+                                        int attackaccuracy = attackHit-defendAvoid+Triangle*15;
+                                        if(attackaccuracy>100) attackaccuracy = 100;
+                                        if(attackaccuracy<0) attackaccuracy = 0;
+                                        obj.text = attackaccuracy.ToString();
+                                        break;
+                                    case "PlayerCrit":
+                                        int attackCrit = PlayerUnits[currentUnitIndex].EquippedWeapon.Crt+(int)PlayerUnits[currentUnitIndex].Skill/2
+                                            -enemy.Luck;
+                                        if(attackCrit>100) attackCrit = 100;
+                                        if(attackCrit<0) attackCrit = 0;
+                                        obj.text = attackCrit.ToString();
+                                        break;
+                                    case "PlayerRepeat":
+                                        if(PlayerUnits[currentUnitIndex].Speed-enemy.Speed >= 5) obj.text = "X2";
+                                        else obj.text = "";
+                                        break;
+                                    case "EnermyHP":
+                                        obj.text = enemy.HP.ToString();
+                                        break;
+                                    case "EnermyMt":                                       
+                                        if(typedef == 1) terrain_bonus = 1;
+                                        else terrain_bonus = 0;
+                                        obj.text = (enemy.Strength+enemy.EquippedWeapon.Mt
+                                            - PlayerUnits[currentUnitIndex].Defend-Triangle+terrain_bonus).ToString();
+                                        break;
+                                    case "EnermyHit":                                        
+                                        if(typeattack == 1) terrain_bonus = 20;
+                                        else if(typeattack == 2) terrain_bonus = 10;
+                                        else terrain_bonus = 0;
+                                        int defendHit = enemy.EquippedWeapon.Hit+enemy.Skill*2+
+                                            (int)enemy.Luck/2;
+                                        int attackAvoid = PlayerUnits[currentUnitIndex].Speed*2+PlayerUnits[currentUnitIndex].Luck+terrain_bonus;
+                                        int defaccuracy = defendHit-attackAvoid-Triangle*15;
+                                        if(defaccuracy>100) defaccuracy = 100;
+                                        if(defaccuracy<0) defaccuracy = 0;
+                                        obj.text = defaccuracy.ToString();
+                                        break;
+                                    case "EnermyCrit":
+                                        int defendCrit = enemy.EquippedWeapon.Crt+(int)enemy.Skill/2
+                                            - PlayerUnits[currentUnitIndex].Luck;
+                                        if(defendCrit>100) defendCrit = 100;
+                                        if(defendCrit<0) defendCrit = 0;
+                                        obj.text = defendCrit.ToString();
+                                        break;
+                                    case "EnermyRepeat":
+                                        if(enemy.Speed-PlayerUnits[currentUnitIndex].Speed>=5) obj.text = "X2";
+                                        else obj.text = "";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                             currentState = GameStates.PlayerSelectAction;
                         }
                     }

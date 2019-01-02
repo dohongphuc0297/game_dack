@@ -8,6 +8,7 @@ public class Warrior : BaseCharacterClass
     {
         CharacterClassName = "BladeMaster";
         CharacterClassDescription = "Master of bow and blade";
+        MaxHP = 20;
         HP = 20;
         Strength = 7;
         Magic = 0;
