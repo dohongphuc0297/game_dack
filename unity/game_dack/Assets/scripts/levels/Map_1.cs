@@ -16,6 +16,9 @@ public class Map_1 : MonoBehaviour
     public GameObject AttackPanel;
     public GameObject FightWindow;
 
+    public GameObject PlayerCharacter;
+    public GameObject EnemyCharacter;
+
     public Text ChangeTurnText;
     public Text InfoMenuName;
     public Text InfoMenuHP;
@@ -37,12 +40,15 @@ public class Map_1 : MonoBehaviour
         }
     }
     private List<Terrain> terrain = new List<Terrain>();
-    
+    private List<Sprite> listSprite;
+    private List<RuntimeAnimatorController> listController;
+
     private List<Vector3Int> moveZone = new List<Vector3Int>();
     private List<Vector3Int> attackZone = new List<Vector3Int>();
     private List<Vector3Int> curAttackZone = new List<Vector3Int>();
     private List<int> MovedUnitIndex = new List<int>();
     private int currentUnitIndex;
+    private BaseCharacterClass currentEnemy;
 
     private List<BaseCharacterClass> PlayerUnits = new List<BaseCharacterClass>();
     private List<BaseCharacterClass> EnemyUnits = new List<BaseCharacterClass>();
@@ -92,6 +98,14 @@ public class Map_1 : MonoBehaviour
                 }
             }
         }
+
+        //get sprite list
+        Sprite[] sprites = Resources.LoadAll<Sprite>("sprites");
+        listSprite = new List<Sprite>(sprites);
+
+        RuntimeAnimatorController[] controllers = Resources.LoadAll<RuntimeAnimatorController>("controllers");
+        listController = new List<RuntimeAnimatorController>(controllers);
+        
         isPlayerTurn = true;
         ChangeTurnPanel.SetActive(false);
         FightWindow.SetActive(false);
@@ -252,6 +266,22 @@ public class Map_1 : MonoBehaviour
     public void BtnAttackConfirmClick()
     {
         ShowFightWindow();
+        foreach (Sprite sprite in listSprite)
+        {
+            if(sprite.name == PlayerUnits[currentUnitIndex]._GameObject.name)
+            {
+                PlayerCharacter.GetComponent<SpriteRenderer>().sprite = sprite;
+                Debug.Log(PlayerCharacter.GetComponent<SpriteRenderer>().sprite.name);
+                Debug.Log(sprite.name);
+            }
+        }
+        foreach (RuntimeAnimatorController cotroller in listController)
+        {
+            if(cotroller.name == PlayerUnits[currentUnitIndex]._GameObject.name)
+            {
+                PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = cotroller;
+            }
+        }
         currentState = GameStates.AnimationFight;
     }
 
@@ -636,6 +666,7 @@ public class Map_1 : MonoBehaviour
                         BaseCharacterClass enemy = IsEnemyUnit(coordinate);
                         if (enemy != null)
                         {
+                            currentEnemy = enemy;
                             ShowAttackPanel();
                             Vector3Int attack_pos = grid.WorldToCell(moveTarget);
                             int Triangle = 0; //dam+1/Acc+15
