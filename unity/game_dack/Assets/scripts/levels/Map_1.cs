@@ -39,6 +39,52 @@ public class Map_1 : MonoBehaviour
             pos = p2;
         }
     }
+
+    public struct PlayerInfo {
+        public string Name;
+        public string Weapon;
+        public int HP;
+        public int MaxHP;
+        public int Mt;
+        public int Hit;
+        public int Crit;
+        public int Repeat;
+        public void reset(){
+            Name = "";
+            Weapon = "";
+            HP = 0;
+            MaxHP = 0;
+            Mt = 0;
+            Hit = 0;
+            Crit = 0;
+            Repeat = 0;
+        }
+    }
+
+    public struct EnemyInfo {
+        public string Name;
+        public string Weapon;
+        public int HP;
+        public int MaxHP;
+        public int Mt;
+        public int Hit;
+        public int Crit;
+        public int Repeat;
+        public void reset(){
+            Name = "";
+            Weapon = "";
+            HP = 0;
+            MaxHP = 0;
+            Mt = 0;
+            Hit = 0;
+            Crit = 0;
+            Repeat = 0;
+        }
+    }
+
+    private PlayerInfo playerInfo = new PlayerInfo();
+    private EnemyInfo enemyInfo = new EnemyInfo();
+
     private List<Terrain> terrain = new List<Terrain>();
     private List<Sprite> listSprite;
     private List<RuntimeAnimatorController> listController;
@@ -266,6 +312,54 @@ public class Map_1 : MonoBehaviour
     public void BtnAttackConfirmClick()
     {
         ShowFightWindow();
+
+        GameObject[] info = GameObject.FindGameObjectsWithTag("BattleInfo");
+
+        foreach (GameObject obj in info)
+        {
+            switch (obj.name)
+            {
+                case "HIT_enemy":
+                    obj.GetComponent<Text>().text = enemyInfo.Hit.ToString();
+                    break;
+                case "DMG_enemy":
+                    obj.GetComponent<Text>().text = enemyInfo.Mt.ToString();
+                    break;
+                case "CRT_enemy":
+                    obj.GetComponent<Text>().text = enemyInfo.Crit.ToString();
+                break;
+                case "HP_enemy":
+                    obj.GetComponent<Text>().text = enemyInfo.HP.ToString()+"/"+enemyInfo.MaxHP.ToString();
+                break;
+                case "weapon_enemy":
+                    obj.GetComponent<Text>().text = enemyInfo.Weapon;
+                break;
+                case "EnemyUnitName":
+                    obj.GetComponent<Text>().text = enemyInfo.Name;
+                break;
+                case "HIT_player":
+                    obj.GetComponent<Text>().text = playerInfo.Hit.ToString();
+                    break;
+                case "DMG_player":
+                    obj.GetComponent<Text>().text = playerInfo.Mt.ToString();
+                    break;
+                case "CRT_player":
+                    obj.GetComponent<Text>().text = playerInfo.Crit.ToString();
+                break;
+                case "HP_player":
+                    obj.GetComponent<Text>().text = playerInfo.HP.ToString()+"/"+playerInfo.MaxHP.ToString();
+                break;
+                case "weapon_player":
+                    obj.GetComponent<Text>().text = playerInfo.Weapon;
+                break;
+                case "PlayerUnitName":
+                    obj.GetComponent<Text>().text = playerInfo.Name;
+                break;
+                default:
+                    break;
+            }
+        }
+
         foreach (Sprite sprite in listSprite)
         {
             if(sprite.name == PlayerUnits[currentUnitIndex]._GameObject.name)
@@ -283,6 +377,8 @@ public class Map_1 : MonoBehaviour
             }
         }
         currentState = GameStates.AnimationFight;
+        //enemyInfo.reset();
+        //playerInfo.reset();
     }
 
     public void BtnAttackCancelClick()
@@ -667,11 +763,18 @@ public class Map_1 : MonoBehaviour
                         if (enemy != null)
                         {
                             currentEnemy = enemy;
+                            enemyInfo.MaxHP = enemy.MaxHP;
+                            enemyInfo.Name = enemy.CharacterClassName;
+                            enemyInfo.Weapon = enemy.EquippedWeapon.WeaponClassName;
+                            playerInfo.MaxHP = PlayerUnits[currentUnitIndex].MaxHP;
+                            playerInfo.Name = PlayerUnits[currentUnitIndex].CharacterClassName;
+                            playerInfo.Weapon = PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName;
                             ShowAttackPanel();
                             Vector3Int attack_pos = grid.WorldToCell(moveTarget);
                             int Triangle = 0; //dam+1/Acc+15
                             int typedef = 0;
                             int typeattack = 0;
+
                             for(int i = 0; i<terrain.Count; i++ ) {
                                 if(coordinate == terrain[i].pos) {
                                     typedef = terrain[i].type;
@@ -721,6 +824,7 @@ public class Map_1 : MonoBehaviour
                                 {
                                     case "PlayerHP":
                                         obj.text = PlayerUnits[currentUnitIndex].HP.ToString();
+                                        playerInfo.HP = PlayerUnits[currentUnitIndex].HP;
                                         break;
                                     case "PlayerMt":
                                         //Debug.Log(PlayerUnits[currentUnitIndex].Strength);
@@ -730,7 +834,9 @@ public class Map_1 : MonoBehaviour
                                         if(typeattack == 1) terrain_bonus = 1;
                                         else terrain_bonus = 0;
                                         obj.text = (PlayerUnits[currentUnitIndex].Strength+PlayerUnits[currentUnitIndex].EquippedWeapon.Mt
-                                            -enemy.Defend+Triangle+terrain_bonus).ToString();
+                                            - enemy.Defend+Triangle+terrain_bonus).ToString();
+                                        playerInfo.Mt = PlayerUnits[currentUnitIndex].Strength+PlayerUnits[currentUnitIndex].EquippedWeapon.Mt
+                                            - enemy.Defend+Triangle+terrain_bonus;
                                         break;
                                     case "PlayerHit":                                        
                                         if(typedef == 1) terrain_bonus = 20;
@@ -742,6 +848,7 @@ public class Map_1 : MonoBehaviour
                                         int attackaccuracy = attackHit-defendAvoid+Triangle*15;
                                         if(attackaccuracy>100) attackaccuracy = 100;
                                         if(attackaccuracy<0) attackaccuracy = 0;
+                                        playerInfo.Hit = attackaccuracy;
                                         obj.text = attackaccuracy.ToString();
                                         break;
                                     case "PlayerCrit":
@@ -749,20 +856,30 @@ public class Map_1 : MonoBehaviour
                                             -enemy.Luck;
                                         if(attackCrit>100) attackCrit = 100;
                                         if(attackCrit<0) attackCrit = 0;
+                                        playerInfo.Crit = attackCrit;
                                         obj.text = attackCrit.ToString();
                                         break;
                                     case "PlayerRepeat":
-                                        if(PlayerUnits[currentUnitIndex].Speed-enemy.Speed >= 5) obj.text = "X2";
-                                        else obj.text = "";
+                                        if(PlayerUnits[currentUnitIndex].Speed-enemy.Speed >= 5) {
+                                            obj.text = "X2";
+                                            playerInfo.Repeat = 2;
+                                        }
+                                        else {
+                                            obj.text = "";
+                                            playerInfo.Repeat = 1;
+                                        }
                                         break;
                                     case "EnermyHP":
                                         obj.text = enemy.HP.ToString();
+                                        enemyInfo.HP = enemy.HP;
                                         break;
                                     case "EnermyMt":                                       
                                         if(typedef == 1) terrain_bonus = 1;
                                         else terrain_bonus = 0;
                                         obj.text = (enemy.Strength+enemy.EquippedWeapon.Mt
                                             - PlayerUnits[currentUnitIndex].Defend-Triangle+terrain_bonus).ToString();
+                                        enemyInfo.Mt = enemy.Strength+enemy.EquippedWeapon.Mt
+                                            - PlayerUnits[currentUnitIndex].Defend-Triangle+terrain_bonus;
                                         break;
                                     case "EnermyHit":                                        
                                         if(typeattack == 1) terrain_bonus = 20;
@@ -774,6 +891,7 @@ public class Map_1 : MonoBehaviour
                                         int defaccuracy = defendHit-attackAvoid-Triangle*15;
                                         if(defaccuracy>100) defaccuracy = 100;
                                         if(defaccuracy<0) defaccuracy = 0;
+                                        enemyInfo.Hit = defaccuracy;
                                         obj.text = defaccuracy.ToString();
                                         break;
                                     case "EnermyCrit":
@@ -781,11 +899,18 @@ public class Map_1 : MonoBehaviour
                                             - PlayerUnits[currentUnitIndex].Luck;
                                         if(defendCrit>100) defendCrit = 100;
                                         if(defendCrit<0) defendCrit = 0;
+                                        enemyInfo.Crit = defendCrit;
                                         obj.text = defendCrit.ToString();
                                         break;
                                     case "EnermyRepeat":
-                                        if(enemy.Speed-PlayerUnits[currentUnitIndex].Speed>=5) obj.text = "X2";
-                                        else obj.text = "";
+                                        if(enemy.Speed-PlayerUnits[currentUnitIndex].Speed>=5) {
+                                            obj.text = "X2";
+                                            enemyInfo.Repeat = 2;
+                                        }
+                                        else {
+                                            obj.text = "";
+                                            enemyInfo.Repeat = 1;
+                                        }
                                         break;
                                     default:
                                         break;
