@@ -96,8 +96,9 @@ public class Map_1 : MonoBehaviour
     private List<Vector3Int> curAttackZone = new List<Vector3Int>();
     private List<int> MovedUnitIndex = new List<int>();
     private int currentUnitIndex;
-    private BaseCharacterClass currentEnemy;
-    private int currentAttackTurn = 0;
+    private int currentEnemyIndex;
+    private int currentEnemyAttackTurn = 0;
+    private int currentPlayerAttackTurn = 0;
     private bool isPlayerAttackTurn = true;
     private bool isHit = true;
 
@@ -118,6 +119,9 @@ public class Map_1 : MonoBehaviour
     //string str_collider = "not set";
 
     //bool Lyn_active = false;
+
+    private Text enemyHP;
+    private Text playerHP;
     // Start is called before the first frame update
     void Start()
     {
@@ -270,7 +274,7 @@ public class Map_1 : MonoBehaviour
                 if (j >= coordinate.y - range + t && j <= coordinate.y + range - t)
                 {
                     Vector3Int a = new Vector3Int(i, j, 0);
-                    if (IsPlayerUnit(a) == null)
+                    if (IsPlayerUnit(a) < 0)
                     {
                         curAttackZone.Add(a);
                     }
@@ -336,7 +340,8 @@ public class Map_1 : MonoBehaviour
                     obj.GetComponent<Text>().text = enemyInfo.Crit.ToString();
                 break;
                 case "HP_enemy":
-                    obj.GetComponent<Text>().text = enemyInfo.HP.ToString()+"/"+enemyInfo.MaxHP.ToString();
+                    enemyHP = obj.GetComponent<Text>();
+                    enemyHP.text = enemyInfo.HP.ToString()+"/"+enemyInfo.MaxHP.ToString();
                 break;
                 case "weapon_enemy":
                     obj.GetComponent<Text>().text = enemyInfo.Weapon;
@@ -354,7 +359,8 @@ public class Map_1 : MonoBehaviour
                     obj.GetComponent<Text>().text = playerInfo.Crit.ToString();
                 break;
                 case "HP_player":
-                    obj.GetComponent<Text>().text = playerInfo.HP.ToString()+"/"+playerInfo.MaxHP.ToString();
+                    playerHP = obj.GetComponent<Text>();
+                    playerHP.text = playerInfo.HP.ToString()+"/"+playerInfo.MaxHP.ToString();
                 break;
                 case "weapon_player":
                     obj.GetComponent<Text>().text = playerInfo.Weapon;
@@ -384,8 +390,18 @@ public class Map_1 : MonoBehaviour
             }
         }
         //set order attack
-        currentAttackTurn = 1;
-        if (isPlayerTurn) isPlayerAttackTurn = true;
+        if (isPlayerTurn)
+        {
+            isPlayerAttackTurn = true;
+            currentEnemyAttackTurn = 0;
+            currentPlayerAttackTurn = 1;
+        }
+        else
+        {
+            isPlayerAttackTurn = false;
+            currentEnemyAttackTurn = 1;
+            currentPlayerAttackTurn = 0;
+        }
         currentState = GameStates.AnimationFight;
         //enemyInfo.reset();
         //playerInfo.reset();
@@ -480,24 +496,24 @@ public class Map_1 : MonoBehaviour
         return -1;
     }
 
-    private BaseCharacterClass IsPlayerUnit(Vector3Int point)
+    private int IsPlayerUnit(Vector3Int point)
     {
-        foreach (BaseCharacterClass unit in PlayerUnits)
+        for (int i = 0; i < PlayerUnits.Count; i++)
         {
-            Vector3Int coordinate = grid.WorldToCell(unit._GameObject.transform.position);
-            if (coordinate.x == point.x && coordinate.y == point.y) return unit;
+            Vector3Int coordinate = grid.WorldToCell(PlayerUnits[i]._GameObject.transform.position);
+            if (coordinate.x == point.x && coordinate.y == point.y) return i;
         }
-        return null;
+        return -1;
     }
 
-    private BaseCharacterClass IsEnemyUnit(Vector3Int point)
+    private int IsEnemyUnit(Vector3Int point)
     {
-        foreach (BaseCharacterClass unit in EnemyUnits)
+        for (int i = 0; i < EnemyUnits.Count; i++)
         {
-            Vector3Int coordinate = grid.WorldToCell(unit._GameObject.transform.position);
-            if (coordinate.x == point.x && coordinate.y == point.y) return unit;
+            Vector3Int coordinate = grid.WorldToCell(EnemyUnits[i]._GameObject.transform.position);
+            if (coordinate.x == point.x && coordinate.y == point.y) return i;
         }
-        return null;
+        return -1;
     }
 
     private bool isMovable(Vector3Int currPos, Vector3Int des, int currStep, int maxStep, string dir)
@@ -558,7 +574,7 @@ public class Map_1 : MonoBehaviour
                 {
                     haveCharacter = true;
                     InfoMenuName.text = PlayerUnits[i]._GameObject.name;
-                    InfoMenuHP.text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].HP.ToString();
+                    InfoMenuHP.text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].MaxHP.ToString();
                     if (MovedUnitIndex.IndexOf(i) >= 0) continue;
                     if (!(PlayerUnits[i].State == CharacterStates.Active))
                     {
@@ -582,7 +598,7 @@ public class Map_1 : MonoBehaviour
                     {
                         haveCharacter = true;
                         InfoMenuName.text = EnemyUnits[i]._GameObject.name;
-                        InfoMenuHP.text = EnemyUnits[i].HP.ToString() + "/" + EnemyUnits[i].HP.ToString();
+                        InfoMenuHP.text = EnemyUnits[i].HP.ToString() + "/" + EnemyUnits[i].MaxHP.ToString();
                     }
                 }
             }
@@ -664,7 +680,7 @@ public class Map_1 : MonoBehaviour
                                         int type = GetTerrainType(a);
                                         if(type != 3)
                                         {
-                                            if (IsEnemyUnit(a) == null)
+                                            if (IsEnemyUnit(a) < 0)
                                             {
                                                 moveZone.Add(a);
                                             }
@@ -743,7 +759,7 @@ public class Map_1 : MonoBehaviour
                     if (IsOutMap(coordinate)) break;
                     if (IsInMoveZone(coordinate))
                     {
-                        if (IsPlayerUnit(coordinate) == null || coordinate == grid.WorldToCell(TargetPosition))
+                        if (IsPlayerUnit(coordinate) < 0 || coordinate == grid.WorldToCell(TargetPosition))
                         {
                             //Debug.Log(coordinate);
                             moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
@@ -769,10 +785,10 @@ public class Map_1 : MonoBehaviour
                     if (IsOutMap(coordinate)) break;
                     if (IsInAttackZone(coordinate))
                     {
-                        BaseCharacterClass enemy = IsEnemyUnit(coordinate);
-                        if (enemy != null)
+                        currentEnemyIndex = IsEnemyUnit(coordinate);
+                        if (currentEnemyIndex >= 0)
                         {
-                            currentEnemy = enemy;
+                            BaseCharacterClass enemy = EnemyUnits[currentEnemyIndex];
                             enemyInfo.MaxHP = enemy.MaxHP;
                             enemyInfo.Name = enemy.CharacterClassName;
                             enemyInfo.Weapon = enemy.EquippedWeapon.WeaponClassName;
@@ -936,7 +952,23 @@ public class Map_1 : MonoBehaviour
                 Animator FightWindowAnimator = FightWindow.GetComponent<Animator>();
                 if (FightWindowAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
-                    if(currentAttackTurn > (playerInfo.Repeat + enemyInfo.Repeat))
+                    if(PlayerUnits[currentUnitIndex].HP <= 0)
+                    {
+                        Destroy(PlayerUnits[currentUnitIndex]._GameObject);
+                        PlayerUnits.RemoveAt(currentUnitIndex);
+                        FightWindowAnimator.SetTrigger("playerDeath");
+                        currentState = GameStates.AnimationEndFight;
+                        break;
+                    }
+                    if (EnemyUnits[currentEnemyIndex].HP <= 0)
+                    {
+                        Destroy(EnemyUnits[currentEnemyIndex]._GameObject);
+                        EnemyUnits.RemoveAt(currentEnemyIndex);
+                        FightWindowAnimator.SetTrigger("enemyDeath");
+                        currentState = GameStates.AnimationEndFight;
+                        break;
+                    }
+                    if ((currentEnemyAttackTurn + currentPlayerAttackTurn) > (playerInfo.Repeat + enemyInfo.Repeat))
                     {
                         FightWindowAnimator.SetTrigger("end");
                         currentState = GameStates.AnimationEndFight;
@@ -946,6 +978,7 @@ public class Map_1 : MonoBehaviour
                         if (isPlayerAttackTurn)
                         {
                             isPlayerAttackTurn = !isPlayerAttackTurn;
+                            if (currentPlayerAttackTurn > playerInfo.Repeat) break;
                             Animator playerCharacterAnimator = PlayerCharacter.GetComponent<Animator>();
                             playerCharacterAnimator.SetTrigger("attack");
                             int rand = UnityEngine.Random.Range(0, 100);
@@ -959,13 +992,25 @@ public class Map_1 : MonoBehaviour
                                 isHit = false;
                                 EnemyHitEffect.text = "Miss!";
                             }
-                                currentState = GameStates.AnimationPlayerAttack;
+                            currentState = GameStates.AnimationPlayerAttack;
                         }
                         else
                         {
                             isPlayerAttackTurn = !isPlayerAttackTurn;
+                            if (currentEnemyAttackTurn > enemyInfo.Repeat) break;
                             Animator enemyCharacterAnimator = EnemyCharacter.GetComponent<Animator>();
                             enemyCharacterAnimator.SetTrigger("attack");
+                            int rand = UnityEngine.Random.Range(0, 100);
+                            if (rand <= enemyInfo.Hit)
+                            {
+                                isHit = true;
+                                PlayerHitEffect.text = "Hit!";
+                            }
+                            else
+                            {
+                                isHit = false;
+                                PlayerHitEffect.text = "Miss!";
+                            }
                             currentState = GameStates.AnimationEnemyAttack;
                         }
                     }
@@ -976,23 +1021,54 @@ public class Map_1 : MonoBehaviour
                 Animator EHA = EnemyHitEffect.GetComponent<Animator>();
                 if (PlayerCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
                 {
+                    //if (isHit && enemyInfo.HP > (EnemyUnits[currentEnemyIndex].HP - playerInfo.Mt))
+                    //{
+                    //    enemyHP.text = (--enemyInfo.HP).ToString() + "/" + enemyInfo.MaxHP.ToString();
+                    //}
                     if (EHA.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                     {
+                        if (isHit)
+                        {
+                            EnemyUnits[currentEnemyIndex].HP -= playerInfo.Mt;
+                            if (EnemyUnits[currentEnemyIndex].HP < 0) EnemyUnits[currentEnemyIndex].HP = 0;
+                            enemyInfo.HP = EnemyUnits[currentEnemyIndex].HP;
+                            enemyHP.text = enemyInfo.HP.ToString() + "/" + enemyInfo.MaxHP.ToString();
+                        }
                         EHA.SetBool("isActive", true);
                     }
                 }
                 if (PlayerCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
-                    currentAttackTurn++;
+                    currentPlayerAttackTurn++;
                     EHA.SetBool("isActive", false);
                     currentState = GameStates.AnimationFight;
                 }
                 break;
             case GameStates.AnimationEnemyAttack:
                 Animator EnemyCharacterAnimator = EnemyCharacter.GetComponent<Animator>();
+                Animator PHA = PlayerHitEffect.GetComponent<Animator>();
+                if (EnemyCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+                {
+                    //if (isHit && playerInfo.HP > (PlayerUnits[currentUnitIndex].HP - enemyInfo.Mt))
+                    //{
+                    //    playerHP.text = (--playerInfo.HP).ToString() + "/" + playerInfo.MaxHP.ToString();
+                    //}
+                    if (PHA.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    {
+                        if (isHit)
+                        {
+                            PlayerUnits[currentUnitIndex].HP -= enemyInfo.Mt;
+                            if (PlayerUnits[currentUnitIndex].HP < 0) PlayerUnits[currentUnitIndex].HP = 0;
+                            playerInfo.HP = PlayerUnits[currentUnitIndex].HP;
+                            playerHP.text = playerInfo.HP.ToString() + "/" + playerInfo.MaxHP.ToString();
+                        }
+                        PHA.SetBool("isActive", true);
+                    }
+                }
                 if (EnemyCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
-                    currentAttackTurn++;
+                    currentEnemyAttackTurn++;
+                    PHA.SetBool("isActive", false);
                     currentState = GameStates.AnimationFight;
                 }
                 break;
@@ -1011,6 +1087,10 @@ public class Map_1 : MonoBehaviour
                     }
                 }
                     break;
+            case GameStates.AnimationPlayerDeath:
+                break;
+            case GameStates.AnimationEnemyDeath:
+                break;
             case GameStates.EnemyTurn:
                 if (!changeTurn)
                 {
