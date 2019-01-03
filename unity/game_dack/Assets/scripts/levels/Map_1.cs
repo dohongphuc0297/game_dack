@@ -372,7 +372,7 @@ public class Map_1 : MonoBehaviour
                     break;
             }
         }
-
+        PlayerCharacter.GetComponent<SpriteRenderer>().sprite = null;
         foreach (Sprite sprite in listSprite)
         {
             if(sprite.name == PlayerUnits[currentUnitIndex]._GameObject.name)
@@ -381,6 +381,7 @@ public class Map_1 : MonoBehaviour
                 break;
             }
         }
+        PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = null;
         foreach (RuntimeAnimatorController cotroller in listController)
         {
             if(cotroller.name == PlayerUnits[currentUnitIndex]._GameObject.name)
