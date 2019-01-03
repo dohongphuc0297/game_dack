@@ -279,6 +279,7 @@ public class Map_1 : MonoBehaviour
             if(cotroller.name == PlayerUnits[currentUnitIndex]._GameObject.name)
             {
                 PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = cotroller;
+                break;
             }
         }
         currentState = GameStates.AnimationFight;
@@ -712,6 +713,7 @@ public class Map_1 : MonoBehaviour
                             }
                             else Triangle = 0;
                             Text[] stats =  FindObjectsOfType<Text>();
+                            
                             int terrain_bonus;
                             foreach (Text obj in stats)
                             {
@@ -795,7 +797,11 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.AnimationFight:
-                break;
+                if (Input.GetMouseButtonDown(0))
+                {
+                    PlayerCharacter.GetComponent<Animator>().SetTrigger("doge");
+                }
+                    break;
             case GameStates.EnemyTurn:
                 if (!changeTurn)
                 {
