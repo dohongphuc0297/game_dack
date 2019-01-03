@@ -22,6 +22,8 @@ public class Map_1 : MonoBehaviour
     public Text ChangeTurnText;
     public Text InfoMenuName;
     public Text InfoMenuHP;
+    public Text EnemyHitEffect;
+    public Text PlayerHitEffect;
 
     public float speed;
 
@@ -97,6 +99,7 @@ public class Map_1 : MonoBehaviour
     private BaseCharacterClass currentEnemy;
     private int currentAttackTurn = 0;
     private bool isPlayerAttackTurn = true;
+    private bool isHit = true;
 
     private List<BaseCharacterClass> PlayerUnits = new List<BaseCharacterClass>();
     private List<BaseCharacterClass> EnemyUnits = new List<BaseCharacterClass>();
@@ -936,14 +939,7 @@ public class Map_1 : MonoBehaviour
                     if(currentAttackTurn > (playerInfo.Repeat + enemyInfo.Repeat))
                     {
                         FightWindowAnimator.SetTrigger("end");
-                        if (isPlayerTurn)
-                        {
-                            currentState = GameStates.AnimationEndFight;
-                        }
-                        else
-                        {
-
-                        }
+                        currentState = GameStates.AnimationEndFight;
                     }
                     else
                     {
@@ -952,7 +948,18 @@ public class Map_1 : MonoBehaviour
                             isPlayerAttackTurn = !isPlayerAttackTurn;
                             Animator playerCharacterAnimator = PlayerCharacter.GetComponent<Animator>();
                             playerCharacterAnimator.SetTrigger("attack");
-                            currentState = GameStates.AnimationPlayerAttack;
+                            int rand = UnityEngine.Random.Range(0, 100);
+                            if (rand <= playerInfo.Hit)
+                            {
+                                isHit = true;
+                                EnemyHitEffect.text = "Hit!";
+                            }
+                            else
+                            {
+                                isHit = false;
+                                EnemyHitEffect.text = "Miss!";
+                            }
+                                currentState = GameStates.AnimationPlayerAttack;
                         }
                         else
                         {
@@ -966,9 +973,18 @@ public class Map_1 : MonoBehaviour
                 break;
             case GameStates.AnimationPlayerAttack:
                 Animator PlayerCharacterAnimator = PlayerCharacter.GetComponent<Animator>();
+                Animator EHA = EnemyHitEffect.GetComponent<Animator>();
+                if (PlayerCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+                {
+                    if (EHA.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    {
+                        EHA.SetBool("isActive", true);
+                    }
+                }
                 if (PlayerCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
                     currentAttackTurn++;
+                    EHA.SetBool("isActive", false);
                     currentState = GameStates.AnimationFight;
                 }
                 break;
@@ -984,8 +1000,15 @@ public class Map_1 : MonoBehaviour
                 Animator fightWindowAnimator = FightWindow.GetComponent<Animator>();
                 if (fightWindowAnimator.GetCurrentAnimatorStateInfo(0).IsName("FightStart"))
                 {
-                    ShowInfoPanel();
-                    currentState = GameStates.PlayerSelectTile;
+                    if (isPlayerTurn)
+                    {
+                        ShowInfoPanel();
+                        currentState = GameStates.PlayerSelectTile;
+                    }
+                    else
+                    {
+
+                    }
                 }
                     break;
             case GameStates.EnemyTurn:
