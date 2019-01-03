@@ -17,7 +17,7 @@ public class Luna : BaseWeaponClass
         Hit = 95;
         Crt = 20;
         Wex = 1;
-        int range = 5;
+        int range = 2;
         Range = range;
         Cost = 5250;
     }

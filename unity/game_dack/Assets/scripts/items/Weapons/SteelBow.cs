@@ -17,7 +17,7 @@ public class SteelBow : BaseWeaponClass
         Hit = 70;
         Crt = 0;
         Wex = 1;
-        int range = 3;
+        int range = 2;
         Range = range;
         Cost = 720;
     }

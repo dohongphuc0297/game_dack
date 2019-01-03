@@ -17,7 +17,7 @@ public class SteelAxe : BaseWeaponClass
         Hit = 65;
         Crt = 0;
         Wex = 2;
-        int range = 2;
+        int range = 1;
         Range = range;
         Cost = 360;
     }

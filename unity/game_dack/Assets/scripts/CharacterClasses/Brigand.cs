@@ -8,6 +8,7 @@ public class Brigand : BaseCharacterClass
     {
         CharacterClassName = "Brigand";
         CharacterClassDescription = "Bandit who use axe and destroy building when visit";
+        MaxHP = 20;
         HP = 20;
         Strength = 7;
         Magic = 0;

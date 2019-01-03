@@ -17,7 +17,7 @@ public class Flux : BaseWeaponClass
         Hit = 80;
         Crt = 0;
         Wex = 1;
-        int range = 5;
+        int range = 2;
         Range = range;
         Cost = 900;
     }

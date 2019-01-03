@@ -17,7 +17,7 @@ public class Heal : BaseWeaponClass
         Hit = 0;
         Crt = 0;
         Wex = 2;
-        int range = 5;
+        int range = 2;
         Range = range;
         Cost = 600;
     }

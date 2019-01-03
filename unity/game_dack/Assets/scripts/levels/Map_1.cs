@@ -95,6 +95,8 @@ public class Map_1 : MonoBehaviour
     private List<int> MovedUnitIndex = new List<int>();
     private int currentUnitIndex;
     private BaseCharacterClass currentEnemy;
+    private int currentAttackTurn = 0;
+    private bool isPlayerAttackTurn = true;
 
     private List<BaseCharacterClass> PlayerUnits = new List<BaseCharacterClass>();
     private List<BaseCharacterClass> EnemyUnits = new List<BaseCharacterClass>();
@@ -208,6 +210,7 @@ public class Map_1 : MonoBehaviour
         InfoPanel.SetActive(true);
         ActionPanel.SetActive(false);
         AttackPanel.SetActive(false);
+        FightWindow.SetActive(false);
     }
 
     public void ShowMenuPanel()
@@ -312,7 +315,8 @@ public class Map_1 : MonoBehaviour
     public void BtnAttackConfirmClick()
     {
         ShowFightWindow();
-
+        Animator animate = FightWindow.GetComponent<Animator>();
+        animate.SetTrigger("begin");
         GameObject[] info = GameObject.FindGameObjectsWithTag("BattleInfo");
 
         foreach (GameObject obj in info)
@@ -376,6 +380,9 @@ public class Map_1 : MonoBehaviour
                 break;
             }
         }
+        //set order attack
+        currentAttackTurn = 1;
+        if (isPlayerTurn) isPlayerAttackTurn = true;
         currentState = GameStates.AnimationFight;
         //enemyInfo.reset();
         //playerInfo.reset();
@@ -916,15 +923,69 @@ public class Map_1 : MonoBehaviour
                                         break;
                                 }
                             }
+                            tilemap.RefreshAllTiles();
                             currentState = GameStates.PlayerSelectAction;
                         }
                     }
                 }
                 break;
             case GameStates.AnimationFight:
-                if (Input.GetMouseButtonDown(0))
+                Animator FightWindowAnimator = FightWindow.GetComponent<Animator>();
+                if (FightWindowAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
-                    PlayerCharacter.GetComponent<Animator>().SetTrigger("doge");
+                    if(currentAttackTurn > (playerInfo.Repeat + enemyInfo.Repeat))
+                    {
+                        FightWindowAnimator.SetTrigger("end");
+                        if (isPlayerTurn)
+                        {
+                            currentState = GameStates.AnimationEndFight;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        if (isPlayerAttackTurn)
+                        {
+                            isPlayerAttackTurn = !isPlayerAttackTurn;
+                            Animator playerCharacterAnimator = PlayerCharacter.GetComponent<Animator>();
+                            playerCharacterAnimator.SetTrigger("attack");
+                            currentState = GameStates.AnimationPlayerAttack;
+                        }
+                        else
+                        {
+                            isPlayerAttackTurn = !isPlayerAttackTurn;
+                            Animator enemyCharacterAnimator = EnemyCharacter.GetComponent<Animator>();
+                            enemyCharacterAnimator.SetTrigger("attack");
+                            currentState = GameStates.AnimationEnemyAttack;
+                        }
+                    }
+                }
+                break;
+            case GameStates.AnimationPlayerAttack:
+                Animator PlayerCharacterAnimator = PlayerCharacter.GetComponent<Animator>();
+                if (PlayerCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                {
+                    currentAttackTurn++;
+                    currentState = GameStates.AnimationFight;
+                }
+                break;
+            case GameStates.AnimationEnemyAttack:
+                Animator EnemyCharacterAnimator = EnemyCharacter.GetComponent<Animator>();
+                if (EnemyCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                {
+                    currentAttackTurn++;
+                    currentState = GameStates.AnimationFight;
+                }
+                break;
+            case GameStates.AnimationEndFight:
+                Animator fightWindowAnimator = FightWindow.GetComponent<Animator>();
+                if (fightWindowAnimator.GetCurrentAnimatorStateInfo(0).IsName("FightStart"))
+                {
+                    ShowInfoPanel();
+                    currentState = GameStates.PlayerSelectTile;
                 }
                     break;
             case GameStates.EnemyTurn:

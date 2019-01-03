@@ -17,7 +17,7 @@ public class Thunder : BaseWeaponClass
         Hit = 80;
         Crt = 5;
         Wex = 1;
-        int range = 5;
+        int range = 2;
         Range = range;
         Cost = 700;
     }

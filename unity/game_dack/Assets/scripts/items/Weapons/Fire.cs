@@ -16,7 +16,7 @@ public class Fire : BaseWeaponClass
         Hit = 90;
         Crt = 0;
         Wex = 1;
-        int range = 5;
+        int range = 2;
         Range = range;
         Cost = 560;
     }
