@@ -757,20 +757,36 @@ public class Map_1 : MonoBehaviour
             case GameStates.PlayerMoveUnit:
                 if (Input.GetMouseButtonDown(0))
                 {
+                    Vector3 pos_unit = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
+                    Vector3Int pos_unit_int = grid.WorldToCell(pos_unit);
                     if (IsOutMap(coordinate)) break;
                     if (IsInMoveZone(coordinate))
                     {
                         if (IsPlayerUnit(coordinate) < 0 || coordinate == grid.WorldToCell(TargetPosition))
                         {
                             //Debug.Log(coordinate);
-                            moveTarget = new Vector3(coordinate.x + 0.5f, coordinate.y + 0.5f, coordinate.z);
+                            moveTarget = new Vector3(pos_unit.x + (coordinate.x - pos_unit_int.x), pos_unit.y + (coordinate.y - pos_unit_int.y), coordinate.z);
                             currentState = GameStates.UnitMoving;
                         }
                     }
                 }
                 break;
             case GameStates.UnitMoving:
-                PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
+                Vector3 temp_moveTarget = moveTarget;
+                Vector3 temp_pos_unit = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
+                if(Math.Abs(temp_pos_unit.x-temp_moveTarget.x) <= Math.Abs(temp_pos_unit.y-temp_moveTarget.y) && temp_moveTarget == moveTarget){
+                    temp_moveTarget.y = temp_pos_unit.y;
+                }
+                else if(Math.Abs(temp_pos_unit.x-temp_moveTarget.x) > Math.Abs(temp_pos_unit.y-temp_moveTarget.y) && temp_moveTarget == moveTarget)
+                {
+                    temp_moveTarget.x = temp_pos_unit.x;
+                }
+
+                PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, temp_moveTarget, speed * Time.deltaTime);
+                if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == temp_moveTarget) {
+                    PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
+                }
+                
                 if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == moveTarget)
                 {
                     ShowActionPanel();
