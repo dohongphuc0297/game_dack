@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Map_1 : MonoBehaviour
 {
+    public int test = 0;
     public Grid grid;
     public GameObject Cursor;
     public GameObject MenuPanel;
@@ -292,6 +293,7 @@ public class Map_1 : MonoBehaviour
         spriteR.color = Color.gray;
         ShowInfoPanel();
         currentState = GameStates.PlayerSelectTile;
+        tilemap.RefreshAllTiles();
     }
 
     public void BtnEndTurnClick()
@@ -321,6 +323,8 @@ public class Map_1 : MonoBehaviour
 
     public void BtnAttackConfirmClick()
     {
+        PlayerCharacter.GetComponent<SpriteRenderer>().sprite = null;
+        PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = null;
         ShowFightWindow();
         Animator animate = FightWindow.GetComponent<Animator>();
         animate.SetTrigger("begin");
@@ -372,7 +376,7 @@ public class Map_1 : MonoBehaviour
                     break;
             }
         }
-        PlayerCharacter.GetComponent<SpriteRenderer>().sprite = null;
+        
         foreach (Sprite sprite in listSprite)
         {
             if(sprite.name == PlayerUnits[currentUnitIndex]._GameObject.name)
@@ -381,7 +385,7 @@ public class Map_1 : MonoBehaviour
                 break;
             }
         }
-        PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = null;
+        
         foreach (RuntimeAnimatorController cotroller in listController)
         {
             if(cotroller.name == PlayerUnits[currentUnitIndex]._GameObject.name)
@@ -403,6 +407,7 @@ public class Map_1 : MonoBehaviour
             currentEnemyAttackTurn = 1;
             currentPlayerAttackTurn = 0;
         }
+
         currentState = GameStates.AnimationFight;
         //enemyInfo.reset();
         //playerInfo.reset();
@@ -627,7 +632,6 @@ public class Map_1 : MonoBehaviour
                 }
             }
         }
-
         switch (currentState)
         {
             case GameStates.Start:
@@ -966,11 +970,12 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.AnimationFight:
+                //Debug.Log(PlayerUnits[currentUnitIndex].CharacterClassName);
                 Animator FightWindowAnimator = FightWindow.GetComponent<Animator>();
                 if (FightWindowAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
                     if(PlayerUnits[currentUnitIndex].HP <= 0)
-                    {
+                    {   
                         Destroy(PlayerUnits[currentUnitIndex]._GameObject);
                         PlayerUnits.RemoveAt(currentUnitIndex);
                         FightWindowAnimator.SetTrigger("playerDeath");
@@ -1010,9 +1015,11 @@ public class Map_1 : MonoBehaviour
                                 EnemyHitEffect.text = "Miss!";
                             }
                             currentState = GameStates.AnimationPlayerAttack;
+                            test++;
                         }
                         else
                         {
+                            
                             isPlayerAttackTurn = !isPlayerAttackTurn;
                             if (currentEnemyAttackTurn > enemyInfo.Repeat) break;
                             Animator enemyCharacterAnimator = EnemyCharacter.GetComponent<Animator>();
@@ -1030,6 +1037,7 @@ public class Map_1 : MonoBehaviour
                             }
                             currentState = GameStates.AnimationEnemyAttack;
                         }
+
                     }
                 }
                 break;
@@ -1054,6 +1062,7 @@ public class Map_1 : MonoBehaviour
                         EHA.SetBool("isActive", true);
                     }
                 }
+
                 if (PlayerCharacterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 {
                     currentPlayerAttackTurn++;
@@ -1097,6 +1106,9 @@ public class Map_1 : MonoBehaviour
                     {
                         ShowInfoPanel();
                         currentState = GameStates.PlayerSelectTile;
+                        MovedUnitIndex.Add(currentUnitIndex);
+                        SpriteRenderer spriteR = PlayerUnits[currentUnitIndex]._GameObject.GetComponent<SpriteRenderer>();
+                        spriteR.color = Color.gray;
                     }
                     else
                     {
