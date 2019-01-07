@@ -561,7 +561,21 @@ public class Map_1 : MonoBehaviour
                 changeTurn = false;
             }
         }
-        
+        if(Input.GetMouseButtonDown(1)){
+            if(MenuPanel.activeInHierarchy)
+            {
+                BtnCancelClick();
+            }
+            if(ActionPanel.activeInHierarchy || currentState == GameStates.PlayerMoveUnit)
+            {
+                BtnActionCancelClick();
+            }
+            if(AttackPanel.activeInHierarchy)
+            {
+                BtnAttackCancelClick();
+            }
+        }
+
         bool haveCharacter = false;
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int coordinate = grid.WorldToCell(mouseWorldPos);
