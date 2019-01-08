@@ -10,6 +10,7 @@ TagManager:
   - EnemyUnit
   - AttactStats
   - BattleInfo
+  - ExpIncrease
   layers:
   - Default
   - TransparentFX

@@ -13,6 +13,8 @@ public class BaseCharacterClass
     private string characterClassDescription;
 
     //stats
+    private int level;
+    private float exp;
     private int maxhitpoint;
     private int hitpoint;
     private int strength;
@@ -23,6 +25,15 @@ public class BaseCharacterClass
     private int defend;
     private int resist;
     private int movement;
+
+    private int grhitpoint;
+    private int grstrength;
+    private int grmagic;
+    private int grskill;
+    private int grspeed;
+    private int grluck;
+    private int grdefend;
+    private int grresist;
 
     public int AttackRange { get; set; }
 
@@ -57,6 +68,19 @@ public class BaseCharacterClass
         get { return characterClassDescription; }
         set { characterClassDescription = value; }
     }
+
+    public int Level
+    {
+        get { return level; }
+        set { level = value; }
+    }
+
+    public float Exp
+    {
+        get { return exp; }
+        set { exp = value; }
+    }
+
     public int MaxHP
     {
         get { return maxhitpoint; }
@@ -107,5 +131,46 @@ public class BaseCharacterClass
     {
         get { return movement; }
         set { movement = value; }
+    }
+
+    public int GRHP
+    {
+        get { return grhitpoint; }
+        set { grhitpoint = value; }
+    }
+    public int GRStrength
+    {
+        get { return grstrength; }
+        set { grstrength = value; }
+    }
+    public int GRMagic
+    {
+        get { return grmagic; }
+        set { grmagic = value; }
+    }
+    public int GRSkill
+    {
+        get { return grskill; }
+        set { grskill = value; }
+    }
+    public int GRSpeed
+    {
+        get { return grspeed; }
+        set { grspeed = value; }
+    }
+    public int GRLuck
+    {
+        get { return grluck; }
+        set { grluck = value; }
+    }
+    public int GRDefend
+    {
+        get { return grdefend; }
+        set { grdefend = value; }
+    }
+    public int GRResist
+    {
+        get { return grresist; }
+        set { grresist = value; }
     }
 }

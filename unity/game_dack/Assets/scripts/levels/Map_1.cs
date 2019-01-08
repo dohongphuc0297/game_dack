@@ -16,6 +16,8 @@ public class Map_1 : MonoBehaviour
     public GameObject ChangeTurnPanel;
     public GameObject AttackPanel;
     public GameObject FightWindow;
+    public GameObject ExpPanel;
+    public GameObject LevelUpAnimation;
 
     public GameObject PlayerCharacter;
     public GameObject EnemyCharacter;
@@ -42,10 +44,24 @@ public class Map_1 : MonoBehaviour
             pos = p2;
         }
     }
+    public struct UnitInfo {
+        public int Level;
+        public float Exp;
+        public int MaxHP;
+        public int HP;
+        public int Strength;
+        public int Magic;
+        public int Skill;
+        public int Speed;
+        public int Luck;
+        public int Defend;
+        public int Resist;
+    }
 
     public struct PlayerInfo {
         public string Name;
         public string Weapon;
+        public float Exp;
         public int HP;
         public int MaxHP;
         public int Mt;
@@ -165,6 +181,8 @@ public class Map_1 : MonoBehaviour
         isPlayerTurn = true;
         ChangeTurnPanel.SetActive(false);
         FightWindow.SetActive(false);
+        ExpPanel.SetActive(false);
+        LevelUpAnimation.SetActive(false);
         ShowInfoPanel();
         //tilemap = grid.GetComponent<Tilemap>();
         currentState = GameStates.PlayerSelectTile;
@@ -180,6 +198,18 @@ public class Map_1 : MonoBehaviour
                     break;
                 case "Archer":
                     PlayerUnits.Add(new Archer(obj));
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
+                    break;
+                case "Paladin":
+                    PlayerUnits.Add(new Paladin(obj));
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
+                    break;
+                case "Knight":
+                    PlayerUnits.Add(new Knight(obj));
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
+                    break;
+                case "Summoner":
+                    PlayerUnits.Add(new Summoner(obj));
                     PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
                     break;
                 default:
@@ -827,6 +857,7 @@ public class Map_1 : MonoBehaviour
                             enemyInfo.MaxHP = enemy.MaxHP;
                             enemyInfo.Name = enemy.CharacterClassName;
                             enemyInfo.Weapon = enemy.EquippedWeapon.WeaponClassName;
+                            playerInfo.Exp = PlayerUnits[currentUnitIndex].Exp;
                             playerInfo.MaxHP = PlayerUnits[currentUnitIndex].MaxHP;
                             playerInfo.Name = PlayerUnits[currentUnitIndex].CharacterClassName;
                             playerInfo.Weapon = PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName;
@@ -894,10 +925,11 @@ public class Map_1 : MonoBehaviour
                                         //Debug.Log(typeattack);
                                         if(typeattack == 1) terrain_bonus = 1;
                                         else terrain_bonus = 0;
-                                        obj.text = (PlayerUnits[currentUnitIndex].Strength+PlayerUnits[currentUnitIndex].EquippedWeapon.Mt
-                                            - enemy.Defend+Triangle+terrain_bonus).ToString();
-                                        playerInfo.Mt = PlayerUnits[currentUnitIndex].Strength+PlayerUnits[currentUnitIndex].EquippedWeapon.Mt
+                                        int attackMt = PlayerUnits[currentUnitIndex].Strength+PlayerUnits[currentUnitIndex].EquippedWeapon.Mt
                                             - enemy.Defend+Triangle+terrain_bonus;
+                                        if(attackMt < 0) attackMt = 0;
+                                        obj.text = attackMt.ToString();
+                                        playerInfo.Mt = attackMt;
                                         break;
                                     case "PlayerHit":                                        
                                         if(typedef == 1) terrain_bonus = 20;
@@ -937,10 +969,11 @@ public class Map_1 : MonoBehaviour
                                     case "EnermyMt":                                       
                                         if(typedef == 1) terrain_bonus = 1;
                                         else terrain_bonus = 0;
-                                        obj.text = (enemy.Strength+enemy.EquippedWeapon.Mt
-                                            - PlayerUnits[currentUnitIndex].Defend-Triangle+terrain_bonus).ToString();
-                                        enemyInfo.Mt = enemy.Strength+enemy.EquippedWeapon.Mt
+                                        int defendMt = enemy.Strength+enemy.EquippedWeapon.Mt
                                             - PlayerUnits[currentUnitIndex].Defend-Triangle+terrain_bonus;
+                                        if(defendMt < 0 ) defendMt = 0;
+                                        obj.text = defendMt.ToString();
+                                        enemyInfo.Mt = defendMt;
                                         break;
                                     case "EnermyHit":                                        
                                         if(typeattack == 1) terrain_bonus = 20;
@@ -1069,11 +1102,27 @@ public class Map_1 : MonoBehaviour
                         if (isHit)
                         {
                             EnemyUnits[currentEnemyIndex].HP -= playerInfo.Mt;
-                            if (EnemyUnits[currentEnemyIndex].HP < 0) EnemyUnits[currentEnemyIndex].HP = 0;
+
+                            if (EnemyUnits[currentEnemyIndex].HP < 0) {
+                                EnemyUnits[currentEnemyIndex].HP = 0;
+                                int BossBonus = 0;
+                                playerInfo.Exp += (float)Math.Round((double)
+                                    ((31+EnemyUnits[currentEnemyIndex].Level-PlayerUnits[currentUnitIndex].Level)/2+
+                                    20+BossBonus)*1.8+50, 2);
+                            }
+                            else playerInfo.Exp += (float)Math.Round((double)
+                                (31+EnemyUnits[currentEnemyIndex].Level-PlayerUnits[currentUnitIndex].Level)/2, 2);
+
                             enemyInfo.HP = EnemyUnits[currentEnemyIndex].HP;
                             enemyHP.text = enemyInfo.HP.ToString() + "/" + enemyInfo.MaxHP.ToString();
+                            
+                            
                         }
                         EHA.SetBool("isActive", true);
+                        if(!isHit) {
+                            playerInfo.Exp += 1;
+                        }
+
                     }
                 }
 
@@ -1113,20 +1162,124 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.AnimationEndFight:
+                
                 Animator fightWindowAnimator = FightWindow.GetComponent<Animator>();
                 if (fightWindowAnimator.GetCurrentAnimatorStateInfo(0).IsName("FightStart"))
                 {
-                    if (isPlayerTurn)
+                    UnitInfo tempUnit = new UnitInfo();
+                    if(playerInfo.HP > 0 && !LevelUpAnimation.activeInHierarchy) 
                     {
-                        ShowInfoPanel();
-                        currentState = GameStates.PlayerSelectTile;
-                        MovedUnitIndex.Add(currentUnitIndex);
-                        SpriteRenderer spriteR = PlayerUnits[currentUnitIndex]._GameObject.GetComponent<SpriteRenderer>();
-                        spriteR.color = Color.gray;
-                    }
-                    else
-                    {
+                        tempUnit.Level = PlayerUnits[currentUnitIndex].Level;
+                        tempUnit.Exp = PlayerUnits[currentUnitIndex].Exp;
+                        tempUnit.MaxHP = PlayerUnits[currentUnitIndex].MaxHP;
+                        tempUnit.HP = PlayerUnits[currentUnitIndex].HP;
+                        tempUnit.Strength = PlayerUnits[currentUnitIndex].Strength;
+                        tempUnit.Magic = PlayerUnits[currentUnitIndex].Magic;
+                        tempUnit.Skill = PlayerUnits[currentUnitIndex].Skill;
+                        tempUnit.Speed = PlayerUnits[currentUnitIndex].Speed;
+                        tempUnit.Luck = PlayerUnits[currentUnitIndex].Luck;
+                        tempUnit.Defend = PlayerUnits[currentUnitIndex].Defend;
+                        tempUnit.Resist = PlayerUnits[currentUnitIndex].Resist;
 
+                        ExpPanel.SetActive(true);
+
+                        GameObject[] info = GameObject.FindGameObjectsWithTag("ExpIncrease");
+                        PlayerUnits[currentUnitIndex].Exp += 1;
+                        foreach (GameObject obj in info)
+                        {
+                            switch (obj.name)
+                            {
+                                case "Exp":
+                                    obj.GetComponent<Text>().text = (Math.Round(tempUnit.Exp)%100).ToString();
+                                    break;
+                                case "Slider":
+                                    obj.GetComponent<Slider>().value = (float)(Math.Round(tempUnit.Exp)%100);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        
+                        if(PlayerUnits[currentUnitIndex].Exp >= playerInfo.Exp)
+                        {
+                            PlayerUnits[currentUnitIndex].Exp = playerInfo.Exp;
+                            System.Threading.Thread.Sleep(1000);
+                            ExpPanel.SetActive(false);
+
+                            while(PlayerUnits[currentUnitIndex].Exp >= 100) {
+                                PlayerUnits[currentUnitIndex].Level += 1;
+                                int increase_limit = 0;
+                                int rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRHP && increase_limit <= 4) {
+                                    PlayerUnits[currentUnitIndex].MaxHP+=1;
+                                    PlayerUnits[currentUnitIndex].HP+=1;
+                                    increase_limit++;
+                                }
+                                rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRStrength && increase_limit<=4) {
+                                    PlayerUnits[currentUnitIndex].Strength++;
+                                    increase_limit++;
+                                }
+                                rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRMagic && increase_limit<=4) {
+                                    PlayerUnits[currentUnitIndex].Magic++;
+                                    increase_limit++;
+                                }
+                                rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRSkill && increase_limit<=4) {
+                                    PlayerUnits[currentUnitIndex].Skill++;
+                                    increase_limit++;
+                                }
+                                rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRSpeed && increase_limit<=4) {
+                                    PlayerUnits[currentUnitIndex].Speed++;
+                                    increase_limit++;
+                                }
+                                rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRLuck && increase_limit<=4) {
+                                    PlayerUnits[currentUnitIndex].Luck++;
+                                    increase_limit++;
+                                }
+                                rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRDefend && increase_limit<=4) {
+                                    PlayerUnits[currentUnitIndex].Defend++;
+                                    increase_limit++;
+                                }
+                                rand = UnityEngine.Random.Range(1, 101);
+                                if(rand <= PlayerUnits[currentUnitIndex].GRResist && increase_limit<=4) {
+                                    PlayerUnits[currentUnitIndex].Resist++;
+                                    increase_limit++;
+                                }
+                                PlayerUnits[currentUnitIndex].Exp-=100;
+                            }
+                            playerInfo.Exp = PlayerUnits[currentUnitIndex].Exp;
+                        }
+                    }   
+
+                    if(!ExpPanel.activeInHierarchy)
+                    {
+                        if(PlayerUnits[currentUnitIndex].Level != tempUnit.Level) {
+                            LevelUpAnimation.SetActive(true);
+                            Animator LevelUpAnimator = LevelUpAnimation.GetComponent<Animator>();
+                            if (LevelUpAnimator.GetCurrentAnimatorStateInfo(0).IsName("End")){
+                                LevelUpAnimation.SetActive(false);
+                            }
+                        }
+
+                        if (isPlayerTurn && !LevelUpAnimation.activeInHierarchy)
+                        {   
+                            if(playerInfo.HP > 0) {
+                                MovedUnitIndex.Add(currentUnitIndex);
+                                SpriteRenderer spriteR = PlayerUnits[currentUnitIndex]._GameObject.GetComponent<SpriteRenderer>();
+                                spriteR.color = Color.gray;
+                            }
+                            ShowInfoPanel();
+                            currentState = GameStates.PlayerSelectTile;
+                        }
+                        else
+                        {
+
+                        }
                     }
                 }
                     break;
@@ -1145,6 +1298,9 @@ public class Map_1 : MonoBehaviour
                     isPlayerTurn = true;
                 }
                 break;
+            case GameStates.AfterAnimationFight:
+
+                break;    
             case GameStates.GameOver:
                 break;
             default:

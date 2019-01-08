@@ -8,16 +8,27 @@ public class Archer : BaseCharacterClass
     {
         CharacterClassName = "Archer";
         CharacterClassDescription = "Soldier equipped with bow and attack enemy from far";
-        MaxHP = 15;
-        HP = 15;
-        Strength = 5;
+        Level = 1;
+        Exp = 0;
+        MaxHP = 17;
+        HP = 17;
+        Strength = 4;
         Magic = 0;
-        Skill = 4;
-        Speed = 5;
-        Luck = 3;
+        Skill = 5;
+        Speed = 6;
+        Luck = 4;
         Defend = 3;
         Resist = 2;
-        Movement = 3;
+        Movement = 5;
         AttackRange = 2;
+
+        GRHP = 55;
+        GRStrength = 45;
+        GRMagic = 0;
+        GRSkill = 45;
+        GRSpeed = 60;
+        GRLuck = 50;
+        GRDefend = 15;
+        GRResist = 35;
     }
 }

@@ -19,5 +19,14 @@ public class Warrior : BaseCharacterClass
         Resist = 2;
         Movement = 4;
         AttackRange = 1;
+
+        GRHP = 60;
+        GRStrength = 60;
+        GRMagic = 0;
+        GRSkill = 60;
+        GRSpeed = 60;
+        GRLuck = 50;
+        GRDefend = 25;
+        GRResist = 35;
     }
 }

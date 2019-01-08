@@ -17,5 +17,6 @@ public enum GameStates
     AnimationEndFight,
     UnitMoving,
     EnemyTurn,
+    AfterAnimationFight,
     GameOver
 }
