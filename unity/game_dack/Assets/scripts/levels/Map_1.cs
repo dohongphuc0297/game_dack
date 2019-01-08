@@ -1306,7 +1306,7 @@ public class Map_1 : MonoBehaviour
                                             else obj.GetComponent<Slider>().value = 0;
                                             break;
                                         case "HPUp":
-                                            if(tempUnit.MaxHP < PlayerUnits[currentUnitIndex].MaxHP && tempUnit.temp == PlayerUnits[currentUnitIndex].MaxHP)
+                                            if(tempUnit.MaxHP < PlayerUnits[currentUnitIndex].MaxHP && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].MaxHP)
                                             {
                                                 obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].MaxHP-tempUnit.MaxHP).ToString();
                                             }
@@ -1345,14 +1345,14 @@ public class Map_1 : MonoBehaviour
                                             break;
                                         case "StrUp":
                                             if(PlayerUnits[currentUnitIndex].Strength == 0) {
-                                                if(tempUnit.Magic < PlayerUnits[currentUnitIndex].Magic && tempUnit.temp == PlayerUnits[currentUnitIndex].Magic)
+                                                if(tempUnit.Magic < PlayerUnits[currentUnitIndex].Magic && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].Magic)
                                                 {
                                                     obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Magic-tempUnit.Magic).ToString();
                                                 }
                                                 else obj.GetComponent<Text>().text = "";
                                             }
                                             else {
-                                                if(tempUnit.Strength < PlayerUnits[currentUnitIndex].Strength && tempUnit.temp == PlayerUnits[currentUnitIndex].Strength)
+                                                if(tempUnit.Strength < PlayerUnits[currentUnitIndex].Strength && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].Strength)
                                                 {
                                                     obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Strength-tempUnit.Strength).ToString();
                                                 }
@@ -1372,7 +1372,7 @@ public class Map_1 : MonoBehaviour
                                             else obj.GetComponent<Slider>().value = 0;
                                             break;
                                         case "SkillUp":
-                                            if(tempUnit.Skill < PlayerUnits[currentUnitIndex].Skill && tempUnit.temp == PlayerUnits[currentUnitIndex].Skill)
+                                            if(tempUnit.Skill < PlayerUnits[currentUnitIndex].Skill && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].Skill)
                                             {
                                                 obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Skill-tempUnit.Skill).ToString();
                                             }
@@ -1391,7 +1391,7 @@ public class Map_1 : MonoBehaviour
                                             else obj.GetComponent<Slider>().value = 0;
                                             break;
                                         case "SpdUp":
-                                            if(tempUnit.Speed < PlayerUnits[currentUnitIndex].Speed && tempUnit.temp == PlayerUnits[currentUnitIndex].Speed)
+                                            if(tempUnit.Speed < PlayerUnits[currentUnitIndex].Speed && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].Speed)
                                             {
                                                 obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Speed-tempUnit.Speed).ToString();
                                             }
@@ -1410,7 +1410,7 @@ public class Map_1 : MonoBehaviour
                                             else obj.GetComponent<Slider>().value = 0;
                                             break;
                                         case "LuckUp":
-                                            if(tempUnit.Luck < PlayerUnits[currentUnitIndex].Luck && tempUnit.temp == PlayerUnits[currentUnitIndex].Luck)
+                                            if(tempUnit.Luck < PlayerUnits[currentUnitIndex].Luck && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].Luck)
                                             {
                                                 obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Luck-tempUnit.Luck).ToString();
                                             }
@@ -1429,7 +1429,7 @@ public class Map_1 : MonoBehaviour
                                             else obj.GetComponent<Slider>().value = 0;
                                             break;
                                         case "DefUp":
-                                            if(tempUnit.Defend < PlayerUnits[currentUnitIndex].Defend && tempUnit.temp == PlayerUnits[currentUnitIndex].Defend)
+                                            if(tempUnit.Defend < PlayerUnits[currentUnitIndex].Defend && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].Defend)
                                             {
                                                 obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Defend-tempUnit.Defend).ToString();
                                             }
@@ -1448,7 +1448,7 @@ public class Map_1 : MonoBehaviour
                                             else obj.GetComponent<Slider>().value = 0;
                                             break;
                                         case "ResUp":
-                                            if(tempUnit.Resist < PlayerUnits[currentUnitIndex].Resist && tempUnit.temp == PlayerUnits[currentUnitIndex].Resist)
+                                            if(tempUnit.Resist < PlayerUnits[currentUnitIndex].Resist && tempUnit.temp+1 >= PlayerUnits[currentUnitIndex].Resist)
                                             {
                                                 obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Resist-tempUnit.Resist).ToString();
                                             }
