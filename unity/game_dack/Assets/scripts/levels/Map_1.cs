@@ -18,6 +18,7 @@ public class Map_1 : MonoBehaviour
     public GameObject FightWindow;
     public GameObject ExpPanel;
     public GameObject LevelUpAnimation;
+    public GameObject StatsUpTable;
 
     public GameObject PlayerCharacter;
     public GameObject EnemyCharacter;
@@ -45,6 +46,7 @@ public class Map_1 : MonoBehaviour
         }
     }
     public struct UnitInfo {
+        public int temp;
         public int Level;
         public float Exp;
         public int MaxHP;
@@ -103,6 +105,7 @@ public class Map_1 : MonoBehaviour
 
     private PlayerInfo playerInfo = new PlayerInfo();
     private EnemyInfo enemyInfo = new EnemyInfo();
+    private UnitInfo tempUnit = new UnitInfo();
 
     private List<Terrain> terrain = new List<Terrain>();
     private List<Sprite> listSprite;
@@ -183,6 +186,7 @@ public class Map_1 : MonoBehaviour
         FightWindow.SetActive(false);
         ExpPanel.SetActive(false);
         LevelUpAnimation.SetActive(false);
+        StatsUpTable.SetActive(false);
         ShowInfoPanel();
         //tilemap = grid.GetComponent<Tilemap>();
         currentState = GameStates.PlayerSelectTile;
@@ -1166,9 +1170,9 @@ public class Map_1 : MonoBehaviour
                 Animator fightWindowAnimator = FightWindow.GetComponent<Animator>();
                 if (fightWindowAnimator.GetCurrentAnimatorStateInfo(0).IsName("FightStart"))
                 {
-                    UnitInfo tempUnit = new UnitInfo();
-                    if(playerInfo.HP > 0 && !LevelUpAnimation.activeInHierarchy) 
+                    if(playerInfo.HP > 0 && !LevelUpAnimation.activeInHierarchy && !StatsUpTable.activeInHierarchy) 
                     {
+                        tempUnit.temp = 0;
                         tempUnit.Level = PlayerUnits[currentUnitIndex].Level;
                         tempUnit.Exp = PlayerUnits[currentUnitIndex].Exp;
                         tempUnit.MaxHP = PlayerUnits[currentUnitIndex].MaxHP;
@@ -1183,6 +1187,7 @@ public class Map_1 : MonoBehaviour
 
                         ExpPanel.SetActive(true);
 
+                        //Exp tăng dần và hiện ra màn hình
                         GameObject[] info = GameObject.FindGameObjectsWithTag("ExpIncrease");
                         PlayerUnits[currentUnitIndex].Exp += 1;
                         foreach (GameObject obj in info)
@@ -1200,6 +1205,8 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                         
+
+                        //Khi Exp tăng tới số Exp đã đạt được
                         if(PlayerUnits[currentUnitIndex].Exp >= playerInfo.Exp)
                         {
                             PlayerUnits[currentUnitIndex].Exp = playerInfo.Exp;
@@ -1253,33 +1260,227 @@ public class Map_1 : MonoBehaviour
                                 PlayerUnits[currentUnitIndex].Exp-=100;
                             }
                             playerInfo.Exp = PlayerUnits[currentUnitIndex].Exp;
+                            LevelUpAnimation.SetActive(true);
                         }
                     }   
 
                     if(!ExpPanel.activeInHierarchy)
                     {
                         if(PlayerUnits[currentUnitIndex].Level != tempUnit.Level) {
-                            LevelUpAnimation.SetActive(true);
+                            
                             Animator LevelUpAnimator = LevelUpAnimation.GetComponent<Animator>();
                             if (LevelUpAnimator.GetCurrentAnimatorStateInfo(0).IsName("End")){
                                 LevelUpAnimation.SetActive(false);
+                                StatsUpTable.SetActive(true);
                             }
                         }
 
-                        if (isPlayerTurn && !LevelUpAnimation.activeInHierarchy)
-                        {   
-                            if(playerInfo.HP > 0) {
-                                MovedUnitIndex.Add(currentUnitIndex);
-                                SpriteRenderer spriteR = PlayerUnits[currentUnitIndex]._GameObject.GetComponent<SpriteRenderer>();
-                                spriteR.color = Color.gray;
+                        if(!LevelUpAnimation.activeInHierarchy) {
+                            if(StatsUpTable.activeInHierarchy) 
+                            {
+                                GameObject[] info = GameObject.FindGameObjectsWithTag("StatsUp");
+                                int check = 0;
+                                foreach (GameObject obj in info)
+                                {
+                                    switch (obj.name)
+                                    {
+                                        case "Name":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].CharacterClassName;
+                                            break;
+                                        case "Level":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Level.ToString();
+                                            break;
+                                        case "LevelUp":
+                                            obj.GetComponent<Text>().text = "+"+(PlayerUnits[currentUnitIndex].Level - tempUnit.Level).ToString();
+                                            break;
+                                        case "HP":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].MaxHP.ToString();
+                                            break;
+                                        case "SliderHP":
+                                            if(tempUnit.MaxHP < PlayerUnits[currentUnitIndex].MaxHP) {
+                                                if(tempUnit.temp < PlayerUnits[currentUnitIndex].MaxHP) {
+                                                    check++;
+                                                    obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                }
+                                            }
+                                            else obj.GetComponent<Slider>().value = 0;
+                                            break;
+                                        case "HPUp":
+                                            if(tempUnit.MaxHP < PlayerUnits[currentUnitIndex].MaxHP && tempUnit.temp == PlayerUnits[currentUnitIndex].MaxHP)
+                                            {
+                                                obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].MaxHP-tempUnit.MaxHP).ToString();
+                                            }
+                                            else obj.GetComponent<Text>().text = "";
+                                            break;    
+                                        case "Str":
+                                            if(PlayerUnits[currentUnitIndex].Strength == 0) {
+                                                obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Magic.ToString();
+                                            }
+                                            else obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Strength.ToString();
+                                            break;
+                                        case "SliderStr":
+                                            if(PlayerUnits[currentUnitIndex].Strength == 0) {
+                                                if(tempUnit.Magic < PlayerUnits[currentUnitIndex].Magic) 
+                                                {
+                                                    if(tempUnit.temp < PlayerUnits[currentUnitIndex].Magic) 
+                                                    {
+                                                        check++;
+                                                        obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                    }
+                                                }
+                                                else obj.GetComponent<Slider>().value = 0;
+                                            }
+                                            else {
+                                                if(tempUnit.Strength < PlayerUnits[currentUnitIndex].Strength) 
+                                                {
+                                                    if(tempUnit.temp < PlayerUnits[currentUnitIndex].Strength) 
+                                                    {
+                                                        check++;
+                                                        obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                    }
+                                                }
+                                                else obj.GetComponent<Slider>().value = 0;
+                                            }
+                                            
+                                            break;
+                                        case "StrUp":
+                                            if(PlayerUnits[currentUnitIndex].Strength == 0) {
+                                                if(tempUnit.Magic < PlayerUnits[currentUnitIndex].Magic && tempUnit.temp == PlayerUnits[currentUnitIndex].Magic)
+                                                {
+                                                    obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Magic-tempUnit.Magic).ToString();
+                                                }
+                                                else obj.GetComponent<Text>().text = "";
+                                            }
+                                            else {
+                                                if(tempUnit.Strength < PlayerUnits[currentUnitIndex].Strength && tempUnit.temp == PlayerUnits[currentUnitIndex].Strength)
+                                                {
+                                                    obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Strength-tempUnit.Strength).ToString();
+                                                }
+                                                else obj.GetComponent<Text>().text = "";
+                                            }
+                                            break;    
+                                        case "Skill":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Skill.ToString();
+                                            break;
+                                        case "SliderSkill":
+                                            if(tempUnit.Skill < PlayerUnits[currentUnitIndex].Skill) {
+                                                if(tempUnit.temp < PlayerUnits[currentUnitIndex].Skill) {
+                                                    check++;
+                                                    obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                }
+                                            }
+                                            else obj.GetComponent<Slider>().value = 0;
+                                            break;
+                                        case "SkillUp":
+                                            if(tempUnit.Skill < PlayerUnits[currentUnitIndex].Skill && tempUnit.temp == PlayerUnits[currentUnitIndex].Skill)
+                                            {
+                                                obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Skill-tempUnit.Skill).ToString();
+                                            }
+                                            else obj.GetComponent<Text>().text = "";
+                                            break;    
+                                        case "Spd":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Speed.ToString();
+                                            break;
+                                        case "SliderSpd":
+                                            if(tempUnit.Speed < PlayerUnits[currentUnitIndex].Speed) {
+                                                if(tempUnit.temp < PlayerUnits[currentUnitIndex].Speed) {
+                                                    check++;
+                                                    obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                }
+                                            }
+                                            else obj.GetComponent<Slider>().value = 0;
+                                            break;
+                                        case "SpdUp":
+                                            if(tempUnit.Speed < PlayerUnits[currentUnitIndex].Speed && tempUnit.temp == PlayerUnits[currentUnitIndex].Speed)
+                                            {
+                                                obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Speed-tempUnit.Speed).ToString();
+                                            }
+                                            else obj.GetComponent<Text>().text = "";
+                                            break;  
+                                        case "Luck":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Luck.ToString();
+                                            break;
+                                        case "SliderLuck":
+                                            if(tempUnit.Luck < PlayerUnits[currentUnitIndex].Luck) {
+                                                if(tempUnit.temp < PlayerUnits[currentUnitIndex].Luck) {
+                                                    check++;
+                                                    obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                }
+                                            }
+                                            else obj.GetComponent<Slider>().value = 0;
+                                            break;
+                                        case "LuckUp":
+                                            if(tempUnit.Luck < PlayerUnits[currentUnitIndex].Luck && tempUnit.temp == PlayerUnits[currentUnitIndex].Luck)
+                                            {
+                                                obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Luck-tempUnit.Luck).ToString();
+                                            }
+                                            else obj.GetComponent<Text>().text = "";
+                                            break;    
+                                        case "Def":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Defend.ToString();
+                                            break;
+                                        case "SliderDef":
+                                            if(tempUnit.Defend < PlayerUnits[currentUnitIndex].Defend) {
+                                                if(tempUnit.temp < PlayerUnits[currentUnitIndex].Defend) {
+                                                    check++;
+                                                    obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                }
+                                            }
+                                            else obj.GetComponent<Slider>().value = 0;
+                                            break;
+                                        case "DefUp":
+                                            if(tempUnit.Defend < PlayerUnits[currentUnitIndex].Defend && tempUnit.temp == PlayerUnits[currentUnitIndex].Defend)
+                                            {
+                                                obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Defend-tempUnit.Defend).ToString();
+                                            }
+                                            else obj.GetComponent<Text>().text = "";
+                                            break;    
+                                        case "Res":
+                                            obj.GetComponent<Text>().text = PlayerUnits[currentUnitIndex].Resist.ToString();
+                                            break;
+                                        case "SliderRes":
+                                            if(tempUnit.Resist < PlayerUnits[currentUnitIndex].Resist) {
+                                                if(tempUnit.temp < PlayerUnits[currentUnitIndex].Resist) {
+                                                    check++;
+                                                    obj.GetComponent<Slider>().value = tempUnit.temp;
+                                                }
+                                            }
+                                            else obj.GetComponent<Slider>().value = 0;
+                                            break;
+                                        case "ResUp":
+                                            if(tempUnit.Resist < PlayerUnits[currentUnitIndex].Resist && tempUnit.temp == PlayerUnits[currentUnitIndex].Resist)
+                                            {
+                                                obj.GetComponent<Text>().text = "+" + (PlayerUnits[currentUnitIndex].Resist-tempUnit.Resist).ToString();
+                                            }
+                                            else obj.GetComponent<Text>().text = "";
+                                            break;    
+                                        default:
+                                            break;
+                                    }
+                                }
+                                tempUnit.temp+=1;
+                                if(check == 0) {
+                                    System.Threading.Thread.Sleep(5000);
+                                    StatsUpTable.SetActive(false);
+                                }
                             }
-                            ShowInfoPanel();
-                            currentState = GameStates.PlayerSelectTile;
-                        }
-                        else
-                        {
 
+                            if (isPlayerTurn && !StatsUpTable.activeInHierarchy)
+                            {   
+                                if(playerInfo.HP > 0) {
+                                    MovedUnitIndex.Add(currentUnitIndex);
+                                    SpriteRenderer spriteR = PlayerUnits[currentUnitIndex]._GameObject.GetComponent<SpriteRenderer>();
+                                    spriteR.color = Color.gray;
+                                }
+                                ShowInfoPanel();
+                                currentState = GameStates.PlayerSelectTile;
+                            }
+                            else
+                            {
+
+                            }
                         }
+                        
                     }
                 }
                     break;
