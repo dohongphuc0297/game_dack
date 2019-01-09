@@ -133,7 +133,6 @@ public class Map_1 : MonoBehaviour
     //private Animator _activeLyn = null;
 
     private GameStates currentState;
-    private bool isClickable = true;
     private bool isHoverable = true;
     private bool isPlayerTurn = false;
     private Vector3 TargetPosition;
@@ -637,6 +636,10 @@ public class Map_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(PlayerUnits.Count < 0 || EnemyUnits.Count < 0)
+        {
+            currentState = GameStates.GameOver;
+        }
         Vector3 CameraPos = transform.position;
         if (isPlayerTurn)
         {
@@ -1627,13 +1630,13 @@ public class Map_1 : MonoBehaviour
                     }
                     else
                     {
-                        float step = speed * Time.deltaTime;
+                        float step = speed * 3 * Time.deltaTime;
                         transform.position = Vector3.MoveTowards(Camera.main.transform.position, EnemyUnits[currentEnemyIndex]._GameObject.transform.position, step);
                     }
                 }
                 break;
             case GameStates.EnemyTurn:
-                if(MovedUnitIndex.Count >= EnemyUnits.Count)
+                if (MovedUnitIndex.Count >= EnemyUnits.Count)
                 {
                     RefreshEnemyUnitColor();
                     ChangeTurnText.text = "YOUR TURN";
@@ -1649,10 +1652,35 @@ public class Map_1 : MonoBehaviour
                 }
                 else
                 {
+                    if(EnemyUnits[currentEnemyIndex]._GameObject.name == "Boss")
+                    {
+                        curAttackZone.Clear();
+                        coordinate = grid.WorldToCell(moveTarget);
+                        int range = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
+                        for (int i = coordinate.x - range; i <= coordinate.x + range; i++)
+                        {
+                            for (int j = coordinate.y - range; j <= coordinate.y + range; j++)
+                            {
+                                if (i == coordinate.x && j == coordinate.y) continue;
+                                int t = i - coordinate.x;
+                                if (t < 0) t = -t;
+                                if (j >= coordinate.y - range + t && j <= coordinate.y + range - t)
+                                {
+                                    Vector3Int a = new Vector3Int(i, j, 0);
+                                    if (IsEnemyUnit(a) < 0)
+                                    {
+                                        curAttackZone.Add(a);
+                                    }
+                                }
+                            }
+                        }
+                        ColorAttackZone();
+                        currentState = GameStates.EnemyUnitAttack;
+                        break;
+                    }
                     //Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                     coordinate = grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position);
                     int weaponRange = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
-                    TargetPosition = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                     //refresh list zone
                     moveZone.Clear();
                     attackZone.Clear();
@@ -1678,8 +1706,8 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                     }
-
-                    if(moveZone.Count >= 0)
+                    
+                    if (moveZone.Count >= 0)
                     {
                         int index = 0;
                         while (index < moveZone.Count)
@@ -1699,7 +1727,7 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                     }
-
+                    
                     //calculate attack zone
                     for (int j = 0; j < moveZone.Count; j++)
                     {
@@ -1736,16 +1764,20 @@ public class Map_1 : MonoBehaviour
                         }
                     }
                     Vector3Int coorTemp = grid.WorldToCell(PlayerUnits[NerestPlayerUnitIndex]._GameObject.transform.position);
+                    Vector3 pos_unit = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
+                    Vector3Int pos_unit_int = grid.WorldToCell(pos_unit);
                     currDis = Vector3Int.Distance(coorTemp, moveZone[0]);
+                    moveTarget = new Vector3(pos_unit.x + (moveZone[0].x - pos_unit_int.x), pos_unit.y + (moveZone[0].y - pos_unit_int.y), moveZone[0].z);
                     for (int i = 0; i < moveZone.Count; i++)
                     {
-                        float Dis = Vector3Int.Distance(coorTemp, moveZone[i]);
-                        if (currDis > Dis)
+                        if(IsEnemyUnit(moveZone[i]) < 0)
                         {
-                            currDis = Dis;
-                            Vector3 pos_unit = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
-                            Vector3Int pos_unit_int = grid.WorldToCell(pos_unit);
-                            moveTarget = new Vector3(pos_unit.x + (moveZone[i].x - pos_unit_int.x), pos_unit.y + (moveZone[i].y - pos_unit_int.y), moveZone[i].z);
+                            float Dis = Vector3Int.Distance(coorTemp, moveZone[i]);
+                            if (currDis > Dis)
+                            {
+                                currDis = Dis;
+                                moveTarget = new Vector3(pos_unit.x + (moveZone[i].x - pos_unit_int.x), pos_unit.y + (moveZone[i].y - pos_unit_int.y), moveZone[i].z);
+                            }
                         }
                     }
                     currentState = GameStates.EnemyUnitMoving;
@@ -2028,6 +2060,16 @@ public class Map_1 : MonoBehaviour
                         tilemap.RefreshAllTiles();
                         Debug.Log(123);
                         BtnAttackConfirmClick();
+                        break;
+                    }
+                    else
+                    {
+                        tilemap.RefreshAllTiles();
+                        MovedUnitIndex.Add(currentEnemyIndex);
+                        SpriteRenderer spriteR = EnemyUnits[currentEnemyIndex]._GameObject.GetComponent<SpriteRenderer>();
+                        spriteR.color = Color.gray;
+                        currentEnemyIndex++;
+                        currentState = GameStates.ToEnemyTurn;
                         break;
                     }
                 }
