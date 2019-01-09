@@ -234,6 +234,30 @@ public class Map_1 : MonoBehaviour
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
+                case "Brigand1":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "Brigand2":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "Brigand3":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "Brigand4":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "Brigand5":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "Boss":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
                 default:
                     break;
             }
