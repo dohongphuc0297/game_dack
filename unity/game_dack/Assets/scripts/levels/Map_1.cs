@@ -146,6 +146,11 @@ public class Map_1 : MonoBehaviour
 
     private Text enemyHP;
     private Text playerHP;
+
+    //timer
+    float timer = 0;
+    bool timerReached = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -184,16 +189,18 @@ public class Map_1 : MonoBehaviour
 
         RuntimeAnimatorController[] controllers = Resources.LoadAll<RuntimeAnimatorController>("controllers");
         listController = new List<RuntimeAnimatorController>(controllers);
-        
-        isPlayerTurn = true;
+
+        MenuPanel.SetActive(false);
+        InfoPanel.SetActive(false);
+        ActionPanel.SetActive(false);
+        AttackPanel.SetActive(false);
         ChangeTurnPanel.SetActive(false);
         FightWindow.SetActive(false);
         ExpPanel.SetActive(false);
         LevelUpAnimation.SetActive(false);
         StatsUpTable.SetActive(false);
-        ShowInfoPanel();
+        //ShowInfoPanel();
         //tilemap = grid.GetComponent<Tilemap>();
-        currentState = GameStates.PlayerSelectTile;
         GameObject[] list = GameObject.FindGameObjectsWithTag("PlayerUnit");
 
         foreach (GameObject obj in list)
@@ -261,6 +268,14 @@ public class Map_1 : MonoBehaviour
                     break;
             }
         }
+
+        ChangeTurnText.text = "KILL ALL ENEMIES";
+        ChangeTurnText.color = Color.red;
+        PlayChangeTurnPanel();
+        currentState = GameStates.Start;
+        isHoverable = false;
+        Cursor.SetActive(false);
+        isPlayerTurn = false;
     }
 
     public void  PlayChangeTurnPanel()
@@ -379,6 +394,7 @@ public class Map_1 : MonoBehaviour
         currentEnemyIndex = 0;
         isHoverable = false;
         isPlayerTurn = false;
+        //Cursor.SetActive(false);
     }
 
     public void BtnCancelClick()
@@ -636,8 +652,20 @@ public class Map_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(PlayerUnits.Count < 0 || EnemyUnits.Count < 0)
+        if(PlayerUnits.Count <= 0)
         {
+            ChangeTurnText.text = "MAP CLEAR";
+            ChangeTurnText.color = Color.blue;
+            //Debug.Log(ChangeTurnText.color);
+            PlayChangeTurnPanel();
+            currentState = GameStates.GameOver;
+        }
+        if (EnemyUnits.Count <= 0)
+        {
+            ChangeTurnText.text = "YOU LOSE";
+            ChangeTurnText.color = Color.red;
+            //Debug.Log(ChangeTurnText.color);
+            PlayChangeTurnPanel();
             currentState = GameStates.GameOver;
         }
         Vector3 CameraPos = transform.position;
@@ -761,6 +789,26 @@ public class Map_1 : MonoBehaviour
         switch (currentState)
         {
             case GameStates.Start:
+                Vector3 position = PlayerUnits[0]._GameObject.transform.position;
+                position.x = Mathf.Clamp(position.x, -panLimit.x, panLimit.x);
+                position.y = Mathf.Clamp(position.y, -panLimit.y, panLimit.y);
+                if (transform.position.x >= position.x - 1 && transform.position.x <= position.x + 1 && transform.position.y >= position.y - 1 && transform.position.y <= position.y + 1)
+                {
+                    if (!changeTurn)
+                    {
+                        isHoverable = true;
+                        Cursor.SetActive(true);
+                        isPlayerTurn = true;
+                        ShowInfoPanel();
+                        currentState = GameStates.PlayerSelectTile;
+                        transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+                    }
+                }
+                else
+                {
+                    float step = speed * 3 * Time.deltaTime;
+                    transform.position = Vector3.MoveTowards(Camera.main.transform.position, position, step);
+                }
                 break;
             case GameStates.PlayerSelectTile:
                 if(MovedUnitIndex.Count == PlayerUnits.Count) BtnEndTurnClick();
@@ -1627,12 +1675,13 @@ public class Map_1 : MonoBehaviour
                         if (!changeTurn)
                         {
                             currentState = GameStates.EnemyTurn;
+                            transform.position = new Vector3(transform.position.x, transform.position.y, -10);
                         }
                     }
                     else
                     {
                         float step = speed * 3 * Time.deltaTime;
-                        transform.position = Vector3.MoveTowards(Camera.main.transform.position, EnemyUnits[currentEnemyIndex]._GameObject.transform.position, step);
+                        transform.position = Vector3.MoveTowards(Camera.main.transform.position, pos, step);
                     }
                 }
                 break;
@@ -1645,18 +1694,19 @@ public class Map_1 : MonoBehaviour
                     MovedUnitIndex.Clear();
                     PlayChangeTurnPanel();
                     InfoPanel.SetActive(true);
-                    currentState = GameStates.PlayerSelectTile;
-                    isPlayerTurn = true;
-                    isHoverable = true;
+                    currentState = GameStates.Start;
+                    //isPlayerTurn = true;
+                    //isHoverable = true;
                     currentEnemyIndex = EnemyUnits.Count - 1;
                     currentUnitIndex = PlayerUnits.Count - 1;
+                    //Cursor.SetActive(true);
                 }
                 else
                 {
-                    if(EnemyUnits[currentEnemyIndex]._GameObject.name == "Boss")
+                    coordinate = grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position);
+                    if (EnemyUnits[currentEnemyIndex]._GameObject.name == "Boss")
                     {
                         curAttackZone.Clear();
-                        coordinate = grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position);
                         int range = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
                         for (int i = coordinate.x - range; i <= coordinate.x + range; i++)
                         {
@@ -1676,11 +1726,12 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                         ColorAttackZone();
-                        currentState = GameStates.EnemyUnitAttack;
+                        timer = 0;
+                        timerReached = false;
+                        currentState = GameStates.EnemyUnitChooseAttack;
                         break;
                     }
                     //Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
-                    coordinate = grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position);
                     int weaponRange = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
                     //refresh list zone
                     moveZone.Clear();
@@ -1781,6 +1832,7 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                     }
+                    Cursor.transform.position = moveTarget;
                     currentState = GameStates.EnemyUnitMoving;
                 }
                 break;
@@ -1829,7 +1881,18 @@ public class Map_1 : MonoBehaviour
                         }
                     }
                     ColorAttackZone();
+                    timer = 0;
+                    timerReached = false;
+                    currentState = GameStates.EnemyUnitChooseAttack;
+                }
+                break;
+            case GameStates.EnemyUnitChooseAttack:
+                if (!timerReached) timer += Time.deltaTime;
+
+                if (!timerReached && timer > 1)
+                {
                     currentState = GameStates.EnemyUnitAttack;
+                    timerReached = true;
                 }
                 break;
             case GameStates.EnemyUnitAttack:
@@ -1844,7 +1907,7 @@ public class Map_1 : MonoBehaviour
                         pos.x += 0.5f;
                         pos.y += 0.5f;
                         Cursor.transform.position = pos;
-                        System.Threading.Thread.Sleep(1000);
+                        //System.Threading.Thread.Sleep(1000);
                         currentUnitIndex = index;
                         BaseCharacterClass enemy = EnemyUnits[currentEnemyIndex];
                         enemyInfo.MaxHP = enemy.MaxHP;
@@ -2079,6 +2142,10 @@ public class Map_1 : MonoBehaviour
 
                 break;    
             case GameStates.GameOver:
+                if (!changeTurn)
+                {
+                    currentState = GameStates.AfterAnimationFight;
+                }
                 break;
             default:
                 break;
