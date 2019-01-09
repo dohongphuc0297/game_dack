@@ -1210,6 +1210,7 @@ public class Map_1 : MonoBehaviour
                         if (isPlayerAttackTurn)
                         {
                             isPlayerAttackTurn = !isPlayerAttackTurn;
+                            if(playerInfo.Repeat == 0) break;
                             if (currentPlayerAttackTurn > playerInfo.Repeat) break;
                             Animator playerCharacterAnimator = PlayerCharacter.GetComponent<Animator>();
                             playerCharacterAnimator.SetTrigger("attack");
@@ -1231,6 +1232,7 @@ public class Map_1 : MonoBehaviour
                         {
                             
                             isPlayerAttackTurn = !isPlayerAttackTurn;
+                            if(enemyInfo.Repeat == 0) break;
                             if (currentEnemyAttackTurn > enemyInfo.Repeat) break;
                             Animator enemyCharacterAnimator = EnemyCharacter.GetComponent<Animator>();
                             enemyCharacterAnimator.SetTrigger("attack");
