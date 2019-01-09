@@ -1656,7 +1656,7 @@ public class Map_1 : MonoBehaviour
                     if(EnemyUnits[currentEnemyIndex]._GameObject.name == "Boss")
                     {
                         curAttackZone.Clear();
-                        coordinate = grid.WorldToCell(moveTarget);
+                        coordinate = grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position);
                         int range = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
                         for (int i = coordinate.x - range; i <= coordinate.x + range; i++)
                         {
