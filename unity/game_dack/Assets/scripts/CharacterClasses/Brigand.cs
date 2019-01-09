@@ -12,9 +12,9 @@ public class Brigand : BaseCharacterClass
         Exp = 0;
         MaxHP = 20;
         HP = 20;
-        Strength = 60;
+        Strength = 6;
         Magic = 0;
-        Skill = 200;
+        Skill = 2;
         Speed = 3;
         Luck = 1;
         Defend = 2;
