@@ -757,44 +757,33 @@ public class Map_1 : MonoBehaviour
                                 {
                                     index++;
                                 }
-                                
                             }
+                          
                             //calculate attack zone
                             for(int j = 0; j < moveZone.Count; j++)
                             {
-                                Vector3Int left = new Vector3Int(moveZone[j].x - weaponRange, moveZone[j].y, 0);
-                                Vector3Int right = new Vector3Int(moveZone[j].x + weaponRange, moveZone[j].y, 0);
-                                Vector3Int up = new Vector3Int(moveZone[j].x, moveZone[j].y + weaponRange, 0);
-                                Vector3Int down = new Vector3Int(moveZone[j].x, moveZone[j].y - weaponRange, 0);
-                                if (!moveZone.Contains(left))
+                                for (int l = moveZone[j].x - weaponRange; l <= moveZone[j].x + weaponRange; l++)
                                 {
-                                    if (!attackZone.Contains(left))
+                                    for (int k = moveZone[j].y - weaponRange; k <= moveZone[j].y + weaponRange; k++)
                                     {
-                                        attackZone.Add(left);
+                                        int t = l - moveZone[j].x;
+                                        if (t < 0) t = -t;
+                                        if (k >= moveZone[j].y - weaponRange + t && k <= moveZone[j].y + weaponRange - t)
+                                        {
+                                            Vector3Int a = new Vector3Int(l, k, 0);
+                                            if (!moveZone.Contains(a))
+                                            {
+                                                if (!attackZone.Contains(a))
+                                                {
+                                                    attackZone.Add(a);
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                                if (!moveZone.Contains(right))
-                                {
-                                    if (!attackZone.Contains(right))
-                                    {
-                                        attackZone.Add(right);
-                                    }
-                                }
-                                if (!moveZone.Contains(up))
-                                {
-                                    if (!attackZone.Contains(up))
-                                    {
-                                        attackZone.Add(up);
-                                    }
-                                }
-                                if (!moveZone.Contains(down))
-                                {
-                                    if (!attackZone.Contains(down))
-                                    {
-                                        attackZone.Add(down);
-                                    }
-                                }
+                    
                             }
+
                             ColorMoveZone();
                         }
                     //ShowActionPanel();
@@ -867,6 +856,26 @@ public class Map_1 : MonoBehaviour
                             playerInfo.Weapon = PlayerUnits[currentUnitIndex].EquippedWeapon.WeaponClassName;
                             ShowAttackPanel();
                             Vector3Int attack_pos = grid.WorldToCell(moveTarget);
+                            Vector3Int defend_pos = grid.WorldToCell(coordinate);
+                            bool defendCanAttack = false;
+                            for (int j = defend_pos.x - enemy.EquippedWeapon.Range; j <= defend_pos.x + enemy.EquippedWeapon.Range; j++)
+                            {
+                                for (int k = defend_pos.y - enemy.EquippedWeapon.Range; k <= defend_pos.y + enemy.EquippedWeapon.Range; k++)
+                                {
+                                    int t = j - defend_pos.x;
+                                    if (t < 0) t = -t;
+                                    if (k >= defend_pos.y - enemy.EquippedWeapon.Range + t && k <= defend_pos.y + enemy.EquippedWeapon.Range - t)
+                                    {
+                                        Vector3Int a = new Vector3Int(j, k, 0);
+                                        if(attack_pos == a) {
+                                            defendCanAttack = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(defendCanAttack == true) break;
+                            }
+
                             int Triangle = 0; //dam+1/Acc+15
                             int typedef = 0;
                             int typeattack = 0;
@@ -970,44 +979,62 @@ public class Map_1 : MonoBehaviour
                                         obj.text = enemy.HP.ToString();
                                         enemyInfo.HP = enemy.HP;
                                         break;
-                                    case "EnermyMt":                                       
-                                        if(typedef == 1) terrain_bonus = 1;
-                                        else terrain_bonus = 0;
-                                        int defendMt = enemy.Strength+enemy.EquippedWeapon.Mt
-                                            - PlayerUnits[currentUnitIndex].Defend-Triangle+terrain_bonus;
-                                        if(defendMt < 0 ) defendMt = 0;
+                                    case "EnermyMt":
+                                        int defendMt;
+                                        if(defendCanAttack == true) {
+                                            if(typedef == 1) terrain_bonus = 1;
+                                            else terrain_bonus = 0;
+                                            defendMt = enemy.Strength+enemy.EquippedWeapon.Mt
+                                                - PlayerUnits[currentUnitIndex].Defend-Triangle+terrain_bonus;
+                                            if(defendMt < 0 ) defendMt = 0;
+                                        }                                       
+                                        else defendMt = 0;
                                         obj.text = defendMt.ToString();
                                         enemyInfo.Mt = defendMt;
                                         break;
-                                    case "EnermyHit":                                        
-                                        if(typeattack == 1) terrain_bonus = 20;
-                                        else if(typeattack == 2) terrain_bonus = 10;
-                                        else terrain_bonus = 0;
-                                        int defendHit = enemy.EquippedWeapon.Hit+enemy.Skill*2+
-                                            (int)enemy.Luck/2;
-                                        int attackAvoid = PlayerUnits[currentUnitIndex].Speed*2+PlayerUnits[currentUnitIndex].Luck+terrain_bonus;
-                                        int defaccuracy = defendHit-attackAvoid-Triangle*15;
-                                        if(defaccuracy>100) defaccuracy = 100;
-                                        if(defaccuracy<0) defaccuracy = 0;
+                                    case "EnermyHit":
+                                        int defaccuracy; 
+                                        if(defendCanAttack == true) {                                      
+                                            if(typeattack == 1) terrain_bonus = 20;
+                                            else if(typeattack == 2) terrain_bonus = 10;
+                                            else terrain_bonus = 0;
+                                            int defendHit = enemy.EquippedWeapon.Hit+enemy.Skill*2+
+                                                (int)enemy.Luck/2;
+                                            int attackAvoid = PlayerUnits[currentUnitIndex].Speed*2+PlayerUnits[currentUnitIndex].Luck+terrain_bonus;
+                                            defaccuracy = defendHit-attackAvoid-Triangle*15;
+                                            if(defaccuracy>100) defaccuracy = 100;
+                                            if(defaccuracy<0) defaccuracy = 0;
+                                        }
+                                        else defaccuracy = 0;
                                         enemyInfo.Hit = defaccuracy;
                                         obj.text = defaccuracy.ToString();
                                         break;
                                     case "EnermyCrit":
-                                        int defendCrit = enemy.EquippedWeapon.Crt+(int)enemy.Skill/2
-                                            - PlayerUnits[currentUnitIndex].Luck;
-                                        if(defendCrit>100) defendCrit = 100;
-                                        if(defendCrit<0) defendCrit = 0;
+                                        int defendCrit;
+                                        if(defendCanAttack == true) {        
+                                            defendCrit = enemy.EquippedWeapon.Crt+(int)enemy.Skill/2
+                                                - PlayerUnits[currentUnitIndex].Luck;
+                                            if(defendCrit>100) defendCrit = 100;
+                                            if(defendCrit<0) defendCrit = 0;
+                                        }
+                                        else defendCrit = 0;
                                         enemyInfo.Crit = defendCrit;
                                         obj.text = defendCrit.ToString();
                                         break;
                                     case "EnermyRepeat":
-                                        if(enemy.Speed-PlayerUnits[currentUnitIndex].Speed>=5) {
-                                            obj.text = "X2";
-                                            enemyInfo.Repeat = 2;
+                                        if(defendCanAttack == true) {
+                                            if(enemy.Speed-PlayerUnits[currentUnitIndex].Speed>=5) {
+                                                obj.text = "X2";
+                                                enemyInfo.Repeat = 2;
+                                            }
+                                            else {
+                                                obj.text = "";
+                                                enemyInfo.Repeat = 1;
+                                            }
                                         }
                                         else {
                                             obj.text = "";
-                                            enemyInfo.Repeat = 1;
+                                            enemyInfo.Repeat = 0;
                                         }
                                         break;
                                     default:
@@ -1258,9 +1285,9 @@ public class Map_1 : MonoBehaviour
                                     increase_limit++;
                                 }
                                 PlayerUnits[currentUnitIndex].Exp-=100;
+                                LevelUpAnimation.SetActive(true);
                             }
                             playerInfo.Exp = PlayerUnits[currentUnitIndex].Exp;
-                            LevelUpAnimation.SetActive(true);
                         }
                     }   
 
