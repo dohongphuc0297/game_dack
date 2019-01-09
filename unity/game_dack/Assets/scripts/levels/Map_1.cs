@@ -587,6 +587,14 @@ public class Map_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(changeTurn == true){
+            Animator animate = ChangeTurnText.GetComponent<Animator>();
+            if(!animate.GetCurrentAnimatorStateInfo(0).IsName("TurnAnimation")){
+                animate.SetBool("isActive", false);
+                ChangeTurnPanel.SetActive(false);
+                changeTurn = false;
+            }
+        }
         if(Input.GetMouseButtonDown(1)){
             if(MenuPanel.activeInHierarchy)
             {
@@ -1479,7 +1487,7 @@ public class Map_1 : MonoBehaviour
                                 }
                                 tempUnit.temp+=1;
                                 if(check == 0) {
-                                    System.Threading.Thread.Sleep(2000);
+                                    System.Threading.Thread.Sleep(5000);
                                     StatsUpTable.SetActive(false);
                                 }
                             }
@@ -1508,31 +1516,15 @@ public class Map_1 : MonoBehaviour
             case GameStates.AnimationEnemyDeath:
                 break;
             case GameStates.EnemyTurn:
-                if(changeTurn == true)
-                {
-                    Animator animate = ChangeTurnText.GetComponent<Animator>();
-                    if(!animate.GetCurrentAnimatorStateInfo(0).IsName("TurnAnimation")){
-                        animate.SetBool("isActive", false);
-                        ChangeTurnPanel.SetActive(false);
-                        changeTurn = false;
-                    }
-                    Vector3Int first_enemy_pos = grid.WorldToCell(EnemyUnits[0]._GameObject.transform.position);
-                    Camera.main.gameObject.transform.position = EnemyUnits[0]._GameObject.transform.position;
-                }
-                else 
+                if (!changeTurn)
                 {
                     ChangeTurnText.text = "YOUR TURN";
                     ChangeTurnText.color = Color.blue;
                     MovedUnitIndex.Clear();
                     PlayChangeTurnPanel();
-                    changeTurn = false;
-                    Animator animate = ChangeTurnText.GetComponent<Animator>();
-                    if(!animate.GetCurrentAnimatorStateInfo(0).IsName("TurnAnimation")){
-                        animate.SetBool("isActive", false);
-                        ChangeTurnPanel.SetActive(false);
-                        currentState = GameStates.PlayerSelectTile;
-                        isPlayerTurn = true;
-                    }
+                    currentState = GameStates.PlayerSelectTile;
+                    isPlayerTurn = true;
+
                 }
                 break;
             case GameStates.AfterAnimationFight:
