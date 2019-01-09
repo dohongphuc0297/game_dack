@@ -31,6 +31,11 @@ public class Map_1 : MonoBehaviour
 
     public float speed;
 
+    //camera
+    public float panSpeed = 20f;
+    public float panBorderThickness = 10f;
+    public Vector2 panLimit;
+
     public Tilemap tilemap;
     public BoundsInt cellBounds;
     public Color color;
@@ -608,7 +613,32 @@ public class Map_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(changeTurn == true){
+        Vector3 CameraPos = transform.position;
+        if (isPlayerTurn)
+        {
+            //camera move
+            if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness)
+            {
+                CameraPos.y += panSpeed * Time.deltaTime;
+            }
+            else if (Input.GetKey("a") || Input.mousePosition.x <= panBorderThickness)
+            {
+                CameraPos.x -= panSpeed * Time.deltaTime;
+            }
+            else if (Input.GetKey("d") || Input.mousePosition.x >= Screen.width - panBorderThickness)
+            {
+                CameraPos.x += panSpeed * Time.deltaTime;
+            }
+            else if (Input.GetKey("s") || Input.mousePosition.y <= panBorderThickness)
+            {
+                CameraPos.y -= panSpeed * Time.deltaTime;
+            }
+        }
+        CameraPos.x = Mathf.Clamp(CameraPos.x, -panLimit.x, panLimit.x);
+        CameraPos.y = Mathf.Clamp(CameraPos.y, -panLimit.y, panLimit.y);
+        transform.position = CameraPos;
+
+        if (changeTurn == true){
             Animator animate = ChangeTurnText.GetComponent<Animator>();
             if(!animate.GetCurrentAnimatorStateInfo(0).IsName("TurnAnimation")){
                 animate.SetBool("isActive", false);
@@ -762,21 +792,25 @@ public class Map_1 : MonoBehaviour
                                     }
                                 }
                             }
-                            int index = 0;
-                            while(index < moveZone.Count)
+
+                            if(moveZone.Count >= 0)
                             {
-                                if (moveZone[index].x == coordinate.x && moveZone[index].y == coordinate.y)
+                                int index = 0;
+                                while (index < moveZone.Count)
                                 {
-                                    index++;
-                                    continue;
-                                }
-                                if (!isMovable(coordinate, moveZone[index], 0, MoveRange, ""))
-                                {
-                                    moveZone.RemoveAt(index);
-                                }
-                                else
-                                {
-                                    index++;
+                                    if (moveZone[index].x == coordinate.x && moveZone[index].y == coordinate.y)
+                                    {
+                                        index++;
+                                        continue;
+                                    }
+                                    if (!isMovable(coordinate, moveZone[index], 0, MoveRange, ""))
+                                    {
+                                        moveZone.RemoveAt(index);
+                                    }
+                                    else
+                                    {
+                                        index++;
+                                    }
                                 }
                             }
                           
@@ -1536,7 +1570,7 @@ public class Map_1 : MonoBehaviour
                                     }
                                     currentEnemyIndex++;
                                     HideAllPanel();
-                                    currentState = GameStates.EnemyTurn;
+                                    currentState = GameStates.ToEnemyTurn;
                                 }
                             }
                         }
@@ -1549,11 +1583,29 @@ public class Map_1 : MonoBehaviour
             case GameStates.AnimationEnemyDeath:
                 break;
             case GameStates.ToEnemyTurn:
-                if (!changeTurn)
+                if(currentEnemyIndex >= EnemyUnits.Count)
                 {
                     currentState = GameStates.EnemyTurn;
                 }
-                    break;
+                else
+                {
+                    Vector3 pos = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
+                    pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
+                    pos.y = Mathf.Clamp(pos.y, -panLimit.y, panLimit.y);
+                    if (transform.position.x >= pos.x - 0.5f && transform.position.x <= pos.x + 0.5f && transform.position.y >= pos.y - 0.5f && transform.position.y <= pos.y + 0.5f)
+                    {
+                        if (!changeTurn)
+                        {
+                            currentState = GameStates.EnemyTurn;
+                        }
+                    }
+                    else
+                    {
+                        float step = speed * Time.deltaTime;
+                        transform.position = Vector3.MoveTowards(Camera.main.transform.position, EnemyUnits[currentEnemyIndex]._GameObject.transform.position, step);
+                    }
+                }
+                break;
             case GameStates.EnemyTurn:
                 if(MovedUnitIndex.Count >= EnemyUnits.Count)
                 {
@@ -1562,13 +1614,16 @@ public class Map_1 : MonoBehaviour
                     ChangeTurnText.color = Color.blue;
                     MovedUnitIndex.Clear();
                     PlayChangeTurnPanel();
+                    InfoPanel.SetActive(true);
                     currentState = GameStates.PlayerSelectTile;
                     isPlayerTurn = true;
                     isHoverable = true;
+                    currentEnemyIndex = EnemyUnits.Count - 1;
+                    currentUnitIndex = PlayerUnits.Count - 1;
                 }
                 else
                 {
-                    Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
+                    //Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                     coordinate = grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position);
                     int weaponRange = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
                     TargetPosition = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
@@ -1597,21 +1652,25 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                     }
-                    int index = 0;
-                    while (index < moveZone.Count)
+
+                    if(moveZone.Count >= 0)
                     {
-                        if (moveZone[index].x == coordinate.x && moveZone[index].y == coordinate.y)
+                        int index = 0;
+                        while (index < moveZone.Count)
                         {
-                            index++;
-                            continue;
-                        }
-                        if (!isMovable(coordinate, moveZone[index], 0, MoveRange, ""))
-                        {
-                            moveZone.RemoveAt(index);
-                        }
-                        else
-                        {
-                            index++;
+                            if (moveZone[index].x == coordinate.x && moveZone[index].y == coordinate.y)
+                            {
+                                index++;
+                                continue;
+                            }
+                            if (!isMovable(coordinate, moveZone[index], 0, MoveRange, ""))
+                            {
+                                moveZone.RemoveAt(index);
+                            }
+                            else
+                            {
+                                index++;
+                            }
                         }
                     }
 

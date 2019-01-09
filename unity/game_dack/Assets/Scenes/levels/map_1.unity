@@ -4782,7 +4782,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 750357521}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 544e8693d59837a4ab1bdd492ba1648e, type: 3}
   m_Name: 
@@ -4822,6 +4822,9 @@ MonoBehaviour:
   EnemyHitEffect: {fileID: 1501157179}
   PlayerHitEffect: {fileID: 2127046782}
   speed: 4
+  panSpeed: 20
+  panBorderThickness: 10
+  panLimit: {x: 12.7, y: 5.7}
   tilemap: {fileID: 1228835608}
   cellBounds:
     m_Position: {x: 0, y: 0, z: 0}
