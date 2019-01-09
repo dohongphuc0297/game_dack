@@ -895,6 +895,7 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.UnitMoving:
+                //Camera.main.transform.position = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
                 Vector3 temp_moveTarget = moveTarget;
                 Vector3 temp_pos_unit = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
                 if(Math.Abs(temp_pos_unit.x-temp_moveTarget.x) <= Math.Abs(temp_pos_unit.y-temp_moveTarget.y) && temp_moveTarget == moveTarget){
@@ -1621,7 +1622,7 @@ public class Map_1 : MonoBehaviour
                     Vector3 pos = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                     pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
                     pos.y = Mathf.Clamp(pos.y, -panLimit.y, panLimit.y);
-                    if (transform.position.x >= pos.x - 0.5f && transform.position.x <= pos.x + 0.5f && transform.position.y >= pos.y - 0.5f && transform.position.y <= pos.y + 0.5f)
+                    if (transform.position.x >= pos.x - 1 && transform.position.x <= pos.x + 1 && transform.position.y >= pos.y - 1 && transform.position.y <= pos.y + 1)
                     {
                         if (!changeTurn)
                         {
@@ -1784,6 +1785,7 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.EnemyUnitMoving:
+                //Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                 Vector3 temp_moveTargetEnemy = moveTarget;
                 Vector3 temp_pos_unitEnemy = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                 if (Math.Abs(temp_pos_unitEnemy.x - temp_moveTargetEnemy.x) <= Math.Abs(temp_pos_unitEnemy.y - temp_moveTargetEnemy.y) && temp_moveTargetEnemy == moveTarget)
@@ -1831,11 +1833,13 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.EnemyUnitAttack:
+                bool hasPlayerUnit = false;
                 for (int i = 0; i < curAttackZone.Count; i++)
                 {
                     int index = IsPlayerUnit(curAttackZone[i]);
                     if (index >= 0)
                     {
+                        hasPlayerUnit = true;
                         Vector3 pos = new Vector3(moveTarget.x, moveTarget.y, moveTarget.z);
                         pos.x += 0.5f;
                         pos.y += 0.5f;
@@ -2062,17 +2066,14 @@ public class Map_1 : MonoBehaviour
                         BtnAttackConfirmClick();
                         break;
                     }
-                    else
-                    {
-                        tilemap.RefreshAllTiles();
-                        MovedUnitIndex.Add(currentEnemyIndex);
-                        SpriteRenderer spriteR = EnemyUnits[currentEnemyIndex]._GameObject.GetComponent<SpriteRenderer>();
-                        spriteR.color = Color.gray;
-                        currentEnemyIndex++;
-                        currentState = GameStates.ToEnemyTurn;
-                        break;
-                    }
                 }
+                if (hasPlayerUnit) break;
+                tilemap.RefreshAllTiles();
+                MovedUnitIndex.Add(currentEnemyIndex);
+                SpriteRenderer spriteRender = EnemyUnits[currentEnemyIndex]._GameObject.GetComponent<SpriteRenderer>();
+                spriteRender.color = Color.gray;
+                currentEnemyIndex++;
+                currentState = GameStates.ToEnemyTurn;
                 break;
             case GameStates.AfterAnimationFight:
 
