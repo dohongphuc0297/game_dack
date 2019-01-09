@@ -261,7 +261,10 @@ public class Map_1 : MonoBehaviour
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
                 case "Boss":
-                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits.Add(new Brigand(obj)
+                    {
+                        CharacterClassName = "BrigandBoss",
+                    });
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
                 default:
@@ -1762,7 +1765,7 @@ public class Map_1 : MonoBehaviour
                         }
                     }
                     
-                    if (moveZone.Count >= 0)
+                    if (moveZone.Count > 0)
                     {
                         int index = 0;
                         while (index < moveZone.Count)

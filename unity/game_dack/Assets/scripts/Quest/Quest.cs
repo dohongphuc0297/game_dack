@@ -73,7 +73,7 @@ public class KillObjective : Objective
 {
     public void UpdateKillCount(BaseCharacterClass character)
     {
-        if(Type == character.CharacterClassName)
+        if(Type == character.CharacterClassName && CurrentAmount < Amount)
         {
             CurrentAmount++;
 
