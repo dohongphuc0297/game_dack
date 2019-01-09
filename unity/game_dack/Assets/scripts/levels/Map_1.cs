@@ -441,8 +441,6 @@ public class Map_1 : MonoBehaviour
             }
         }
         //set order attack
-        Debug.Log(playerInfo.Repeat);
-        Debug.Log(enemyInfo.Repeat);
         if (isPlayerTurn)
         {
             isPlayerAttackTurn = true;
@@ -1510,7 +1508,7 @@ public class Map_1 : MonoBehaviour
                                 }
                                 tempUnit.temp+=1;
                                 if(check == 0) {
-                                    System.Threading.Thread.Sleep(5000);
+                                    System.Threading.Thread.Sleep(2000);
                                     StatsUpTable.SetActive(false);
                                 }
                             }
