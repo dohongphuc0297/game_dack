@@ -16,7 +16,11 @@ public enum GameStates
     AnimationEnemyDeath,
     AnimationEndFight,
     UnitMoving,
+    ToEnemyTurn,
     EnemyTurn,
+    EnemyUnitMoving,
+    EnemyUnitChooseAttack,
+    EnemyUnitAttack,
     AfterAnimationFight,
     GameOver
 }
