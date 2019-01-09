@@ -206,15 +206,15 @@ public class Map_1 : MonoBehaviour
                     break;
                 case "Paladin":
                     PlayerUnits.Add(new Paladin(obj));
-                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
                 case "Knight":
                     PlayerUnits.Add(new Knight(obj));
-                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronLance();
                     break;
                 case "Summoner":
                     PlayerUnits.Add(new Summoner(obj));
-                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronBow();
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new Flux();
                     break;
                 default:
                     break;
@@ -1079,6 +1079,7 @@ public class Map_1 : MonoBehaviour
                         PlayerUnits.RemoveAt(currentUnitIndex);
                         FightWindowAnimator.SetTrigger("playerDeath");
                         currentState = GameStates.AnimationEndFight;
+                        Debug.Log("player died");
                         break;
                     }
                     if (EnemyUnits[currentEnemyIndex].HP <= 0)
@@ -1314,15 +1315,16 @@ public class Map_1 : MonoBehaviour
 
                     if(!ExpPanel.activeInHierarchy)
                     {
-                        if(PlayerUnits[currentUnitIndex].Level != tempUnit.Level) {
-                            
-                            Animator LevelUpAnimator = LevelUpAnimation.GetComponent<Animator>();
-                            if (LevelUpAnimator.GetCurrentAnimatorStateInfo(0).IsName("End")){
-                                LevelUpAnimation.SetActive(false);
-                                StatsUpTable.SetActive(true);
+                        if(playerInfo.HP>0) {
+                            if(PlayerUnits[currentUnitIndex].Level != tempUnit.Level) {
+                                Animator LevelUpAnimator = LevelUpAnimation.GetComponent<Animator>();
+                                if (LevelUpAnimator.GetCurrentAnimatorStateInfo(0).IsName("End")){
+                                    LevelUpAnimation.SetActive(false);
+                                    StatsUpTable.SetActive(true);
+                                }
                             }
                         }
-
+                        
                         if(!LevelUpAnimation.activeInHierarchy) {
                             if(StatsUpTable.activeInHierarchy) 
                             {
@@ -1941,6 +1943,7 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                         tilemap.RefreshAllTiles();
+                        Debug.Log(123);
                         BtnAttackConfirmClick();
                         break;
                     }
