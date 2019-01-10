@@ -652,6 +652,73 @@ public class Map_1 : MonoBehaviour
         return res;
     }
 
+    private bool StreetUnitMoving(Vector3Int currPos, Vector3Int des, int currStep, int maxStep, string dir)
+    {   
+        //Debug.Log("1: " + currPos);
+        //Debug.Log("2: " + des);
+        int type = GetTerrainType(currPos);
+        if(type == 3) return false;
+        if(IsEnemyUnit(grid.WorldToCell(currPos))>=0) return false; 
+        if(currPos.x == des.x && currPos.y == des.y) {
+            return true;
+        }
+        if(currStep >= maxStep) {
+            return false;
+        }
+        
+        bool b;
+        
+        //go left
+        if(dir != "right")
+        {
+            //Debug.Log("left");
+            b = StreetUnitMoving(new Vector3Int(currPos.x - 1, currPos.y, 0), des, currStep + 1, maxStep, "left");
+            if(b == true)
+            {
+                street.Add(new Vector3Int(currPos.x - 1, currPos.y, 0));
+                return true;
+            }
+            
+        }
+        //go right
+        if (dir != "left")
+        {
+            //Debug.Log("right");
+            b = StreetUnitMoving(new Vector3Int(currPos.x + 1, currPos.y, 0), des, currStep + 1, maxStep, "right");
+            if(b == true)
+            {
+                street.Add(new Vector3Int(currPos.x + 1, currPos.y, 0));
+                return true;
+            }
+        }
+        //go up
+        if (dir != "down")
+        {
+            //Debug.Log("up");
+            b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y + 1, 0), des, currStep + 1, maxStep, "up");
+            if(b==true)
+            {
+                street.Add(new Vector3Int(currPos.x, currPos.y + 1, 0));
+                return true;
+            }
+        }
+        if (dir != "up")
+        {
+            //Debug.Log("down");
+            b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y - 1, 0), des, currStep + 1, maxStep, "down");
+            if(b == true)
+            {
+                street.Add(new Vector3Int(currPos.x, currPos.y - 1, 0));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    List<Vector3Int> street = new List<Vector3Int>();
+    int checkstreet = 0;
+    Vector3 one_step;
+    
     // Update is called once per frame
     void Update()
     {
@@ -939,8 +1006,37 @@ public class Map_1 : MonoBehaviour
                         if (IsPlayerUnit(coordinate) < 0 || coordinate == grid.WorldToCell(TargetPosition))
                         {
                             //Debug.Log(coordinate);
+                            street.Clear();
                             moveTarget = new Vector3(pos_unit.x + (coordinate.x - pos_unit_int.x), pos_unit.y + (coordinate.y - pos_unit_int.y), coordinate.z);
                             currentState = GameStates.UnitMoving;
+                            int limit_step = Math.Abs(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).x-grid.WorldToCell(moveTarget).x) 
+                            + Math.Abs(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).y-grid.WorldToCell(moveTarget).y);
+                            
+                            //Debug.Log("steps: " + limit_step);
+
+                            while(street.Count == 0) {
+                                StreetUnitMoving(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position), grid.WorldToCell(moveTarget), 0, limit_step, "");
+                                limit_step++;
+                                if(limit_step > PlayerUnits[currentUnitIndex].Movement) break;
+                            }
+                            
+                            //Debug.Log("coordinate: " + moveTarget);
+                            //Debug.Log("targe: " + moveTarget);
+                            //Debug.Log("player: " + PlayerUnits[currentUnitIndex]._GameObject.transform.position);
+                            //Debug.Log("player: " + grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position));
+                            //foreach(Vector3Int vector in street) {
+                            //    Debug.Log("street: " + vector);
+                            //}
+                            checkstreet = 1;
+                            
+                            one_step = new Vector3(PlayerUnits[currentUnitIndex]._GameObject.transform.position.x + 
+                                    (street[street.Count-checkstreet].x - 
+                                        grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).x), 
+                                    PlayerUnits[currentUnitIndex]._GameObject.transform.position.y + 
+                                    (street[street.Count-checkstreet].y - 
+                                        grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).y), 
+                                    street[street.Count-checkstreet].z);
+                            PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
                         }
                     }
                 }
@@ -949,6 +1045,30 @@ public class Map_1 : MonoBehaviour
                 //Camera.main.transform.position = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
                 Vector3 temp_moveTarget = moveTarget;
                 Vector3 temp_pos_unit = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
+
+                
+                if(one_step == PlayerUnits[currentUnitIndex]._GameObject.transform.position
+                    && PlayerUnits[currentUnitIndex]._GameObject.transform.position != moveTarget) 
+                {
+                    checkstreet++;
+                    Vector3Int grid_pos_unit = grid.WorldToCell(temp_pos_unit);
+                    Vector3Int grid_pos_target = street[street.Count-checkstreet];
+                    one_step = new Vector3(temp_pos_unit.x + (grid_pos_target.x - grid_pos_unit.x), 
+                            temp_pos_unit.y + (grid_pos_target.y - grid_pos_unit.y), 
+                            temp_pos_unit.z);
+                    
+                            
+                    PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
+                    //Debug.Log("onestep: " + one_step);
+                    //Debug.Log("player: " + PlayerUnits[currentUnitIndex]._GameObject.transform.position);
+                }
+                else{
+                    PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
+                }
+
+
+                
+                /*
                 if(Math.Abs(temp_pos_unit.x-temp_moveTarget.x) <= Math.Abs(temp_pos_unit.y-temp_moveTarget.y) && temp_moveTarget == moveTarget){
                     temp_moveTarget.y = temp_pos_unit.y;
                 }
@@ -958,12 +1078,16 @@ public class Map_1 : MonoBehaviour
                 }
 
                 PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, temp_moveTarget, speed * Time.deltaTime);
+
                 if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == temp_moveTarget) {
                     PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
                 }
-                
+                */
+
                 if (PlayerUnits[currentUnitIndex]._GameObject.transform.position == moveTarget)
                 {
+                    //Debug.Log(PlayerUnits[currentUnitIndex]._GameObject.transform.position);
+                    //Debug.Log(moveTarget);
                     ShowActionPanel();
                     tilemap.RefreshAllTiles();
                     currentState = GameStates.PlayerSelectAction;
@@ -1651,8 +1775,9 @@ public class Map_1 : MonoBehaviour
                                         MovedUnitIndex.Add(currentEnemyIndex);
                                         SpriteRenderer spriteR = EnemyUnits[currentEnemyIndex]._GameObject.GetComponent<SpriteRenderer>();
                                         spriteR.color = Color.gray;
+                                        currentEnemyIndex++;
                                     }
-                                    currentEnemyIndex++;
+                                    //currentEnemyIndex++;
                                     HideAllPanel();
                                     currentState = GameStates.ToEnemyTurn;
                                 }
