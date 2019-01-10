@@ -809,7 +809,7 @@ public class Map_1 : MonoBehaviour
                 {
                     haveCharacter = true;
                     InfoMenuName.text = PlayerUnits[i]._GameObject.name;
-                    InfoMenuHP.text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].MaxHP.ToString();
+                    InfoMenuHP.text = "HP: " + PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].MaxHP.ToString();
                     if (MovedUnitIndex.IndexOf(i) >= 0) continue;
                     if (!(PlayerUnits[i].State == CharacterStates.Active))
                     {
@@ -833,7 +833,7 @@ public class Map_1 : MonoBehaviour
                     {
                         haveCharacter = true;
                         InfoMenuName.text = EnemyUnits[i]._GameObject.name;
-                        InfoMenuHP.text = EnemyUnits[i].HP.ToString() + "/" + EnemyUnits[i].MaxHP.ToString();
+                        InfoMenuHP.text = "HP: " + EnemyUnits[i].HP.ToString() + "/" + EnemyUnits[i].MaxHP.ToString();
                     }
                 }
             }
@@ -914,6 +914,8 @@ public class Map_1 : MonoBehaviour
                             //isHoverable = false;
                             currentState = GameStates.PlayerMoveUnit;
                             TargetPosition = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
+                            //change to moving state
+                            PlayerUnits[currentUnitIndex]._Animator.SetBool("isDown", true);
                             //refresh list zone
                             moveZone.Clear();
                             attackZone.Clear();
@@ -1095,6 +1097,7 @@ public class Map_1 : MonoBehaviour
                     //Debug.Log(moveTarget);
                     ShowActionPanel();
                     tilemap.RefreshAllTiles();
+                    PlayerUnits[currentUnitIndex]._Animator.SetBool("isDown", false);
                     currentState = GameStates.PlayerSelectAction;
                 }
                 break;
@@ -1413,8 +1416,13 @@ public class Map_1 : MonoBehaviour
 
                             enemyInfo.HP = EnemyUnits[currentEnemyIndex].HP;
                             enemyHP.text = enemyInfo.HP.ToString() + "/" + enemyInfo.MaxHP.ToString();
-                            
-                            
+
+
+                        }
+                        else
+                        {
+                            //Animator enemyAnimate = EnemyCharacter.GetComponent<Animator>();
+                            //enemyAnimate.SetTrigger("doge");
                         }
                         EHA.SetBool("isActive", true);
                         if(!isHit) {
@@ -1448,6 +1456,11 @@ public class Map_1 : MonoBehaviour
                             if (PlayerUnits[currentUnitIndex].HP < 0) PlayerUnits[currentUnitIndex].HP = 0;
                             playerInfo.HP = PlayerUnits[currentUnitIndex].HP;
                             playerHP.text = playerInfo.HP.ToString() + "/" + playerInfo.MaxHP.ToString();
+                        }
+                        else
+                        {
+                            //Animator playerAnimate = PlayerCharacter.GetComponent<Animator>();
+                            //playerAnimate.SetTrigger("doge");
                         }
                         PHA.SetBool("isActive", true);
                     }
@@ -1867,6 +1880,7 @@ public class Map_1 : MonoBehaviour
                         currentState = GameStates.EnemyUnitChooseAttack;
                         break;
                     }
+                    EnemyUnits[currentEnemyIndex]._Animator.SetBool("isDown", true);
                     //Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                     int weaponRange = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
                     //refresh list zone
@@ -2068,6 +2082,7 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                     }
+                    EnemyUnits[currentEnemyIndex]._Animator.SetBool("isDown", false);
                     ColorAttackZone();
                     timer = 0;
                     timerReached = false;
