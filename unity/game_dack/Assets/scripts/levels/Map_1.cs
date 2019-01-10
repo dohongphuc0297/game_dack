@@ -652,13 +652,18 @@ public class Map_1 : MonoBehaviour
         return res;
     }
 
-    private bool StreetUnitMoving(Vector3Int currPos, Vector3Int des, int currStep, int maxStep, string dir)
+    private bool StreetUnitMoving(Vector3Int currPos, Vector3Int des, int currStep, int maxStep, string dir, bool isPlayerUnit)
     {   
         //Debug.Log("1: " + currPos);
         //Debug.Log("2: " + des);
         int type = GetTerrainType(currPos);
         if(type == 3) return false;
-        if(IsEnemyUnit(grid.WorldToCell(currPos))>=0) return false; 
+        if(isPlayerUnit) {
+            if(IsEnemyUnit(grid.WorldToCell(currPos))>=0) return false; 
+        }
+        else {
+            if(IsPlayerUnit(grid.WorldToCell(currPos))>=0) return false; 
+        }
         if(currPos.x == des.x && currPos.y == des.y) {
             return true;
         }
@@ -672,7 +677,7 @@ public class Map_1 : MonoBehaviour
         if(dir != "right")
         {
             //Debug.Log("left");
-            b = StreetUnitMoving(new Vector3Int(currPos.x - 1, currPos.y, 0), des, currStep + 1, maxStep, "left");
+            b = StreetUnitMoving(new Vector3Int(currPos.x - 1, currPos.y, 0), des, currStep + 1, maxStep, "left", isPlayerUnit);
             if(b == true)
             {
                 street.Add(new Vector3Int(currPos.x - 1, currPos.y, 0));
@@ -684,7 +689,7 @@ public class Map_1 : MonoBehaviour
         if (dir != "left")
         {
             //Debug.Log("right");
-            b = StreetUnitMoving(new Vector3Int(currPos.x + 1, currPos.y, 0), des, currStep + 1, maxStep, "right");
+            b = StreetUnitMoving(new Vector3Int(currPos.x + 1, currPos.y, 0), des, currStep + 1, maxStep, "right", isPlayerUnit);
             if(b == true)
             {
                 street.Add(new Vector3Int(currPos.x + 1, currPos.y, 0));
@@ -695,7 +700,7 @@ public class Map_1 : MonoBehaviour
         if (dir != "down")
         {
             //Debug.Log("up");
-            b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y + 1, 0), des, currStep + 1, maxStep, "up");
+            b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y + 1, 0), des, currStep + 1, maxStep, "up", isPlayerUnit);
             if(b==true)
             {
                 street.Add(new Vector3Int(currPos.x, currPos.y + 1, 0));
@@ -705,7 +710,7 @@ public class Map_1 : MonoBehaviour
         if (dir != "up")
         {
             //Debug.Log("down");
-            b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y - 1, 0), des, currStep + 1, maxStep, "down");
+            b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y - 1, 0), des, currStep + 1, maxStep, "down", isPlayerUnit);
             if(b == true)
             {
                 street.Add(new Vector3Int(currPos.x, currPos.y - 1, 0));
@@ -718,7 +723,7 @@ public class Map_1 : MonoBehaviour
     List<Vector3Int> street = new List<Vector3Int>();
     int checkstreet = 0;
     Vector3 one_step;
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -1015,7 +1020,7 @@ public class Map_1 : MonoBehaviour
                             //Debug.Log("steps: " + limit_step);
 
                             while(street.Count == 0) {
-                                StreetUnitMoving(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position), grid.WorldToCell(moveTarget), 0, limit_step, "");
+                                StreetUnitMoving(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position), grid.WorldToCell(moveTarget), 0, limit_step, "", true);
                                 limit_step++;
                                 if(limit_step > PlayerUnits[currentUnitIndex].Movement) break;
                             }
@@ -1946,6 +1951,7 @@ public class Map_1 : MonoBehaviour
                             NerestPlayerUnitIndex = i;
                         }
                     }
+
                     Vector3Int coorTemp = grid.WorldToCell(PlayerUnits[NerestPlayerUnitIndex]._GameObject.transform.position);
                     Vector3 pos_unit = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                     Vector3Int pos_unit_int = grid.WorldToCell(pos_unit);
@@ -1965,12 +1971,59 @@ public class Map_1 : MonoBehaviour
                     }
                     Cursor.transform.position = moveTarget;
                     currentState = GameStates.EnemyUnitMoving;
+
+
+                    //Debug.Log(coordinate);
+                    street.Clear();
+                    //moveTarget = new Vector3(pos_unit.x + (coordinate.x - pos_unit_int.x), pos_unit.y + (coordinate.y - pos_unit_int.y), coordinate.z);
+                    int limit_step = Math.Abs(grid.WorldToCell(pos_unit).x-grid.WorldToCell(moveTarget).x) 
+                    + Math.Abs(grid.WorldToCell(pos_unit).y-grid.WorldToCell(moveTarget).y);
+                    
+                    //Debug.Log("steps: " + limit_step);
+
+                    while(street.Count == 0) {
+                        StreetUnitMoving(grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position), grid.WorldToCell(moveTarget), 0, limit_step, "", false);
+                        limit_step++;
+                        if(limit_step > EnemyUnits[currentEnemyIndex].Movement) break;
+                    }
+
+                    checkstreet = 1;
+                    
+                    one_step = new Vector3(EnemyUnits[currentEnemyIndex]._GameObject.transform.position.x + 
+                            (street[street.Count-checkstreet].x - 
+                                grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position).x), 
+                            EnemyUnits[currentEnemyIndex]._GameObject.transform.position.y + 
+                            (street[street.Count-checkstreet].y - 
+                                grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position).y), 
+                            street[street.Count-checkstreet].z);
+                    EnemyUnits[currentEnemyIndex]._GameObject.transform.position = Vector3.MoveTowards(EnemyUnits[currentEnemyIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
                 }
                 break;
             case GameStates.EnemyUnitMoving:
                 //Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                 Vector3 temp_moveTargetEnemy = moveTarget;
                 Vector3 temp_pos_unitEnemy = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
+
+                if(one_step == EnemyUnits[currentEnemyIndex]._GameObject.transform.position
+                    && EnemyUnits[currentEnemyIndex]._GameObject.transform.position != moveTarget) 
+                {
+                    checkstreet++;
+                    Vector3Int grid_pos_unit = grid.WorldToCell(temp_pos_unitEnemy);
+                    Vector3Int grid_pos_target = street[street.Count-checkstreet];
+                    one_step = new Vector3(temp_pos_unitEnemy.x + (grid_pos_target.x - grid_pos_unit.x), 
+                            temp_pos_unitEnemy.y + (grid_pos_target.y - grid_pos_unit.y), 
+                            temp_pos_unitEnemy.z);
+                    
+                            
+                    EnemyUnits[currentEnemyIndex]._GameObject.transform.position = Vector3.MoveTowards(EnemyUnits[currentEnemyIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
+                    //Debug.Log("onestep: " + one_step);
+                    //Debug.Log("player: " + PlayerUnits[currentUnitIndex]._GameObject.transform.position);
+                }
+                else{
+                    EnemyUnits[currentEnemyIndex]._GameObject.transform.position = Vector3.MoveTowards(EnemyUnits[currentEnemyIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
+                }
+
+                /*
                 if (Math.Abs(temp_pos_unitEnemy.x - temp_moveTargetEnemy.x) <= Math.Abs(temp_pos_unitEnemy.y - temp_moveTargetEnemy.y) && temp_moveTargetEnemy == moveTarget)
                 {
                     temp_moveTargetEnemy.y = temp_pos_unitEnemy.y;
@@ -1981,10 +2034,14 @@ public class Map_1 : MonoBehaviour
                 }
 
                 EnemyUnits[currentEnemyIndex]._GameObject.transform.position = Vector3.MoveTowards(EnemyUnits[currentEnemyIndex]._GameObject.transform.position, temp_moveTargetEnemy, speed * Time.deltaTime);
+                
+
+            
                 if (EnemyUnits[currentEnemyIndex]._GameObject.transform.position == temp_moveTargetEnemy)
                 {
                     EnemyUnits[currentEnemyIndex]._GameObject.transform.position = Vector3.MoveTowards(EnemyUnits[currentEnemyIndex]._GameObject.transform.position, moveTarget, speed * Time.deltaTime);
                 }
+                */
 
                 if (EnemyUnits[currentEnemyIndex]._GameObject.transform.position == moveTarget)
                 {
