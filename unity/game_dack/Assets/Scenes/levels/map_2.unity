@@ -17787,13 +17787,15 @@ MonoBehaviour:
   speed: 4
   panSpeed: 20
   panBorderThickness: 10
-  panLimit: {x: 12.7, y: 5.7}
+  panLimit: {x: 12.7, y: 20}
   Audio: {fileID: 1904539855}
   tilemap: {fileID: 1175117385}
   cellBounds:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 0, y: 0, z: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
+  CoordinateLimitX: {x: -12, y: 8}
+  CoordinateLimitY: {x: -22, y: 4}
 --- !u!20 &1721980940
 Camera:
   m_ObjectHideFlags: 0

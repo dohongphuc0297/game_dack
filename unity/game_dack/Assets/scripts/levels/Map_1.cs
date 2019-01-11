@@ -42,6 +42,8 @@ public class Map_1 : MonoBehaviour
     public Tilemap tilemap;
     public BoundsInt cellBounds;
     public Color color;
+    public Vector2Int CoordinateLimitX;
+    public Vector2Int CoordinateLimitY;
 
     public struct Terrain
     {
@@ -170,9 +172,11 @@ public class Map_1 : MonoBehaviour
             m_MyAudioSource.volume = (volume * 1f) / 100;
         }
         //Debug.Log(tilemap.GetTile(grid.WorldToCell(new Vector3(-11, 9, 0))));
-        for (int x = -18; x<= 18; x++) {
-            for(int y = -10; y<=9; y++) {
-                string s = tilemap.GetTile(grid.WorldToCell(new Vector3(x, y, 0))).name;
+        for (int x = CoordinateLimitX.x; x <= CoordinateLimitX.y; x++) {
+            for (int y = CoordinateLimitY.x; y <= CoordinateLimitY.y; y++) {
+                TileBase tb = tilemap.GetTile(grid.WorldToCell(new Vector3(x, y, 0)));
+                if (tb == null) continue;
+                string s = tb.name;
             
                 if(s == "grass1" || s == "grass2" || s == "ground1" || s == "step1" || s == "step2"){
                     Terrain temp = new Terrain(0, grid.WorldToCell(new Vector3(x, y, 0)));
@@ -845,6 +849,7 @@ public class Map_1 : MonoBehaviour
         Vector3Int coordinate = grid.WorldToCell(mouseWorldPos);
         if (isPlayerTurn && isHoverable)
         {
+            Debug.Log(coordinate);
             //hover
             Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
             pos.x += 0.5f;
