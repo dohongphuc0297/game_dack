@@ -279,6 +279,11 @@ public class Map_1 : MonoBehaviour
                     EnemyUnits.Add(new Brigand(obj)
                     {
                         CharacterClassName = "BrigandBoss",
+                        Level = 3,
+                        Strength = 8,
+                        Defend = 3,
+                        HP = 25,
+                        MaxHP = 25,
                     });
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
@@ -290,6 +295,11 @@ public class Map_1 : MonoBehaviour
                     EnemyUnits.Add(new Revenant(obj)
                     {
                         CharacterClassName = "RevenantBoss",
+                        Level = 4,
+                        Strength = 9,
+                        Defend = 4,
+                        HP = 25,
+                        MaxHP = 25,
                     });
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
@@ -525,7 +535,6 @@ public class Map_1 : MonoBehaviour
             if(controller.name == PlayerUnits[currentUnitIndex]._GameObject.name)
             {
                 PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = controller;
-                break;
             }
             if(controller.name == EnemyUnits[currentEnemyIndex]._GameObject.name)
             {
@@ -773,20 +782,6 @@ public class Map_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(EnemyUnits.Count <= 0)
-        {
-            ChangeTurnText.text = "MAP CLEAR";
-            ChangeTurnText.color = Color.blue;
-            PlayChangeTurnPanel();
-            currentState = GameStates.GameOver;
-        }
-        if (PlayerUnits.Count <= 0)
-        {
-            ChangeTurnText.text = "YOU LOSE";
-            ChangeTurnText.color = Color.red;
-            PlayChangeTurnPanel();
-            currentState = GameStates.GameOver;
-        }
         Vector3 CameraPos = transform.position;
         if (isPlayerTurn)
         {
@@ -1574,7 +1569,6 @@ public class Map_1 : MonoBehaviour
                         }
                         else
                         {
-                            
                             isPlayerAttackTurn = !isPlayerAttackTurn;
                             if(enemyInfo.Repeat == 0) break;
                             if (currentEnemyAttackTurn > enemyInfo.Repeat) break;
@@ -1617,7 +1611,7 @@ public class Map_1 : MonoBehaviour
                                 int BossBonus = 0;
                                 playerInfo.Exp += (float)Math.Round((double)
                                     ((31+EnemyUnits[currentEnemyIndex].Level-PlayerUnits[currentUnitIndex].Level)/2+
-                                    20+BossBonus)*1.8+50, 2);
+                                    20+BossBonus)*1.8, 2);
                             }
                             else playerInfo.Exp += (float)Math.Round((double)
                                 (31+EnemyUnits[currentEnemyIndex].Level-PlayerUnits[currentUnitIndex].Level)/2, 2);
@@ -2007,6 +2001,20 @@ public class Map_1 : MonoBehaviour
                                     HideAllPanel();
                                     currentState = GameStates.ToEnemyTurn;
                                 }
+                                if (EnemyUnits.Count <= 0)
+                                {
+                                    ChangeTurnText.text = "MAP CLEAR";
+                                    ChangeTurnText.color = Color.blue;
+                                    PlayChangeTurnPanel();
+                                    currentState = GameStates.GameOver;
+                                }
+                                if (PlayerUnits.Count <= 0)
+                                {
+                                    ChangeTurnText.text = "YOU LOSE";
+                                    ChangeTurnText.color = Color.red;
+                                    PlayChangeTurnPanel();
+                                    currentState = GameStates.GameOver;
+                                }
                             }
                         }
                         
@@ -2223,6 +2231,7 @@ public class Map_1 : MonoBehaviour
                 break;
             case GameStates.EnemyUnitMoving:
                 Vector3 p = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
+                p.z = -10;
                 p.x = Mathf.Clamp(p.x, -panLimit.x, panLimit.x);
                 p.y = Mathf.Clamp(p.y, -panLimit.y, panLimit.y);
                 transform.position = Vector3.MoveTowards(Camera.main.transform.position, p, speed * 3 * Time.deltaTime);
