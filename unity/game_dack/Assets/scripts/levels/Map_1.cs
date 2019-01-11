@@ -160,11 +160,11 @@ public class Map_1 : MonoBehaviour
             for(int y = -10; y<=9; y++) {
                 string s = tilemap.GetTile(grid.WorldToCell(new Vector3(x, y, 0))).name;
             
-                if(s == "grass1" || s == "grass2"){
+                if(s == "grass1" || s == "grass2" || s == "ground1" || s == "step1" || s == "step2"){
                     Terrain temp = new Terrain(0, grid.WorldToCell(new Vector3(x, y, 0)));
                     terrain.Add(temp);
                 }
-                else if(s == "tree1" || s == "tree2" || s == "tree3"){
+                else if(s == "tree1" || s == "tree2" || s == "tree3" || s=="tree4"){
                     Terrain temp = new Terrain(1, grid.WorldToCell(new Vector3(x, y, 0)));
                     terrain.Add(temp);
                 }
@@ -250,27 +250,39 @@ public class Map_1 : MonoBehaviour
         {
             switch (obj.name)
             {
-                case "Brigand":
+                case "BoneWalker":
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
-                case "Brigand1":
+                case "BoneWalker1":
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
-                case "Brigand2":
+                case "BoneWalker2":
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
-                case "Brigand3":
+                case "BoneWalker3":
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
-                case "Brigand4":
+                case "BoneWalker4":
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
-                case "Brigand5":
+                case "BoneWalker5":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "BoneWalker6":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "BoneWalker7":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
+                case "BoneWalker8":
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
@@ -1022,6 +1034,14 @@ public class Map_1 : MonoBehaviour
                     {
                         ShowMenuPanel();
                         currentState = GameStates.PlayerSelectAction;
+                    }
+                }
+                else if(Input.GetMouseButtonDown(1)) {
+                    if (IsOutMap(coordinate)) break;
+                    bool isUnit = false;
+                    for (int i = 0; i < PlayerUnits.Count; i++)
+                    {
+
                     }
                 }
                 break;
