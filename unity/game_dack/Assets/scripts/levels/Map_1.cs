@@ -258,12 +258,12 @@ public class Map_1 : MonoBehaviour
         string sceneName = SceneManager.GetActiveScene().name;
         string[] str = sceneName.Split('_');
         int level = Int32.Parse(str[1]);
-        if (SaveLoad.Level == (level + 1))
+        if (SaveLoad.Level == (level - 1))
         {
             foreach (BaseCharacterClass unit in SaveLoad.savedUnits)
             {
                 int index = isContainedInList(unit.CharacterClassName);
-                if(index >= 0)
+                if (index >= 0)
                 {
                     PlayerUnits[index].setInfo(unit);
                 }
@@ -912,6 +912,7 @@ public class Map_1 : MonoBehaviour
                 Vector3 position = PlayerUnits[0]._GameObject.transform.position;
                 position.x = Mathf.Clamp(position.x, -panLimit.x, panLimit.x);
                 position.y = Mathf.Clamp(position.y, -panLimit.y, panLimit.y);
+                position.z = -10;
                 if (transform.position.x >= position.x - 1 && transform.position.x <= position.x + 1 && transform.position.y >= position.y - 1 && transform.position.y <= position.y + 1)
                 {
                     if (!changeTurn)
@@ -921,7 +922,6 @@ public class Map_1 : MonoBehaviour
                         isPlayerTurn = true;
                         ShowInfoPanel();
                         currentState = GameStates.PlayerSelectTile;
-                        transform.position = new Vector3(transform.position.x, transform.position.y, -10);
                     }
                 }
                 else
@@ -1255,7 +1255,11 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.UnitMoving:
-                //Camera.main.transform.position = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
+                Vector3 P = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
+                P.x = Mathf.Clamp(P.x, -panLimit.x, panLimit.x);
+                P.y = Mathf.Clamp(P.y, -panLimit.y, panLimit.y);
+                P.z = -10;
+                transform.position = Vector3.MoveTowards(Camera.main.transform.position, P, speed * 3 * Time.deltaTime);
                 Vector3 temp_moveTarget = moveTarget;
                 Vector3 temp_pos_unit = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
 
@@ -2039,12 +2043,12 @@ public class Map_1 : MonoBehaviour
                     Vector3 pos = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
                     pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
                     pos.y = Mathf.Clamp(pos.y, -panLimit.y, panLimit.y);
+                    pos.z = -10;
                     if (transform.position.x >= pos.x - 1 && transform.position.x <= pos.x + 1 && transform.position.y >= pos.y - 1 && transform.position.y <= pos.y + 1)
                     {
                         if (!changeTurn)
                         {
                             currentState = GameStates.EnemyTurn;
-                            transform.position = new Vector3(transform.position.x, transform.position.y, -10);
                         }
                     }
                     else
@@ -2195,7 +2199,7 @@ public class Map_1 : MonoBehaviour
                     {
                         if (IsOutMap(moveZone[i])) continue;
                         int index = IsEnemyUnit(moveZone[i]);
-                        if (index < 0 || index == currentEnemyIndex)
+                        if (index < 0)
                         {
                             float Dis = Vector3Int.Distance(coorTemp, moveZone[i]);
                             if (currDis > Dis)
