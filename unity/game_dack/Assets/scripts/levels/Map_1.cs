@@ -273,27 +273,7 @@ public class Map_1 : MonoBehaviour
             {
                 case "Brigand":
                     EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
-                    break;
-                case "Brigand1":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
-                    break;
-                case "Brigand2":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
-                    break;
-                case "Brigand3":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
-                    break;
-                case "Brigand4":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
-                    break;
-                case "Brigand5":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
                 case "Boss":
                     EnemyUnits.Add(new Brigand(obj)
@@ -303,41 +283,17 @@ public class Map_1 : MonoBehaviour
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
                 case "BoneWalker":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    EnemyUnits.Add(new BoneWalker(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
-                case "BoneWalker1":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                case "Boss2":
+                    EnemyUnits.Add(new BoneWalker(obj)
+                    {
+                        CharacterClassName = "BoneWalkerBoss",
+                    });
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
-                case "BoneWalker2":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
-                case "BoneWalker3":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
-                case "BoneWalker4":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
-                case "BoneWalker5":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
-                case "BoneWalker6":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
-                case "BoneWalker7":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
-                case "BoneWalker8":
-                    EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
+
                 default:
                     break;
             }
@@ -1097,7 +1053,9 @@ public class Map_1 : MonoBehaviour
                     }
                     else {
                         if(currentState != GameStates.PlayerSelectAction){
+                            Debug.Log(1);
                             if (IsOutMap(coordinate)) break;
+                             Debug.Log(2);
                             for (int i = 0; i < PlayerUnits.Count; i++)
                             {
                                 Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
@@ -1168,10 +1126,10 @@ public class Map_1 : MonoBehaviour
                                     break;
                                 }
                             }
-
                             if(!UnitInfoPanel.activeInHierarchy) {
                                 for (int i = 0; i < EnemyUnits.Count; i++)
                                 {
+                                    Debug.Log(i);
                                     Collider2D coll = EnemyUnits[i]._GameObject.GetComponent<Collider2D>();
                                     if (coll.OverlapPoint(mouseWorldPos))
                                     {
@@ -1182,6 +1140,7 @@ public class Map_1 : MonoBehaviour
                                         GameObject[] info = GameObject.FindGameObjectsWithTag("UnitInfo");
                                         foreach (GameObject obj in info)
                                         {
+
                                             switch (obj.name)
                                             {
                                                 case "Level":
