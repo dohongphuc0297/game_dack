@@ -426,6 +426,7 @@ public class Map_1 : MonoBehaviour
     {
         ColorMoveZone();
         ShowInfoPanel();
+        PlayerUnits[currentUnitIndex]._Animator.SetBool("isDown", true);
         currentState = GameStates.PlayerMoveUnit;
     }
     public void BtnAttackClick()
@@ -812,7 +813,7 @@ public class Map_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(PlayerUnits.Count <= 0)
+        if(EnemyUnits.Count <= 0)
         {
             ChangeTurnText.text = "MAP CLEAR";
             ChangeTurnText.color = Color.blue;
@@ -820,7 +821,7 @@ public class Map_1 : MonoBehaviour
             PlayChangeTurnPanel();
             currentState = GameStates.GameOver;
         }
-        if (EnemyUnits.Count <= 0)
+        if (PlayerUnits.Count <= 0)
         {
             ChangeTurnText.text = "YOU LOSE";
             ChangeTurnText.color = Color.red;

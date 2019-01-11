@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public enum CharacterStates
 {
     Stance, Active, Left, Right, Up, Down
@@ -38,6 +39,7 @@ public class BaseCharacterClass
 
     public int AttackRange { get; set; }
 
+    [System.NonSerialized]
     public BaseWeaponClass EquippedWeapon;
 
     //state
@@ -50,9 +52,12 @@ public class BaseCharacterClass
         State = CharacterStates.Stance;
         EquippedWeapon = new BaseWeaponClass();
     }
-
-    public GameObject _GameObject { get; set; }
-    public Animator _Animator { get; set; }
+    [System.NonSerialized]
+    private GameObject GB;
+    [System.NonSerialized]
+    private Animator A;
+    public GameObject _GameObject { get { return GB; } set { GB = value; } }
+    public Animator _Animator { get { return A; } set { A = value; } }
 
     public CharacterStates State
     {

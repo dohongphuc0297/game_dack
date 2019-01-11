@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class SteelLance : BaseWeaponClass
 {
     public int AttackRange { get; set; }

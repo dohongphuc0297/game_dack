@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Knight : BaseCharacterClass
 {
     public Knight(GameObject gameObject) : base(gameObject)

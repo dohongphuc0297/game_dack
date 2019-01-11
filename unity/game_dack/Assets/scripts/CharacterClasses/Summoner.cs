@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Summoner : BaseCharacterClass
 {
     public Summoner(GameObject gameObject) : base(gameObject)

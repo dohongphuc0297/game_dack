@@ -20,9 +20,9 @@ public class MenuScript : MonoBehaviour
             case 0:
                 SceneManager.LoadScene("Scenes/levels/map_" + (SaveLoad.Level + 1), LoadSceneMode.Single);
                 break;
-            //case 1:
-            //    SceneManager.LoadScene("Scenes/levels/map_" + (SaveLoad.Level + 1), LoadSceneMode.Single);
-            //    break;
+            case 1:
+                SceneManager.LoadScene("Scenes/levels/map_" + (SaveLoad.Level + 1), LoadSceneMode.Single);
+                break;
             //case 2:
             //    SceneManager.LoadScene("Scenes/levels/map_" + (SaveLoad.Level + 1), LoadSceneMode.Single);
             //    break;

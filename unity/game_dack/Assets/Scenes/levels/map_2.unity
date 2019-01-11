@@ -17777,6 +17777,7 @@ MonoBehaviour:
   ExpPanel: {fileID: 1359952433}
   LevelUpAnimation: {fileID: 853537869}
   StatsUpTable: {fileID: 1866119942}
+  UnitInfoPanel: {fileID: 0}
   PlayerCharacter: {fileID: 1835502236}
   EnemyCharacter: {fileID: 815285529}
   ChangeTurnText: {fileID: 1477045002}
