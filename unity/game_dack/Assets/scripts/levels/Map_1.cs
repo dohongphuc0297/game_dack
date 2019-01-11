@@ -2075,7 +2075,7 @@ public class Map_1 : MonoBehaviour
                 else
                 {
                     coordinate = grid.WorldToCell(EnemyUnits[currentEnemyIndex]._GameObject.transform.position);
-                    if (EnemyUnits[currentEnemyIndex]._GameObject.name == "Boss")
+                    if (EnemyUnits[currentEnemyIndex]._GameObject.name.Contains("Boss"))
                     {
                         curAttackZone.Clear();
                         int range = EnemyUnits[currentEnemyIndex].EquippedWeapon.Range;
@@ -2236,7 +2236,10 @@ public class Map_1 : MonoBehaviour
                 }
                 break;
             case GameStates.EnemyUnitMoving:
-                //Camera.main.transform.position = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
+                Vector3 p = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
+                p.x = Mathf.Clamp(p.x, -panLimit.x, panLimit.x);
+                p.y = Mathf.Clamp(p.y, -panLimit.y, panLimit.y);
+                transform.position = Vector3.MoveTowards(Camera.main.transform.position, p, speed * 3 * Time.deltaTime);
                 Vector3 temp_moveTargetEnemy = moveTarget;
                 Vector3 temp_pos_unitEnemy = EnemyUnits[currentEnemyIndex]._GameObject.transform.position;
 

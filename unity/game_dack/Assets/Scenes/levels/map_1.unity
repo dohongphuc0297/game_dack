@@ -1528,7 +1528,6 @@ GameObject:
   - component: {fileID: 150076433}
   - component: {fileID: 150076437}
   - component: {fileID: 150076436}
-  - component: {fileID: 150076435}
   - component: {fileID: 150076434}
   m_Layer: 0
   m_Name: Brigand
@@ -1577,20 +1576,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &150076435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 150076432}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991dc18cdd2ceff43a6c12eedd6bab39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Bael: {fileID: 150076432}
-  animator: {fileID: 150076436}
 --- !u!95 &150076436
 Animator:
   serializedVersion: 3
@@ -1948,7 +1933,6 @@ GameObject:
   - component: {fileID: 181279929}
   - component: {fileID: 181279933}
   - component: {fileID: 181279932}
-  - component: {fileID: 181279931}
   - component: {fileID: 181279930}
   m_Layer: 0
   m_Name: Brigand
@@ -1997,20 +1981,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &181279931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 181279928}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991dc18cdd2ceff43a6c12eedd6bab39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Bael: {fileID: 181279928}
-  animator: {fileID: 181279932}
 --- !u!95 &181279932
 Animator:
   serializedVersion: 3
@@ -2501,10 +2471,10 @@ RectTransform:
   m_Father: {fileID: 91714684}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.4, y: -124}
-  m_SizeDelta: {x: -178, y: -285.6}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2.399994, y: -124}
+  m_SizeDelta: {x: 398, y: 38.399994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &250976343
 MonoBehaviour:
@@ -8839,7 +8809,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -34.98, y: 0.000005722}
+  m_AnchoredPosition: {x: -11.8, y: 0.000005722}
   m_SizeDelta: {x: 266.28, y: 57.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1101142485
@@ -18882,7 +18852,6 @@ GameObject:
   - component: {fileID: 1353921067}
   - component: {fileID: 1353921071}
   - component: {fileID: 1353921070}
-  - component: {fileID: 1353921069}
   - component: {fileID: 1353921068}
   m_Layer: 0
   m_Name: Brigand
@@ -18931,20 +18900,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &1353921069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1353921066}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991dc18cdd2ceff43a6c12eedd6bab39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Bael: {fileID: 1353921066}
-  animator: {fileID: 1353921070}
 --- !u!95 &1353921070
 Animator:
   serializedVersion: 3
@@ -19612,7 +19567,6 @@ GameObject:
   - component: {fileID: 1467433691}
   - component: {fileID: 1467433695}
   - component: {fileID: 1467433694}
-  - component: {fileID: 1467433693}
   - component: {fileID: 1467433692}
   m_Layer: 0
   m_Name: Brigand
@@ -19661,20 +19615,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &1467433693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467433690}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991dc18cdd2ceff43a6c12eedd6bab39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Bael: {fileID: 1467433690}
-  animator: {fileID: 1467433694}
 --- !u!95 &1467433694
 Animator:
   serializedVersion: 3
@@ -20257,7 +20197,6 @@ GameObject:
   - component: {fileID: 1501980315}
   - component: {fileID: 1501980319}
   - component: {fileID: 1501980318}
-  - component: {fileID: 1501980317}
   - component: {fileID: 1501980316}
   m_Layer: 0
   m_Name: Brigand
@@ -20306,20 +20245,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &1501980317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501980314}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991dc18cdd2ceff43a6c12eedd6bab39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Bael: {fileID: 1501980314}
-  animator: {fileID: 1501980318}
 --- !u!95 &1501980318
 Animator:
   serializedVersion: 3
@@ -20398,7 +20323,6 @@ GameObject:
   - component: {fileID: 1514837944}
   - component: {fileID: 1514837948}
   - component: {fileID: 1514837947}
-  - component: {fileID: 1514837946}
   - component: {fileID: 1514837945}
   m_Layer: 0
   m_Name: Brigand
@@ -20447,20 +20371,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &1514837946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1514837943}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991dc18cdd2ceff43a6c12eedd6bab39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Bael: {fileID: 1514837943}
-  animator: {fileID: 1514837947}
 --- !u!95 &1514837947
 Animator:
   serializedVersion: 3
@@ -21319,7 +21229,6 @@ GameObject:
   - component: {fileID: 1578278230}
   - component: {fileID: 1578278234}
   - component: {fileID: 1578278233}
-  - component: {fileID: 1578278232}
   - component: {fileID: 1578278231}
   m_Layer: 0
   m_Name: Boss
@@ -21368,20 +21277,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.19}
   m_EdgeRadius: 0
---- !u!114 &1578278232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578278229}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 991dc18cdd2ceff43a6c12eedd6bab39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Bael: {fileID: 1578278229}
-  animator: {fileID: 1578278233}
 --- !u!95 &1578278233
 Animator:
   serializedVersion: 3
