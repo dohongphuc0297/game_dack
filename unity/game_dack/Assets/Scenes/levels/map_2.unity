@@ -2460,7 +2460,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 299.05005, y: -10}
+  m_AnchoredPosition: {x: 266.2, y: -10}
   m_SizeDelta: {x: 20, y: 168.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &212984352
@@ -2503,7 +2503,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1479124713}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2748,11 +2748,11 @@ RectTransform:
   m_Father: {fileID: 1400022504}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -159, y: -10}
-  m_SizeDelta: {x: 280.6, y: 168.5}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 19.899963, y: -10}
+  m_SizeDelta: {x: 249.4, y: 168.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &226915150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5415,10 +5415,10 @@ RectTransform:
   m_Father: {fileID: 1400022504}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 154.4, y: -10.024991}
-  m_SizeDelta: {x: 256.9, y: 168.45}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 139.15002, y: -10.02499}
+  m_SizeDelta: {x: -349.6, y: -71.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &619162190
 MonoBehaviour:
@@ -7084,8 +7084,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.32, y: -2.26}
-  m_SizeDelta: {x: 239.35, y: 150.52}
+  m_AnchoredPosition: {x: 0.0012426, y: -2.26}
+  m_SizeDelta: {x: 226.4, y: 150.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &834759362
 MonoBehaviour:
@@ -7189,7 +7189,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -17203,7 +17203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1400022504
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17243,17 +17243,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quests:
   - title: Giai cuu dan lang
-    description: Lang ABC dang bi cuop boi 7 ten Brigand. Hay tieu diet chung va cuu
-      lay dan lang
+    description: Lang ABC dang bi cuop boi 9 ten BoneWalker. Hay tieu diet chung va
+      cuu lay dan lang
     killObjective:
-    - amount: 6
-      type: Brigand
-  - title: Tieu diet Brigand dau dan
-    description: Sau khi tieu diet 6 ten linh Brigand. Ten Brigand dau dang xuat hien
-      va no con thinh no. Hay tieu diet han.
+    - amount: 9
+      type: BoneWalker
+  - title: Tieu diet Boss Revenant
+    description: Hay tieu diet ten boss Revenant.
     killObjective:
     - amount: 1
-      type: BrigandBoss
+      type: RevenantBoss
   questPrefab: {fileID: 6578055539751806101, guid: 542ba87002ea6704382cb39d649fe12f,
     type: 3}
   questList: {fileID: 1730893849}
@@ -17914,7 +17913,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -19615,10 +19614,10 @@ RectTransform:
   m_Father: {fileID: 226915149}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 84.25}
-  m_SizeDelta: {x: 290, y: 26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.0000076293945, y: 0}
+  m_SizeDelta: {x: -0.6000061, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1730893850
 MonoBehaviour:
@@ -22547,7 +22546,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000023186, y: 75.26}
-  m_SizeDelta: {x: 239.35, y: 16}
+  m_SizeDelta: {x: 239.35, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2069467903
 MonoBehaviour:
@@ -22843,11 +22842,11 @@ RectTransform:
   m_Father: {fileID: 1400022504}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 260.2, y: 96.6}
-  m_SizeDelta: {x: 36.7, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 1.0500488, y: -0.15001678}
+  m_SizeDelta: {x: 36.700012, y: 30}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &2101199783
 MonoBehaviour:
   m_ObjectHideFlags: 0
