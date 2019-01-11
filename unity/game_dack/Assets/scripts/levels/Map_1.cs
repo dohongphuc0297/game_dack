@@ -864,10 +864,12 @@ public class Map_1 : MonoBehaviour
         if(Input.GetMouseButtonDown(1)){
             if(MenuPanel.activeInHierarchy)
             {
+
                 BtnCancelClick();
             }
             if(ActionPanel.activeInHierarchy || currentState == GameStates.PlayerMoveUnit)
             {
+                PlayerUnits[currentUnitIndex]._Animator.SetBool("isDown", false);
                 BtnActionCancelClick();
             }
             if(AttackPanel.activeInHierarchy)
@@ -881,7 +883,6 @@ public class Map_1 : MonoBehaviour
         Vector3Int coordinate = grid.WorldToCell(mouseWorldPos);
         if (isPlayerTurn && isHoverable)
         {
-            Debug.Log(coordinate);
             //hover
             Vector3 pos = new Vector3(coordinate.x, coordinate.y, coordinate.z);
             pos.x += 0.5f;
@@ -975,6 +976,7 @@ public class Map_1 : MonoBehaviour
                 if(MovedUnitIndex.Count == PlayerUnits.Count) BtnEndTurnClick();
                 if (Input.GetMouseButtonDown(0))
                 {
+                    UnitInfoPanel.SetActive(false);
                     if (IsOutMap(coordinate)) break;
                     bool isUnit = false;
                     for (int i = 0; i < PlayerUnits.Count; i++)
@@ -1093,86 +1095,16 @@ public class Map_1 : MonoBehaviour
                         InfoPanel.SetActive(true);
                     }
                     else {
-                        if (IsOutMap(coordinate)) break;
-                        for (int i = 0; i < PlayerUnits.Count; i++)
-                        {
-                            Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
-                            if (coll.OverlapPoint(mouseWorldPos))
+                        if(currentState != GameStates.PlayerSelectAction){
+                            if (IsOutMap(coordinate)) break;
+                            for (int i = 0; i < PlayerUnits.Count; i++)
                             {
-                                Sprite[] avatars = Resources.LoadAll<Sprite>("avatars");
-                                List<Sprite> listAvatar = new List<Sprite>(avatars);
-
-                                InfoPanel.SetActive(false);
-                                UnitInfoPanel.SetActive(true);
-                                GameObject[] info = GameObject.FindGameObjectsWithTag("UnitInfo");
-                                foreach (GameObject obj in info)
-                                {
-                                    switch (obj.name)
-                                    {
-                                        case "Level":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Level.ToString();
-                                            break;
-                                        case "Name":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].CharacterClassName.ToString();
-                                            break;
-                                        case "Exp":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Exp.ToString();
-                                            break;
-                                        case "HP":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].MaxHP.ToString();
-                                            break;
-                                        case "Pow":
-                                            if(PlayerUnits[i].Strength>PlayerUnits[i].Magic){
-                                                obj.GetComponent<Text>().text = PlayerUnits[i].Strength.ToString();
-                                            }
-                                            else{
-                                                obj.GetComponent<Text>().text = PlayerUnits[i].Magic.ToString();
-                                            }
-                                            break;
-                                        case "Skill":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Skill.ToString();
-                                            break;
-                                        case "Speed":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Speed.ToString();
-                                            break;
-                                        case "Luck":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Luck.ToString();
-                                            break;
-                                        case "Def":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Defend.ToString();
-                                            break;
-                                        case "Resist":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Resist.ToString();
-                                            break;
-                                        case "Movement":
-                                            obj.GetComponent<Text>().text = PlayerUnits[i].Movement.ToString();
-                                            break;
-                                        case "Avatar":
-                                            foreach (Sprite sprite in listAvatar)
-                                            {
-                                                if(sprite.name == PlayerUnits[i]._GameObject.name)
-                                                {
-                                                    obj.GetComponent<Image>().sprite = sprite;
-                                                    break;
-                                                }
-                                            }
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-
-                        if(!UnitInfoPanel.activeInHierarchy) {
-                            for (int i = 0; i < EnemyUnits.Count; i++)
-                            {
-                                Collider2D coll = EnemyUnits[i]._GameObject.GetComponent<Collider2D>();
+                                Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
                                 if (coll.OverlapPoint(mouseWorldPos))
                                 {
                                     Sprite[] avatars = Resources.LoadAll<Sprite>("avatars");
                                     List<Sprite> listAvatar = new List<Sprite>(avatars);
+
                                     InfoPanel.SetActive(false);
                                     UnitInfoPanel.SetActive(true);
                                     GameObject[] info = GameObject.FindGameObjectsWithTag("UnitInfo");
@@ -1181,47 +1113,47 @@ public class Map_1 : MonoBehaviour
                                         switch (obj.name)
                                         {
                                             case "Level":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Level.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Level.ToString();
                                                 break;
                                             case "Name":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].CharacterClassName.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].CharacterClassName.ToString();
                                                 break;
                                             case "Exp":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Exp.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Exp.ToString();
                                                 break;
                                             case "HP":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].HP.ToString()+"/"+EnemyUnits[i].MaxHP.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].MaxHP.ToString();
                                                 break;
                                             case "Pow":
-                                                if(EnemyUnits[i].Strength>EnemyUnits[i].Magic){
-                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Strength.ToString();
+                                                if(PlayerUnits[i].Strength>PlayerUnits[i].Magic){
+                                                    obj.GetComponent<Text>().text = PlayerUnits[i].Strength.ToString();
                                                 }
                                                 else{
-                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Magic.ToString();
+                                                    obj.GetComponent<Text>().text = PlayerUnits[i].Magic.ToString();
                                                 }
                                                 break;
                                             case "Skill":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Skill.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Skill.ToString();
                                                 break;
                                             case "Speed":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Speed.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Speed.ToString();
                                                 break;
                                             case "Luck":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Luck.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Luck.ToString();
                                                 break;
                                             case "Def":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Defend.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Defend.ToString();
                                                 break;
                                             case "Resist":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Resist.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Resist.ToString();
                                                 break;
                                             case "Movement":
-                                                obj.GetComponent<Text>().text = EnemyUnits[i].Movement.ToString();
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Movement.ToString();
                                                 break;
                                             case "Avatar":
                                                 foreach (Sprite sprite in listAvatar)
                                                 {
-                                                    if(sprite.name == EnemyUnits[i].CharacterClassName)
+                                                    if(sprite.name == PlayerUnits[i]._GameObject.name)
                                                     {
                                                         obj.GetComponent<Image>().sprite = sprite;
                                                         break;
@@ -1235,7 +1167,80 @@ public class Map_1 : MonoBehaviour
                                     break;
                                 }
                             }
+
+                            if(!UnitInfoPanel.activeInHierarchy) {
+                                for (int i = 0; i < EnemyUnits.Count; i++)
+                                {
+                                    Collider2D coll = EnemyUnits[i]._GameObject.GetComponent<Collider2D>();
+                                    if (coll.OverlapPoint(mouseWorldPos))
+                                    {
+                                        Sprite[] avatars = Resources.LoadAll<Sprite>("avatars");
+                                        List<Sprite> listAvatar = new List<Sprite>(avatars);
+                                        InfoPanel.SetActive(false);
+                                        UnitInfoPanel.SetActive(true);
+                                        GameObject[] info = GameObject.FindGameObjectsWithTag("UnitInfo");
+                                        foreach (GameObject obj in info)
+                                        {
+                                            switch (obj.name)
+                                            {
+                                                case "Level":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Level.ToString();
+                                                    break;
+                                                case "Name":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].CharacterClassName.ToString();
+                                                    break;
+                                                case "Exp":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Exp.ToString();
+                                                    break;
+                                                case "HP":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].HP.ToString()+"/"+EnemyUnits[i].MaxHP.ToString();
+                                                    break;
+                                                case "Pow":
+                                                    if(EnemyUnits[i].Strength>EnemyUnits[i].Magic){
+                                                        obj.GetComponent<Text>().text = EnemyUnits[i].Strength.ToString();
+                                                    }
+                                                    else{
+                                                        obj.GetComponent<Text>().text = EnemyUnits[i].Magic.ToString();
+                                                    }
+                                                    break;
+                                                case "Skill":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Skill.ToString();
+                                                    break;
+                                                case "Speed":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Speed.ToString();
+                                                    break;
+                                                case "Luck":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Luck.ToString();
+                                                    break;
+                                                case "Def":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Defend.ToString();
+                                                    break;
+                                                case "Resist":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Resist.ToString();
+                                                    break;
+                                                case "Movement":
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Movement.ToString();
+                                                    break;
+                                                case "Avatar":
+                                                    foreach (Sprite sprite in listAvatar)
+                                                    {
+                                                        if(sprite.name == EnemyUnits[i].CharacterClassName)
+                                                        {
+                                                            obj.GetComponent<Image>().sprite = sprite;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
                         }
+
                     }                          
                 }
                 break;
@@ -1257,30 +1262,39 @@ public class Map_1 : MonoBehaviour
                             + Math.Abs(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).y-grid.WorldToCell(moveTarget).y);
                             
                             //Debug.Log("steps: " + limit_step);
-
-                            while(street.Count == 0) {
-                                StreetUnitMoving(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position), grid.WorldToCell(moveTarget), 0, limit_step, "", true);
-                                limit_step++;
-                                if(limit_step > PlayerUnits[currentUnitIndex].Movement) break;
+                            if(limit_step>0) {
+                                Debug.Log(123);
+                                while(street.Count == 0) {
+                                    StreetUnitMoving(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position), grid.WorldToCell(moveTarget), 0, limit_step, "", true);
+                                    limit_step++;
+                                    if(limit_step > PlayerUnits[currentUnitIndex].Movement) break;
+                                }
+                                
+                                //Debug.Log("coordinate: " + moveTarget);
+                                //Debug.Log("targe: " + moveTarget);
+                                //Debug.Log("player: " + PlayerUnits[currentUnitIndex]._GameObject.transform.position);
+                                //Debug.Log("player: " + grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position));
+                                //foreach(Vector3Int vector in street) {
+                                //    Debug.Log("street: " + vector);
+                                //}
+                                checkstreet = 1;
+                                
+                                one_step = new Vector3(PlayerUnits[currentUnitIndex]._GameObject.transform.position.x + 
+                                        (street[street.Count-checkstreet].x - 
+                                            grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).x), 
+                                        PlayerUnits[currentUnitIndex]._GameObject.transform.position.y + 
+                                        (street[street.Count-checkstreet].y - 
+                                            grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).y), 
+                                        street[street.Count-checkstreet].z);
+                                PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
+                            }
+                            else {
+                                ShowActionPanel();
+                                tilemap.RefreshAllTiles();
+                                PlayerUnits[currentUnitIndex]._Animator.SetBool("isDown", false);
+                                currentState = GameStates.PlayerSelectAction;
                             }
                             
-                            //Debug.Log("coordinate: " + moveTarget);
-                            //Debug.Log("targe: " + moveTarget);
-                            //Debug.Log("player: " + PlayerUnits[currentUnitIndex]._GameObject.transform.position);
-                            //Debug.Log("player: " + grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position));
-                            //foreach(Vector3Int vector in street) {
-                            //    Debug.Log("street: " + vector);
-                            //}
-                            checkstreet = 1;
-                            
-                            one_step = new Vector3(PlayerUnits[currentUnitIndex]._GameObject.transform.position.x + 
-                                    (street[street.Count-checkstreet].x - 
-                                        grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).x), 
-                                    PlayerUnits[currentUnitIndex]._GameObject.transform.position.y + 
-                                    (street[street.Count-checkstreet].y - 
-                                        grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).y), 
-                                    street[street.Count-checkstreet].z);
-                            PlayerUnits[currentUnitIndex]._GameObject.transform.position = Vector3.MoveTowards(PlayerUnits[currentUnitIndex]._GameObject.transform.position, one_step, speed * Time.deltaTime);
                         }
                     }
                 }
@@ -1290,6 +1304,7 @@ public class Map_1 : MonoBehaviour
                 Vector3 temp_moveTarget = moveTarget;
                 Vector3 temp_pos_unit = PlayerUnits[currentUnitIndex]._GameObject.transform.position;
 
+                
                 
                 if(one_step == PlayerUnits[currentUnitIndex]._GameObject.transform.position
                     && PlayerUnits[currentUnitIndex]._GameObject.transform.position != moveTarget) 
@@ -1336,8 +1351,8 @@ public class Map_1 : MonoBehaviour
                     tilemap.RefreshAllTiles();
                     PlayerUnits[currentUnitIndex]._Animator.SetBool("isDown", false);
                     currentState = GameStates.PlayerSelectAction;
-                }
-                break;
+                }    
+                break;  
             case GameStates.PlayerSelectAction:
                 break;
             case GameStates.PlayerAttackUnit:
