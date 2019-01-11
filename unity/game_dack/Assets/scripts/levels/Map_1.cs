@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
@@ -155,7 +156,7 @@ public class Map_1 : MonoBehaviour
     void Start()
     {
         //Debug.Log(tilemap.GetTile(grid.WorldToCell(new Vector3(-11, 9, 0))));
-        for(int x = -18; x<= 18; x++) {
+        for (int x = -18; x<= 18; x++) {
             for(int y = -10; y<=9; y++) {
                 string s = tilemap.GetTile(grid.WorldToCell(new Vector3(x, y, 0))).name;
             
@@ -231,6 +232,19 @@ public class Map_1 : MonoBehaviour
                     break;
             }
         }
+        //get saved info
+        if (SaveLoad.Level != 0)
+        {
+            foreach (BaseCharacterClass unit in SaveLoad.savedUnits)
+            {
+                int index = isContainedInList(unit.CharacterClassName);
+                if(index >= 0)
+                {
+                    PlayerUnits[index].setInfo(unit);
+                }
+            }
+        }
+
         GameObject[] Enemylist = GameObject.FindGameObjectsWithTag("EnemyUnit");
         foreach (GameObject obj in Enemylist)
         {
@@ -279,6 +293,15 @@ public class Map_1 : MonoBehaviour
         isHoverable = false;
         Cursor.SetActive(false);
         isPlayerTurn = false;
+    }
+
+    private int isContainedInList(string name)
+    {
+        for(int i = 0; i < PlayerUnits.Count; i++)
+        {
+            if (PlayerUnits[i].CharacterClassName == name) return i;
+        }
+        return -1;
     }
 
     public void  PlayChangeTurnPanel()
@@ -2347,6 +2370,33 @@ public class Map_1 : MonoBehaviour
             case GameStates.GameOver:
                 if (!changeTurn)
                 {
+                    if(PlayerUnits.Count > 0)
+                    {
+                        string sceneName = SceneManager.GetActiveScene().name;
+                        string[] s = sceneName.Split('_');
+                        int level = Int32.Parse(s[1]);
+                        SaveLoad.Save(PlayerUnits, level);
+                        List<string> scenesInBuild = new List<string>();
+                        for (int i = 1; i < SceneManager.sceneCountInBuildSettings; i++)
+                        {
+                            string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+                            int lastSlash = scenePath.LastIndexOf("/");
+                            scenesInBuild.Add(scenePath.Substring(lastSlash + 1, scenePath.LastIndexOf(".") - lastSlash - 1));
+                        }
+
+                        if (scenesInBuild.Contains("map_" + (level + 1).ToString()))
+                        {
+                            SceneManager.LoadScene("Scenes/levels/map_" + (level + 1).ToString(), LoadSceneMode.Single);
+                        }
+                        else
+                        {
+                            SceneManager.LoadScene("Scenes/Menu/MainMenu", LoadSceneMode.Single);
+                        }
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene("Scenes/Menu/MainMenu", LoadSceneMode.Single);
+                    }
                     currentState = GameStates.AfterAnimationFight;
                 }
                 break;

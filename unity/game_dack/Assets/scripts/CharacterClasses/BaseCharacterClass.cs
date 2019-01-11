@@ -7,6 +7,7 @@ public enum CharacterStates
     Stance, Active, Left, Right, Up, Down
 }
 
+[System.Serializable]
 public class BaseCharacterClass
 {
     private string characterClassName;
@@ -172,5 +173,31 @@ public class BaseCharacterClass
     {
         get { return grresist; }
         set { grresist = value; }
+    }
+
+    public void setInfo(BaseCharacterClass Char)
+    {
+        Level = Char.Level;
+        Exp = Char.Exp;
+        MaxHP = Char.MaxHP;
+        HP = Char.HP;
+        Strength = Char.Strength;
+        Magic = Char.Magic;
+        Skill = Char.Skill;
+        Speed = Char.Speed;
+        Luck = Char.Luck;
+        Defend = Char.Defend;
+        Resist = Char.Resist;
+        Movement = Char.Movement;
+        AttackRange = Char.AttackRange;
+
+        GRHP = Char.GRHP;
+        GRStrength = Char.GRStrength;
+        GRMagic = Char.GRMagic;
+        GRSkill = Char.GRSkill;
+        GRSpeed = Char.GRSpeed;
+        GRLuck = Char.GRLuck;
+        GRDefend = Char.GRDefend;
+        GRResist = Char.GRResist;
     }
 }
