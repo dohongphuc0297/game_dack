@@ -287,9 +287,9 @@ public class Map_1 : MonoBehaviour
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
                 case "Boss2":
-                    EnemyUnits.Add(new BoneWalker(obj)
+                    EnemyUnits.Add(new Revenant(obj)
                     {
-                        CharacterClassName = "BoneWalkerBoss",
+                        CharacterClassName = "RevenantBoss",
                     });
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
@@ -455,6 +455,8 @@ public class Map_1 : MonoBehaviour
     {
         PlayerCharacter.GetComponent<SpriteRenderer>().sprite = null;
         PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = null;
+        EnemyCharacter.GetComponent<SpriteRenderer>().sprite = null;
+        EnemyCharacter.GetComponent<Animator>().runtimeAnimatorController = null;
         ShowFightWindow();
         Animator animate = FightWindow.GetComponent<Animator>();
         animate.SetTrigger("begin");
@@ -512,7 +514,10 @@ public class Map_1 : MonoBehaviour
             if(sprite.name == PlayerUnits[currentUnitIndex]._GameObject.name)
             {
                 PlayerCharacter.GetComponent<SpriteRenderer>().sprite = sprite;
-                break;
+            }
+            if(sprite.name == EnemyUnits[currentEnemyIndex]._GameObject.name)
+            {
+                EnemyCharacter.GetComponent<SpriteRenderer>().sprite = sprite;
             }
         }
         
@@ -523,7 +528,12 @@ public class Map_1 : MonoBehaviour
                 PlayerCharacter.GetComponent<Animator>().runtimeAnimatorController = controller;
                 break;
             }
+            if(controller.name == EnemyUnits[currentEnemyIndex]._GameObject.name)
+            {
+                EnemyCharacter.GetComponent<Animator>().runtimeAnimatorController = controller;
+            }
         }
+        Debug.Log(123);
         //set order attack
         if (isPlayerTurn)
         {
@@ -2540,7 +2550,6 @@ public class Map_1 : MonoBehaviour
                             }
                         }
                         tilemap.RefreshAllTiles();
-                        Debug.Log(123);
                         BtnAttackConfirmClick();
                         break;
                     }
