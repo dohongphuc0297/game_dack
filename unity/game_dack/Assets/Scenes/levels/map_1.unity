@@ -18052,7 +18052,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 750357526}
-        m_MethodName: BtnCancelClick
+        m_MethodName: BtnMainMenuClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

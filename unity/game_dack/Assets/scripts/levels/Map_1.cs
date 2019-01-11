@@ -592,6 +592,11 @@ public class Map_1 : MonoBehaviour
         ShowActionPanel();
     }
 
+    public void BtnMainMenuClick()
+    {
+        SceneManager.LoadScene("Scenes/Menu/MainMenu", LoadSceneMode.Single);
+    }
+
     //source: https://answers.unity.com/questions/1546818/how-can-i-change-a-tile-color-in-unity-by-using-c.html
     /// <summary>
     /// Set the colour of a tile.
