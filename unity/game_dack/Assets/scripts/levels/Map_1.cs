@@ -612,7 +612,7 @@ public class Map_1 : MonoBehaviour
 
     private bool IsOutMap(Vector3Int point)
     {
-        if (point.x < -18 || point.x > 18 || point.y < -10 || point.y > 9) return true;
+        if (point.x < CoordinateLimitX.x || point.x > CoordinateLimitX.y || point.y < CoordinateLimitY.x || point.y > CoordinateLimitY.y) return true;
         return false;
     }
 
