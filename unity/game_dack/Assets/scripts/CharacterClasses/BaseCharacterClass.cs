@@ -185,7 +185,7 @@ public class BaseCharacterClass
         Level = Char.Level;
         Exp = Char.Exp;
         MaxHP = Char.MaxHP;
-        HP = Char.HP;
+        HP = MaxHP;
         Strength = Char.Strength;
         Magic = Char.Magic;
         Skill = Char.Skill;

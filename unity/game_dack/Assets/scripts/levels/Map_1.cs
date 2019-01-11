@@ -254,7 +254,11 @@ public class Map_1 : MonoBehaviour
             }
         }
         //get saved info
-        if (SaveLoad.Level != 0)
+        SaveLoad.Load();
+        string sceneName = SceneManager.GetActiveScene().name;
+        string[] str = sceneName.Split('_');
+        int level = Int32.Parse(str[1]);
+        if (SaveLoad.Level == (level + 1))
         {
             foreach (BaseCharacterClass unit in SaveLoad.savedUnits)
             {
@@ -2189,7 +2193,9 @@ public class Map_1 : MonoBehaviour
                     moveTarget = new Vector3(pos_unit.x + (moveZone[0].x - pos_unit_int.x), pos_unit.y + (moveZone[0].y - pos_unit_int.y), moveZone[0].z);
                     for (int i = 0; i < moveZone.Count; i++)
                     {
-                        if(IsEnemyUnit(moveZone[i]) < 0)
+                        if (IsOutMap(moveZone[i])) continue;
+                        int index = IsEnemyUnit(moveZone[i]);
+                        if (index < 0 || index == currentEnemyIndex)
                         {
                             float Dis = Vector3Int.Distance(coorTemp, moveZone[i]);
                             if (currDis > Dis)

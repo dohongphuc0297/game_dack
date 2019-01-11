@@ -12,18 +12,21 @@ public static class SaveLoad
     {
         PlayerPrefs.SetInt("level", level);
         savedUnits = list;
+        FileStream file;
+        string destination = Application.persistentDataPath + "/savedGames.dat";
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.gd");
-        bf.Serialize(file, SaveLoad.savedUnits);
+        if (File.Exists(destination)) file = File.OpenWrite(destination);
+        else file = File.Create(destination);
+        bf.Serialize(file, savedUnits);
         file.Close();
     }
     public static void Load()
     {
-        if (File.Exists(Application.persistentDataPath + "/savedGames.gd"))
+        if (File.Exists(Application.persistentDataPath + "/savedGames.dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/savedGames.gd", FileMode.Open);
-            SaveLoad.savedUnits = (List<BaseCharacterClass>)bf.Deserialize(file);
+            FileStream file = File.Open(Application.persistentDataPath + "/savedGames.dat", FileMode.Open);
+            savedUnits = (List<BaseCharacterClass>)bf.Deserialize(file);
             file.Close();
             Level = PlayerPrefs.GetInt("level");
         }
