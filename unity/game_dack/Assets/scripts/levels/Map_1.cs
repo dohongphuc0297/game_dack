@@ -37,6 +37,8 @@ public class Map_1 : MonoBehaviour
     public float panBorderThickness = 10f;
     public Vector2 panLimit;
 
+    public GameObject Audio;
+
     public Tilemap tilemap;
     public BoundsInt cellBounds;
     public Color color;
@@ -155,6 +157,18 @@ public class Map_1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //set audio volume
+        AudioSource m_MyAudioSource = Audio.GetComponent<AudioSource>();
+        int volume = PlayerPrefs.GetInt("Volume", -1);
+        if (volume < 0)
+        {
+            PlayerPrefs.SetInt("Volume", 25);
+            m_MyAudioSource.volume = 0.25f;
+        }
+        else
+        {
+            m_MyAudioSource.volume = (volume * 1f) / 100;
+        }
         //Debug.Log(tilemap.GetTile(grid.WorldToCell(new Vector3(-11, 9, 0))));
         for (int x = -18; x<= 18; x++) {
             for(int y = -10; y<=9; y++) {
