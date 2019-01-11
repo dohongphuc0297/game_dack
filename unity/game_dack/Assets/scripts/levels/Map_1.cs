@@ -243,7 +243,7 @@ public class Map_1 : MonoBehaviour
                     break;
                 case "Knight":
                     PlayerUnits.Add(new Knight(obj));
-                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronLance();
+                    PlayerUnits[PlayerUnits.Count - 1].EquippedWeapon = new IronSword();
                     break;
                 case "Summoner":
                     PlayerUnits.Add(new Summoner(obj));
@@ -427,7 +427,6 @@ public class Map_1 : MonoBehaviour
         RefreshUnitColor();
         ChangeTurnText.text = "ENEMY TURN";
         ChangeTurnText.color = Color.red;
-        //Debug.Log(ChangeTurnText.color);
         PlayChangeTurnPanel();
         currentState = GameStates.ToEnemyTurn;
         MovedUnitIndex.Clear();
@@ -533,7 +532,6 @@ public class Map_1 : MonoBehaviour
                 EnemyCharacter.GetComponent<Animator>().runtimeAnimatorController = controller;
             }
         }
-        Debug.Log(123);
         //set order attack
         if (isPlayerTurn)
         {
@@ -728,7 +726,6 @@ public class Map_1 : MonoBehaviour
         //go left
         if(dir != "right")
         {
-            //Debug.Log("left");
             b = StreetUnitMoving(new Vector3Int(currPos.x - 1, currPos.y, 0), des, currStep + 1, maxStep, "left", isPlayerUnit);
             if(b == true)
             {
@@ -740,7 +737,6 @@ public class Map_1 : MonoBehaviour
         //go right
         if (dir != "left")
         {
-            //Debug.Log("right");
             b = StreetUnitMoving(new Vector3Int(currPos.x + 1, currPos.y, 0), des, currStep + 1, maxStep, "right", isPlayerUnit);
             if(b == true)
             {
@@ -751,7 +747,6 @@ public class Map_1 : MonoBehaviour
         //go up
         if (dir != "down")
         {
-            //Debug.Log("up");
             b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y + 1, 0), des, currStep + 1, maxStep, "up", isPlayerUnit);
             if(b==true)
             {
@@ -761,7 +756,6 @@ public class Map_1 : MonoBehaviour
         }
         if (dir != "up")
         {
-            //Debug.Log("down");
             b = StreetUnitMoving(new Vector3Int(currPos.x, currPos.y - 1, 0), des, currStep + 1, maxStep, "down", isPlayerUnit);
             if(b == true)
             {
@@ -783,7 +777,6 @@ public class Map_1 : MonoBehaviour
         {
             ChangeTurnText.text = "MAP CLEAR";
             ChangeTurnText.color = Color.blue;
-            //Debug.Log(ChangeTurnText.color);
             PlayChangeTurnPanel();
             currentState = GameStates.GameOver;
         }
@@ -791,7 +784,6 @@ public class Map_1 : MonoBehaviour
         {
             ChangeTurnText.text = "YOU LOSE";
             ChangeTurnText.color = Color.red;
-            //Debug.Log(ChangeTurnText.color);
             PlayChangeTurnPanel();
             currentState = GameStates.GameOver;
         }
@@ -1063,9 +1055,7 @@ public class Map_1 : MonoBehaviour
                     }
                     else {
                         if(currentState != GameStates.PlayerSelectAction){
-                            Debug.Log(1);
                             if (IsOutMap(coordinate)) break;
-                             Debug.Log(2);
                             for (int i = 0; i < PlayerUnits.Count; i++)
                             {
                                 Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
@@ -1139,7 +1129,6 @@ public class Map_1 : MonoBehaviour
                             if(!UnitInfoPanel.activeInHierarchy) {
                                 for (int i = 0; i < EnemyUnits.Count; i++)
                                 {
-                                    Debug.Log(i);
                                     Collider2D coll = EnemyUnits[i]._GameObject.GetComponent<Collider2D>();
                                     if (coll.OverlapPoint(mouseWorldPos))
                                     {
@@ -1224,16 +1213,13 @@ public class Map_1 : MonoBehaviour
                     {
                         if (IsPlayerUnit(coordinate) < 0 || coordinate == grid.WorldToCell(TargetPosition))
                         {
-                            //Debug.Log(coordinate);
                             street.Clear();
                             moveTarget = new Vector3(pos_unit.x + (coordinate.x - pos_unit_int.x), pos_unit.y + (coordinate.y - pos_unit_int.y), coordinate.z);
                             currentState = GameStates.UnitMoving;
                             int limit_step = Math.Abs(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).x-grid.WorldToCell(moveTarget).x) 
                             + Math.Abs(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position).y-grid.WorldToCell(moveTarget).y);
                             
-                            //Debug.Log("steps: " + limit_step);
                             if(limit_step>0) {
-                                Debug.Log(123);
                                 while(street.Count == 0) {
                                     StreetUnitMoving(grid.WorldToCell(PlayerUnits[currentUnitIndex]._GameObject.transform.position), grid.WorldToCell(moveTarget), 0, limit_step, "", true);
                                     limit_step++;
