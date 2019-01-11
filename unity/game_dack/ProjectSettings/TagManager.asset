@@ -12,6 +12,7 @@ TagManager:
   - BattleInfo
   - ExpIncrease
   - StatsUp
+  - UnitInfo
   layers:
   - Default
   - TransparentFX

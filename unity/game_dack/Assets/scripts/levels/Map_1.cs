@@ -20,6 +20,8 @@ public class Map_1 : MonoBehaviour
     public GameObject ExpPanel;
     public GameObject LevelUpAnimation;
     public GameObject StatsUpTable;
+    public GameObject UnitInfoPanel;
+
 
     public GameObject PlayerCharacter;
     public GameObject EnemyCharacter;
@@ -218,6 +220,7 @@ public class Map_1 : MonoBehaviour
         ExpPanel.SetActive(false);
         LevelUpAnimation.SetActive(false);
         StatsUpTable.SetActive(false);
+        UnitInfoPanel.SetActive(false);
         //ShowInfoPanel();
         //tilemap = grid.GetComponent<Tilemap>();
         GameObject[] list = GameObject.FindGameObjectsWithTag("PlayerUnit");
@@ -268,6 +271,37 @@ public class Map_1 : MonoBehaviour
         {
             switch (obj.name)
             {
+                case "Brigand":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
+                    break;
+                case "Brigand1":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
+                    break;
+                case "Brigand2":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
+                    break;
+                case "Brigand3":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
+                    break;
+                case "Brigand4":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
+                    break;
+                case "Brigand5":
+                    EnemyUnits.Add(new Brigand(obj));
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronSword();
+                    break;
+                case "Boss":
+                    EnemyUnits.Add(new Brigand(obj)
+                    {
+                        CharacterClassName = "BrigandBoss",
+                    });
+                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
+                    break;
                 case "BoneWalker":
                     EnemyUnits.Add(new Brigand(obj));
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
@@ -302,13 +336,6 @@ public class Map_1 : MonoBehaviour
                     break;
                 case "BoneWalker8":
                     EnemyUnits.Add(new Brigand(obj));
-                    EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
-                    break;
-                case "Boss":
-                    EnemyUnits.Add(new Brigand(obj)
-                    {
-                        CharacterClassName = "BrigandBoss",
-                    });
                     EnemyUnits[EnemyUnits.Count - 1].EquippedWeapon = new IronAxe();
                     break;
                 default:
@@ -1055,13 +1082,156 @@ public class Map_1 : MonoBehaviour
                         currentState = GameStates.PlayerSelectAction;
                     }
                 }
-                else if(Input.GetMouseButtonDown(1)) {
-                    if (IsOutMap(coordinate)) break;
-                    bool isUnit = false;
-                    for (int i = 0; i < PlayerUnits.Count; i++)
-                    {
-
+                else if(Input.GetMouseButtonDown(1) || Input.GetKeyDown("x")) {
+                    if(UnitInfoPanel.activeInHierarchy) {
+                        UnitInfoPanel.SetActive(false);
+                        InfoPanel.SetActive(true);
                     }
+                    else {
+                        if (IsOutMap(coordinate)) break;
+                        for (int i = 0; i < PlayerUnits.Count; i++)
+                        {
+                            Collider2D coll = PlayerUnits[i]._GameObject.GetComponent<Collider2D>();
+                            if (coll.OverlapPoint(mouseWorldPos))
+                            {
+                                Sprite[] avatars = Resources.LoadAll<Sprite>("avatars");
+                                List<Sprite> listAvatar = new List<Sprite>(avatars);
+
+                                InfoPanel.SetActive(false);
+                                UnitInfoPanel.SetActive(true);
+                                GameObject[] info = GameObject.FindGameObjectsWithTag("UnitInfo");
+                                foreach (GameObject obj in info)
+                                {
+                                    switch (obj.name)
+                                    {
+                                        case "Level":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Level.ToString();
+                                            break;
+                                        case "Name":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].CharacterClassName.ToString();
+                                            break;
+                                        case "Exp":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Exp.ToString();
+                                            break;
+                                        case "HP":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].HP.ToString()+"/"+PlayerUnits[i].MaxHP.ToString();
+                                            break;
+                                        case "Pow":
+                                            if(PlayerUnits[i].Strength>PlayerUnits[i].Magic){
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Strength.ToString();
+                                            }
+                                            else{
+                                                obj.GetComponent<Text>().text = PlayerUnits[i].Magic.ToString();
+                                            }
+                                            break;
+                                        case "Skill":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Skill.ToString();
+                                            break;
+                                        case "Speed":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Speed.ToString();
+                                            break;
+                                        case "Luck":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Luck.ToString();
+                                            break;
+                                        case "Def":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Defend.ToString();
+                                            break;
+                                        case "Resist":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Resist.ToString();
+                                            break;
+                                        case "Movement":
+                                            obj.GetComponent<Text>().text = PlayerUnits[i].Movement.ToString();
+                                            break;
+                                        case "Avatar":
+                                            foreach (Sprite sprite in listAvatar)
+                                            {
+                                                if(sprite.name == PlayerUnits[i]._GameObject.name)
+                                                {
+                                                    obj.GetComponent<Image>().sprite = sprite;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+
+                        if(!UnitInfoPanel.activeInHierarchy) {
+                            for (int i = 0; i < EnemyUnits.Count; i++)
+                            {
+                                Collider2D coll = EnemyUnits[i]._GameObject.GetComponent<Collider2D>();
+                                if (coll.OverlapPoint(mouseWorldPos))
+                                {
+                                    Sprite[] avatars = Resources.LoadAll<Sprite>("avatars");
+                                    List<Sprite> listAvatar = new List<Sprite>(avatars);
+                                    InfoPanel.SetActive(false);
+                                    UnitInfoPanel.SetActive(true);
+                                    GameObject[] info = GameObject.FindGameObjectsWithTag("UnitInfo");
+                                    foreach (GameObject obj in info)
+                                    {
+                                        switch (obj.name)
+                                        {
+                                            case "Level":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Level.ToString();
+                                                break;
+                                            case "Name":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].CharacterClassName.ToString();
+                                                break;
+                                            case "Exp":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Exp.ToString();
+                                                break;
+                                            case "HP":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].HP.ToString()+"/"+EnemyUnits[i].MaxHP.ToString();
+                                                break;
+                                            case "Pow":
+                                                if(EnemyUnits[i].Strength>EnemyUnits[i].Magic){
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Strength.ToString();
+                                                }
+                                                else{
+                                                    obj.GetComponent<Text>().text = EnemyUnits[i].Magic.ToString();
+                                                }
+                                                break;
+                                            case "Skill":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Skill.ToString();
+                                                break;
+                                            case "Speed":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Speed.ToString();
+                                                break;
+                                            case "Luck":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Luck.ToString();
+                                                break;
+                                            case "Def":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Defend.ToString();
+                                                break;
+                                            case "Resist":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Resist.ToString();
+                                                break;
+                                            case "Movement":
+                                                obj.GetComponent<Text>().text = EnemyUnits[i].Movement.ToString();
+                                                break;
+                                            case "Avatar":
+                                                foreach (Sprite sprite in listAvatar)
+                                                {
+                                                    if(sprite.name == EnemyUnits[i].CharacterClassName)
+                                                    {
+                                                        obj.GetComponent<Image>().sprite = sprite;
+                                                        break;
+                                                    }
+                                                }
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }                          
                 }
                 break;
             case GameStates.PlayerMoveUnit:
